@@ -6,9 +6,26 @@
 build/
 dist/
 localonly/
-nbproject/private
+nbproject/
 build.xml
 manifest.mf
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
 
 # Other stuff
 extra/
