@@ -1,4 +1,4 @@
-package org.codespeak.launcher.windows;
+package org.codespeak.distribution.client.windows;
 
 import java.net.URL;
 import java.util.ResourceBundle;

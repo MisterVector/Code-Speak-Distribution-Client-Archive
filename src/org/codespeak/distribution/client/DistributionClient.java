@@ -1,4 +1,4 @@
-package org.codespeak.launcher;
+package org.codespeak.distribution.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,11 +10,11 @@ import javafx.stage.Stage;
  *
  * @author Vector
  */
-public class CodeSpeakLauncher extends Application {
+public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/org/codespeak/launcher/windows/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("windows/MainWindow.fxml"));
         
         Scene scene = new Scene(root);
         
