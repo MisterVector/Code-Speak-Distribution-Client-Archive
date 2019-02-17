@@ -1,4 +1,3 @@
-# Code Speak Launcher
+# Code Speak Distribution Client
 
-This repository will contain the Code Speak Launcher, written in Java. More information will be
-revealed when the project actually gets underway.
+This is a client for the Code Speak Distribution System, written in Java. It is used to provide access to programs released via the distribution system.
