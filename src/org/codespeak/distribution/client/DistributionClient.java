@@ -14,7 +14,7 @@ public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("windows/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("scenes/MainWindow.fxml"));
         
         Scene scene = new Scene(root);
         

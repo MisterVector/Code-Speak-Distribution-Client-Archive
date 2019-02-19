@@ -1,4 +1,4 @@
-package org.codespeak.distribution.client.windows;
+package org.codespeak.distribution.client.scenes;
 
 import java.net.URL;
 import java.util.ResourceBundle;
