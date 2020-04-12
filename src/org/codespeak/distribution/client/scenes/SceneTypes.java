@@ -9,14 +9,14 @@ public enum SceneTypes {
     
     MAIN("MainWindow.fxml");
     
-    private final String path;
+    private final String fxmlName;
     
-    private SceneTypes(String path) {
-        this.path = path;
+    private SceneTypes(String fxmlName) {
+        this.fxmlName = fxmlName;
     }
     
     public String getPath() {
-        return path;
+        return "/org/codespeak/distribution/client/scenes/" + fxmlName;
     }
     
 }
