@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.codespeak.distribution.client.scenes.SceneTypes;
+import org.codespeak.distribution.client.util.SceneUtil;
 
 /**
  *
@@ -12,13 +14,15 @@ import javafx.stage.Stage;
  */
 public class DistributionClient extends Application {
     
+    private static DistributionClient instance;
+    
+    public DistributionClient() {
+        instance = this;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("scenes/MainWindow.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        stage.setScene(scene);
+        stage = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_NAME).getStage();
         stage.show();
     }
 
@@ -27,6 +31,14 @@ public class DistributionClient extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    /**
+     * Gets an instance of this class
+     * @return instance of this class
+     */
+    public static DistributionClient getInstance() {
+        return instance;
     }
     
 }
