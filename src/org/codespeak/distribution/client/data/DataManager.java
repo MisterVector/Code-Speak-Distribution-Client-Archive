@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * A class that manages all categories, dependencies and programs
@@ -226,6 +228,71 @@ public class DataManager {
         }
         
         return null;
+    }
+
+    /**
+     * Exports all installed programs to JSON
+     * @return JSON representation of all programs
+     */
+    public static JSONObject exportInstalledProgramsToJSON() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonCategories = new JSONArray();
+        JSONArray jsonDependencies = new JSONArray();
+        JSONArray jsonInstalledPrograms = new JSONArray();
+        
+        for (Category category : installedCategories) {
+            jsonCategories.put(category.toJSON());
+        }
+        
+        for (Dependency dependency : installedDependencies) {
+            jsonDependencies.put(dependency.toJSON());
+        }
+        
+        for (Program program : installedPrograms) {
+            jsonInstalledPrograms.put(program.toJSON());
+        }
+        
+        json.put("categories", jsonCategories);
+        json.put("dependencies", jsonDependencies);
+        json.put("programs", jsonInstalledPrograms);
+        
+        return json;
+    }
+    
+    /**
+     * Installs all programs from the specified JSON
+     * @param json JSON representing all installed programs
+     */
+    public static void importInstalledProgramsFromJSON(JSONObject json) {
+        if (json.has("categories")) {
+            JSONArray jsonCategories = json.getJSONArray("categories");
+            
+            for (int i = 0; i < jsonCategories.length(); i++) {
+                JSONObject obj = jsonCategories.getJSONObject(i);
+                Category category = Category.fromJSON(obj);
+                installedCategories.add(category);
+            }
+        }
+        
+        if (json.has("dependencies")) {
+            JSONArray jsonDependencies = json.getJSONArray("dependencies");
+            
+            for (int i = 0; i < jsonDependencies.length(); i++) {
+                JSONObject obj = jsonDependencies.getJSONObject(i);
+                Dependency dependency = Dependency.fromJSON(obj);
+                installedDependencies.add(dependency);
+            }
+        }
+        
+        if (json.has("programs")) {
+            JSONArray jsonPrograms = json.getJSONArray("programs");
+            
+            for (int i = 0; i < jsonPrograms.length(); i++) {
+                JSONObject obj = jsonPrograms.getJSONObject(i);
+                InstalledProgram program = InstalledProgram.fromJSON(json);
+                installedPrograms.add(program);
+            }
+        }
     }
     
 }
