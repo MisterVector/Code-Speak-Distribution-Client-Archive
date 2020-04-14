@@ -3,8 +3,6 @@ package org.codespeak.distribution.client.data;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import org.codespeak.distribution.client.data.handler.CategoryHandler;
-import org.codespeak.distribution.client.data.handler.DependencyHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -182,7 +180,7 @@ public class Program {
         
         if (json.has("category_id")) {
             int categoryId = json.getInt("category_id");
-            category = CategoryHandler.getCategory(categoryId, installed);
+            category = DataManager.getCategory(categoryId, installed);
         }
         
         if (json.has("slug")) {
@@ -222,7 +220,7 @@ public class Program {
              
              for (int i = 0; i < jsonDependencies.length(); i++) {
                  int dependencyId = jsonDependencies.getInt(i);
-                 Dependency dependency = DependencyHandler.getDependency(dependencyId, installed);
+                 Dependency dependency = DataManager.getDependency(dependencyId, installed);
                  dependencies.add(dependency);
              }
          }

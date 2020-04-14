@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 
 /**
@@ -15,6 +16,7 @@ public class MainWindowController implements Initializable {
     
     @FXML
     private Label label;
+    @FXML private ChoiceBox categoryChoices;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -23,7 +25,7 @@ public class MainWindowController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
     }    
     
 }
