@@ -276,7 +276,7 @@ public class DataManager {
             
             for (int i = 0; i < jsonPrograms.length(); i++) {
                 JSONObject obj = jsonPrograms.getJSONObject(i);
-                Program program = Program.fromJSON(json, true);
+                Program program = Program.fromJSON(obj, true);
                 installedPrograms.add(program);
             }
         }
