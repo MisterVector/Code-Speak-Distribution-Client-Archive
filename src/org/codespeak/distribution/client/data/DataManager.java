@@ -20,7 +20,7 @@ public class DataManager {
     
     private static List<Category> installedCategories = new ArrayList<Category>();
     private static List<Dependency> installedDependencies = new ArrayList<Dependency>();
-    private static List<InstalledProgram> installedPrograms = new ArrayList<InstalledProgram>();
+    private static List<Program> installedPrograms = new ArrayList<Program>();
     
     /**
      * Adds a category to the list
@@ -149,18 +149,26 @@ public class DataManager {
     /**
      * Adds a program to the list of programs
      * @param program program to add
+     * @param installed whether the program is installed
      */
-    public static void addProgram(Program program) {
-        programs.add(program);
+    public static void addProgram(Program program, boolean installed) {
+        if (installed) {
+            installedPrograms.add(program);
+        } else {
+            programs.add(program);            
+        }
     }
     
     /**
      * Gets a program by its ID
      * @param id ID of program
+     * @param installed whether the program is installed
      * @return 
      */
-    public static Program getProgram(int id) {
-        for (Program program : programs) {
+    public static Program getProgram(int id, boolean installed) {
+        List<Program> progs = (installed ? installedPrograms : programs);
+        
+        for (Program program : progs) {
             if (program.getId() == id) {
                 return program;
             }
@@ -172,10 +180,13 @@ public class DataManager {
     /**
      * Deletes a program by its ID
      * @param id ID of program
+     * @param installed whether the program is installed
      * @return Program object from deleted program
      */
-    public static Program deleteProgram(int id) {
-        for (Iterator<Program> it = programs.iterator(); it.hasNext();) {
+    public static Program deleteProgram(int id, boolean installed) {
+        List<Program> progs = (installed ? installedPrograms : programs);
+        
+        for (Iterator<Program> it = progs.iterator(); it.hasNext();) {
             Program program = it.next();
             
             if (program.getId() == id) {
@@ -189,47 +200,23 @@ public class DataManager {
     }
 
     /**
-     * Adds an installed program to the list of programs
-     * @param program installed program to add
-     */
-    public static void addInstalledProgram(InstalledProgram program) {
-        installedPrograms.add(program);
-    }
-    
-    /**
-     * Gets an installed program by its ID
-     * @param id ID of installed program
-     * @return installed program
-     */
-    public static InstalledProgram getInstalledProgram(int id) {
-        for (InstalledProgram program : installedPrograms) {
-            if (program.getId() == id) {
-                return program;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Deletes an installed program by its ID
+     * Installs a new program
      * @param id ID of program
-     * @return Program object from deleted program
      */
-    public static InstalledProgram deleteInstalledProgram(int id) {
-        for (Iterator<InstalledProgram> it = installedPrograms.iterator(); it.hasNext();) {
-            InstalledProgram program = it.next();
-            
+    public static void installProgram(int id) {
+        Program foundProgram = null;
+        
+        for (Program program : programs) {
             if (program.getId() == id) {
-                it.remove();
+                foundProgram = program;
                 
-                return program;
+                break;
             }
         }
         
-        return null;
+        installedPrograms.add(foundProgram);
     }
-
+    
     /**
      * Exports all installed programs to JSON
      * @return JSON representation of all programs
@@ -289,7 +276,7 @@ public class DataManager {
             
             for (int i = 0; i < jsonPrograms.length(); i++) {
                 JSONObject obj = jsonPrograms.getJSONObject(i);
-                InstalledProgram program = InstalledProgram.fromJSON(json);
+                Program program = Program.fromJSON(json, true);
                 installedPrograms.add(program);
             }
         }
