@@ -30,11 +30,11 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <TableView layoutX="14.0" layoutY="71.0" prefHeight="283.0" prefWidth="695.0">
+            <TableView fx:id="programsTable" layoutX="14.0" layoutY="71.0" prefHeight="283.0" prefWidth="695.0">
               <columns>
-                <TableColumn prefWidth="315.0" text="Name" />
-                <TableColumn prefWidth="153.0" text="Version" />
-                  <TableColumn prefWidth="226.0" text="Release Time" />
+                <TableColumn fx:id="programsTableNameColumn" prefWidth="315.0" text="Name" />
+                <TableColumn fx:id="programsTableVersionColumn" prefWidth="153.0" text="Version" />
+                  <TableColumn fx:id="programsTableReleaseTimeColumn" prefWidth="226.0" text="Release Time" />
               </columns>
             </TableView>
             <Label layoutX="14.0" layoutY="36.0" text="Select Category">
