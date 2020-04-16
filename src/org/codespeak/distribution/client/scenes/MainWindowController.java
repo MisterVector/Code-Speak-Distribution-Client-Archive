@@ -11,6 +11,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.DataManager;
@@ -29,14 +30,20 @@ import org.json.JSONObject;
  */
 public class MainWindowController implements Initializable {
 
+    private int currentSelectedProgramIndex;
+    
     @FXML private ChoiceBox<String> categoryChoices;
     @FXML private TableView<ProgramTableData> programsTable;
     @FXML private TableColumn<ProgramTableData, String> programsTableNameColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableVersionColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableReleaseTimeColumn;
+    @FXML private Label programNameLabel;
+    @FXML private Label programDescriptionLabel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        currentSelectedProgramIndex = -1;
+        
         programsTable.setEditable(false);
         
         programsTableNameColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("name"));
@@ -92,5 +99,19 @@ public class MainWindowController implements Initializable {
         
         categoryChoices.getSelectionModel().select("All");
     }    
+    
+    @FXML
+    public void onProgramSelect() {
+        TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
+        int selectedIndex = selectionModel.getSelectedIndex();
+        
+        if (selectedIndex > -1 && selectedIndex != currentSelectedProgramIndex) {
+            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
+            Program program = DataManager.getProgram(programData.getId(), false);
+            
+            programNameLabel.setText(program.getName());
+            programDescriptionLabel.setText(program.getDescription());
+        }
+    }
     
 }
