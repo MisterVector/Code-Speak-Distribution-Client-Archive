@@ -1,13 +1,17 @@
 package org.codespeak.distribution.client;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.codespeak.distribution.client.data.DataManager;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 import org.codespeak.distribution.client.util.SceneUtil;
+import org.json.JSONObject;
 
 /**
  *
@@ -27,6 +31,20 @@ public class DistributionClient extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() throws FileNotFoundException {
+        JSONObject json = DataManager.exportInstalledProgramsToJSON();
+        File storedProgramsFile = new File(Configuration.STORED_PROGRAMS_FILE);
+        
+        if (storedProgramsFile.exists()) {
+            storedProgramsFile.delete();
+        }
+        
+        PrintWriter writer = new PrintWriter(storedProgramsFile);
+        writer.write(json.toString(4));
+        writer.close();
+    }
+    
     /**
      * @param args the command line arguments
      */

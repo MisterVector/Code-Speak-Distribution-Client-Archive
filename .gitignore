@@ -30,3 +30,4 @@ target/
 # Other stuff
 extra/
 /programs/
+programs.json
