@@ -91,16 +91,12 @@ public enum QueryTypes {
             String response = sb.toString();
             JSONObject json = new JSONObject(response);
 
-            System.out.println(json.toString(4));
-            
             if (queryType.isInformationListQuery()) {
                 return (T) InformationListQueryResponse.fromJSON(json);
             } else {
                 return (T) InformationQueryResponse.fromJSON(json);
             }
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            
             return null;
         }
     }
