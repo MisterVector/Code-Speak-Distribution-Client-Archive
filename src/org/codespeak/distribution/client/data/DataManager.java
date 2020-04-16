@@ -216,6 +216,15 @@ public class DataManager {
         
         installedPrograms.add(foundProgram);
     }
+
+    /**
+     * Gets an unmodifiable list of all programs
+     * @param installed whether the programs are installed
+     * @return unmodifiable list of all programs
+     */
+    public static List<Program> getPrograms(boolean installed) {
+        return (installed ? Collections.unmodifiableList(installedPrograms) : Collections.unmodifiableList(programs));
+    }
     
     /**
      * Exports all installed programs to JSON
