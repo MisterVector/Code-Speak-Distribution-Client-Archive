@@ -58,20 +58,22 @@ public enum QueryTypes {
     
     /**
      * Queries the backend and gets a response
+     * @param <T> An object that extends QueryResponse
      * @param queryType the type of query to make
      * @return a QueryResponse object containing the response of the query
      */
-    public static QueryResponse getQueryResponse(QueryTypes queryType) {
+    public static <T extends QueryResponse> T getQueryResponse(QueryTypes queryType) {
         return getQueryResponse(queryType, "");
     }
     
     /**
      * Queries the backend and gets a response
+     * @param <T> An object that extends QueryResponse
      * @param queryType the type of query to make
      * @param otherPart an additional part of the query
      * @return a QueryResponse object containing the response of the query
      */
-    public static QueryResponse getQueryResponse(QueryTypes queryType, String otherPart) {
+    public static <T extends QueryResponse> T getQueryResponse(QueryTypes queryType, String otherPart) {
         try {
             URL url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getQueryName() + otherPart);
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -92,9 +94,9 @@ public enum QueryTypes {
             System.out.println(json.toString(4));
             
             if (queryType.isInformationListQuery()) {
-                return InformationListQueryResponse.fromJSON(json);
+                return (T) InformationListQueryResponse.fromJSON(json);
             } else {
-                return InformationQueryResponse.fromJSON(json);
+                return (T) InformationQueryResponse.fromJSON(json);
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
