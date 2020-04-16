@@ -1,7 +1,9 @@
 package org.codespeak.distribution.client.scenes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
  */
 public class MainWindowController implements Initializable {
 
+    @FXML private ChoiceBox<String> categoryChoices;
     @FXML private TableView<ProgramTableData> programsTable;
     @FXML private TableColumn<ProgramTableData, String> programsTableNameColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableVersionColumn;
@@ -69,6 +72,25 @@ public class MainWindowController implements Initializable {
             
             DataManager.addProgram(program, false);
         }
+        
+        List<Category> categories = DataManager.getCategories(false);
+        ObservableList categoryItems = categoryChoices.getItems();
+        
+        categoryItems.add("All");
+        
+        for (Category category : categories) {
+            categoryItems.add(category.getName());
+        }
+        
+        List<Program> programs = DataManager.getPrograms(false);
+        ObservableList items = programsTable.getItems();
+        
+        for (Program program : programs) {
+            ProgramTableData programData = new ProgramTableData(program.getId(), program.getName(), program.getVersion(), program.getReleaseTime().toString());
+            items.add(programData);
+        }
+        
+        categoryChoices.getSelectionModel().select("All");
     }    
     
 }

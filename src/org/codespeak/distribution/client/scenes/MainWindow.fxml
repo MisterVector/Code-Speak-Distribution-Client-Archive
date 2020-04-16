@@ -42,7 +42,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ChoiceBox layoutX="124.0" layoutY="34.0" prefHeight="25.0" prefWidth="237.0" />
+            <ChoiceBox fx:id="categoryChoices" layoutX="124.0" layoutY="34.0" prefHeight="25.0" prefWidth="237.0" />
             <CheckBox layoutX="374.0" layoutY="38.0" mnemonicParsing="false" text="Display Installed Programs Only">
                <font>
                   <Font size="14.0" />
