@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +31,12 @@ public class DistributionClient extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        File programsFolder = new File(Configuration.PROGRAMS_FOLDER);
+        
+        if (!programsFolder.exists()) {
+            programsFolder.mkdir();
+        }
+        
         launch(args);
     }
     
