@@ -181,6 +181,13 @@ public class MainWindowController implements Initializable {
                 ProgramTableData programData = new ProgramTableData(program.getId(), program.getName(), program.getVersion(), program.getReleaseTime().toString());
                 programsList.add(programData);
             }
+            
+            currentlySelectedProgramIndex = -1;
+            
+            programNameLabel.setText("Select A Program");
+            programDescriptionLabel.setText("No description. Select a program first.");
+            
+            disableButtons();
         }
     }
     
