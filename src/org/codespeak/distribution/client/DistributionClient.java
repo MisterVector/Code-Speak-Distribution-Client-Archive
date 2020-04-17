@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.codespeak.distribution.client.data.DataManager;
+import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ public class DistributionClient extends Application {
 
     @Override
     public void stop() throws FileNotFoundException {
-        JSONObject json = DataManager.exportInstalledProgramsToJSON();
+        JSONObject json = DataHandler.exportInstalledProgramsToJSON();
         File storedProgramsFile = new File(Configuration.STORED_PROGRAMS_FILE);
         
         if (storedProgramsFile.exists()) {
@@ -63,7 +63,7 @@ public class DistributionClient extends Application {
             String jsonString = new String(bytes);
             JSONObject json = new JSONObject(jsonString);
             
-            DataManager.importInstalledProgramsFromJSON(json);
+            DataHandler.importInstalledProgramsFromJSON(json);
         }
         
         launch(args);

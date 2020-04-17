@@ -19,7 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.codespeak.distribution.client.data.Category;
-import org.codespeak.distribution.client.data.DataManager;
+import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
@@ -116,7 +116,7 @@ public class MainWindowController implements Initializable {
             JSONObject obj = jsonContents.getJSONObject(i);
             Category category = Category.fromJSON(obj);
             
-            DataManager.addCategory(category, false);
+            DataHandler.addCategory(category, false);
         }
         
         response = BackendHandler.getQueryResponse(QueryTypes.GET_DEPENDENCIES);
@@ -126,7 +126,7 @@ public class MainWindowController implements Initializable {
             JSONObject obj = jsonContents.getJSONObject(i);
             Dependency dependency = Dependency.fromJSON(obj);
             
-            DataManager.addDependency(dependency, false);
+            DataHandler.addDependency(dependency, false);
         }
 
         response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAMS);
@@ -136,10 +136,10 @@ public class MainWindowController implements Initializable {
             JSONObject obj = jsonContents.getJSONObject(i);
             Program program = Program.fromJSON(obj, false);
             
-            DataManager.addProgram(program, false);
+            DataHandler.addProgram(program, false);
         }
         
-        List<Category> categories = DataManager.getCategories(false);
+        List<Category> categories = DataHandler.getCategories(false);
         ObservableList categoryItems = categoryChoices.getItems();
         
         categoryItems.add("All");
@@ -153,7 +153,7 @@ public class MainWindowController implements Initializable {
             
         }
         
-        List<Program> programs = DataManager.getPrograms(false);
+        List<Program> programs = DataHandler.getPrograms(false);
         ObservableList items = programsTable.getItems();
         
         for (Program program : programs) {
@@ -174,7 +174,7 @@ public class MainWindowController implements Initializable {
             
             String selectedCategoryName = categoryChoices.getItems().get(selectedIndex);
             Category category = categoryNamesMap.get(selectedCategoryName);
-            List<Program> programs = DataManager.getProgramsByCategory(category, false);
+            List<Program> programs = DataHandler.getProgramsByCategory(category, false);
             ObservableList<ProgramTableData> programsList = programsTable.getItems();
             
             programsList.clear();
@@ -203,8 +203,8 @@ public class MainWindowController implements Initializable {
             
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
             
-            Program program = DataManager.getProgram(programData.getId(), false);
-            Program installedProgram = DataManager.getProgram(programData.getId(), true);
+            Program program = DataHandler.getProgram(programData.getId(), false);
+            Program installedProgram = DataHandler.getProgram(programData.getId(), true);
             
             displayProgramControls(program, installedProgram);
         }

@@ -1,9 +1,12 @@
-package org.codespeak.distribution.client.data;
+package org.codespeak.distribution.client.handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.codespeak.distribution.client.data.Category;
+import org.codespeak.distribution.client.data.Dependency;
+import org.codespeak.distribution.client.data.Program;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,7 +15,7 @@ import org.json.JSONObject;
  *
  * @author Vector
  */
-public class DataManager {
+public class DataHandler {
     
     private static List<Category> categories = new ArrayList<Category>();
     private static List<Dependency> dependencies = new ArrayList<Dependency>();
