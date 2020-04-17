@@ -35,7 +35,7 @@ public class MainWindowController implements Initializable {
 
     private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
     private int currentlySelectedCategoryIndex;
-    private int currentSelectedProgramIndex;
+    private int currentlySelectedProgramIndex;
     
     @FXML private ComboBox<String> categoryChoices;
     @FXML private TableView<ProgramTableData> programsTable;
@@ -47,7 +47,7 @@ public class MainWindowController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        currentSelectedProgramIndex = -1;
+        currentlySelectedProgramIndex = -1;
         
         programsTable.setEditable(false);
         
@@ -137,7 +137,9 @@ public class MainWindowController implements Initializable {
         TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
         int selectedIndex = selectionModel.getSelectedIndex();
         
-        if (selectedIndex > -1 && selectedIndex != currentSelectedProgramIndex) {
+        if (selectedIndex > -1 && selectedIndex != currentlySelectedProgramIndex) {
+            currentlySelectedProgramIndex = selectedIndex;
+            
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
             Program program = DataManager.getProgram(programData.getId(), false);
             
