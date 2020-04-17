@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,7 +32,7 @@ public class MainWindowController implements Initializable {
 
     private int currentSelectedProgramIndex;
     
-    @FXML private ChoiceBox<String> categoryChoices;
+    @FXML private ComboBox<String> categoryChoices;
     @FXML private TableView<ProgramTableData> programsTable;
     @FXML private TableColumn<ProgramTableData, String> programsTableNameColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableVersionColumn;
