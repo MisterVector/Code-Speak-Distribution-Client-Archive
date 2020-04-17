@@ -1,6 +1,7 @@
 package org.codespeak.distribution.client.scenes;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
@@ -24,6 +26,7 @@ import org.codespeak.distribution.client.data.query.InformationListQueryResponse
 import org.codespeak.distribution.client.data.query.QueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.objects.ProgramTableData;
+import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,6 +47,55 @@ public class MainWindowController implements Initializable {
     @FXML private TableColumn<ProgramTableData, String> programsTableReleaseTimeColumn;
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
+    @FXML private Button launchProgramButton;
+    @FXML private Button viewHelpButton;
+    @FXML private Button viewSourceButton;
+    @FXML private Button installButton;
+    @FXML private Button updateButton;
+
+    private void disableButtons() {
+        launchProgramButton.setDisable(true);
+        viewHelpButton.setDisable(true);
+        viewSourceButton.setDisable(true);
+        installButton.setDisable(true);
+        updateButton.setDisable(true);
+    }
+    
+    private void displayProgramControls(Program program, Program installedProgram) {
+        String name = null;
+        String description = null;
+        
+        disableButtons();
+        
+        if (installedProgram != null) {
+            name = installedProgram.getName();
+            description = installedProgram.getDescription();
+            Timestamp releaseTime = program.getReleaseTime();
+            Timestamp installedReleaseTime = installedProgram.getReleaseTime();
+            
+            launchProgramButton.setDisable(false);
+            
+            if (!StringUtil.isNullOrEmpty(installedProgram.getHelpFile())) {
+                viewHelpButton.setDisable(false);
+            }
+            
+            if (installedReleaseTime.after(releaseTime)) {
+                updateButton.setDisable(false);
+            }
+        } else {
+            name = program.getName();
+            description = program.getDescription();
+            
+            installButton.setDisable(false);
+        }
+        
+        if (!StringUtil.isNullOrEmpty(program.getSourceURL())) {
+            viewSourceButton.setDisable(false);
+        }
+        
+        programNameLabel.setText(name);
+        programDescriptionLabel.setText(description);
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,11 +193,12 @@ public class MainWindowController implements Initializable {
             currentlySelectedProgramIndex = selectedIndex;
             
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
-            Program program = DataManager.getProgram(programData.getId(), false);
             
-            programNameLabel.setText(program.getName());
-            programDescriptionLabel.setText(program.getDescription());
+            Program program = DataManager.getProgram(programData.getId(), false);
+            Program installedProgram = DataManager.getProgram(programData.getId(), true);
+            
+            displayProgramControls(program, installedProgram);
         }
     }
-    
+
 }
