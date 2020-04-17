@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.data;
 
+import java.io.File;
 import java.sql.Timestamp;
 import org.json.JSONObject;
 
@@ -76,6 +77,15 @@ public class FileInfo {
      */
     public String getFilePath() {
         return filePath;
+    }
+
+    /**
+     * Concatenates the file path with the system-dependent file separator and
+     * the file name
+     * @return concatenation of file path with file name
+     */
+    public String getFilePathAndName() {
+        return filePath + File.separator + fileName;
     }
     
     /**
