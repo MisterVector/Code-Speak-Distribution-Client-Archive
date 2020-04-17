@@ -66,7 +66,7 @@
                   <Button disable="true" layoutX="409.0" layoutY="277.0" mnemonicParsing="false" text="Update" />
                </children>
             </AnchorPane>
-            <ComboBox fx:id="categoryChoices" layoutX="124.0" layoutY="36.0" prefHeight="25.0" prefWidth="237.0" />
+            <ComboBox fx:id="categoryChoices" layoutX="124.0" layoutY="36.0" onAction="#onCategorySelect" prefHeight="25.0" prefWidth="237.0" />
          </children>
       </AnchorPane>
    </children>

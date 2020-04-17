@@ -227,6 +227,25 @@ public class DataManager {
     }
     
     /**
+     * Gets a list of programs by a specific category
+     * @param category the category to search for, or null for all programs
+     * @param installed whether the programs are installed
+     * @return a list of programs by category
+     */
+    public static List<Program> getProgramsByCategory(Category category, boolean installed) {
+        List<Program> progs = (installed ? installedPrograms : programs);
+        List<Program> ret = new ArrayList<Program>();
+        
+        for (Program program : progs) {
+            if (category == null || category == program.getCategory()) {
+                ret.add(program);
+            }
+        }
+        
+        return ret;
+    }
+    
+    /**
      * Exports all installed programs to JSON
      * @return JSON representation of all programs
      */

@@ -1,7 +1,9 @@
 package org.codespeak.distribution.client.scenes;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
@@ -30,6 +33,8 @@ import org.json.JSONObject;
  */
 public class MainWindowController implements Initializable {
 
+    private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
+    private int currentlySelectedCategoryIndex;
     private int currentSelectedProgramIndex;
     
     @FXML private ComboBox<String> categoryChoices;
@@ -84,9 +89,14 @@ public class MainWindowController implements Initializable {
         ObservableList categoryItems = categoryChoices.getItems();
         
         categoryItems.add("All");
+        categoryNamesMap.put("All", null);
         
         for (Category category : categories) {
-            categoryItems.add(category.getName());
+            String categoryName = category.getName();
+            
+            categoryItems.add(categoryName);
+            categoryNamesMap.put(categoryName, category);
+            
         }
         
         List<Program> programs = DataManager.getPrograms(false);
@@ -99,6 +109,28 @@ public class MainWindowController implements Initializable {
         
         categoryChoices.getSelectionModel().select("All");
     }    
+    
+    @FXML
+    public void onCategorySelect(ActionEvent event) {
+        SingleSelectionModel<String> selectionModel = categoryChoices.getSelectionModel();
+        int selectedIndex = selectionModel.getSelectedIndex();
+        
+        if (selectedIndex > -1 && selectedIndex != currentlySelectedCategoryIndex) {
+            currentlySelectedCategoryIndex = selectedIndex;
+            
+            String selectedCategoryName = categoryChoices.getItems().get(selectedIndex);
+            Category category = categoryNamesMap.get(selectedCategoryName);
+            List<Program> programs = DataManager.getProgramsByCategory(category, false);
+            ObservableList<ProgramTableData> programsList = programsTable.getItems();
+            
+            programsList.clear();
+            
+            for (Program program : programs) {
+                ProgramTableData programData = new ProgramTableData(program.getId(), program.getName(), program.getVersion(), program.getReleaseTime().toString());
+                programsList.add(programData);
+            }
+        }
+    }
     
     @FXML
     public void onProgramSelect() {
