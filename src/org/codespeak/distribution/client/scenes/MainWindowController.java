@@ -99,6 +99,7 @@ public class MainWindowController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        currentlySelectedCategoryIndex = -1;
         currentlySelectedProgramIndex = -1;
         
         programsTable.setEditable(false);
