@@ -204,20 +204,22 @@ public class DataHandler {
 
     /**
      * Installs a new program
-     * @param id ID of program
+     * @param program the program to install
      */
-    public static void installProgram(int id) {
-        Program foundProgram = null;
+    public static void installProgram(Program program) {
+        Category category = program.getCategory();
         
-        for (Program program : programs) {
-            if (program.getId() == id) {
-                foundProgram = program;
-                
-                break;
+        if (!installedCategories.contains(category)) {
+            installedCategories.add(category);
+        }
+        
+        for (Dependency dependency : program.getDependencies()) {
+            if (!installedDependencies.contains(dependency)) {
+                installedDependencies.add(dependency);
             }
         }
         
-        installedPrograms.add(foundProgram);
+        installedPrograms.add(program);
     }
 
     /**

@@ -1,9 +1,25 @@
 package org.codespeak.distribution.client.data;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
 import org.codespeak.distribution.client.handler.DataHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
+import org.codespeak.distribution.client.data.query.QueryTypes;
+import org.codespeak.distribution.client.handler.BackendHandler;
+import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -125,6 +141,41 @@ public class Program {
      */
     public List<Dependency> getDependencies() {
         return dependencies;
+    }
+
+    /**
+     * Installs this program
+     * @throws IOException thrown if an error occurs while installing
+     */
+    public void install() throws IOException {
+        InformationListQueryResponse queryResponse = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
+        JSONArray jsonFiles = queryResponse.getContents();
+        File programFolder = new File(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        Path programPath = programFolder.toPath();
+        
+        programFolder.mkdir();
+        
+        for (int i = 0; i < jsonFiles.length(); i++) {
+            JSONObject obj = jsonFiles.getJSONObject(i);
+            FileInfo fileInfo = FileInfo.fromJSON(obj);
+            String filePath = fileInfo.getFilePath();
+            String filePathAndName = fileInfo.getFilePathAndName();
+            String remoteFilePathAndName = fileInfo.getRemoteFilePathAndName();
+
+            if (!StringUtil.isNullOrEmpty(filePath)) {
+                Path localFilePath = programPath.resolve(filePath);
+
+                localFilePath.toFile().mkdirs();
+            }
+            
+            Path localFilePathAndName = programPath.resolve(filePathAndName);
+            ReadableByteChannel readableByteChannel = BackendHandler.getProgramFile(id, remoteFilePathAndName);
+            FileChannel outChannel = new FileOutputStream(localFilePathAndName.toFile()).getChannel();
+            
+            outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            readableByteChannel.close();
+            outChannel.close();
+        }
     }
     
     /**

@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.scenes;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -210,4 +211,20 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    @FXML
+    public void onInstallButtonClick() throws IOException {
+        TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
+        int selectedIndex = selectionModel.getSelectedIndex();
+        
+        if (selectedIndex > -1) {
+            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
+            Program program = DataHandler.getProgram(programData.getId(), false);
+            
+            program.install();
+            DataHandler.installProgram(program);
+            
+            displayProgramControls(program, program);
+        }
+    }
+    
 }

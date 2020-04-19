@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
 import org.codespeak.distribution.client.data.query.InformationQueryResponse;
@@ -61,6 +64,17 @@ public class BackendHandler {
         } catch (IOException ex) {
             return null;
         }
+    }
+    
+    /**
+     * Gets a readable byte channel of the specified program file
+     * @param id ID of program
+     * @param programFilePath path to the program file
+     * @return readable byte channel of the specified program file
+     */
+    public static ReadableByteChannel getProgramFile(int id, String programFilePath) throws IOException {
+        URL url = new URL(Configuration.DISTRIBUTION_URL + "/files/" + id + "/" + programFilePath);
+        return Channels.newChannel(url.openStream());
     }
     
 }
