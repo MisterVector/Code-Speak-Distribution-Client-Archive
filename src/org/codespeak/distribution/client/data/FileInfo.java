@@ -2,6 +2,7 @@ package org.codespeak.distribution.client.data;
 
 import java.io.File;
 import java.sql.Timestamp;
+import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
 
 /**
@@ -80,12 +81,38 @@ public class FileInfo {
     }
 
     /**
-     * Concatenates the file path with the system-dependent file separator and
-     * the file name
+     * Concatenates the file path (if it exists) with the file name and returns
+     * them both
+     * @return concatenation of file path with file name
+     */
+    public String getRemoteFilePathAndName() {
+        String fullPath = fileName;
+        
+        if (!StringUtil.isNullOrEmpty(filePath)) {
+            fullPath = filePath + "/" + fullPath;
+        }
+        
+        return fullPath;
+    }
+
+    /**
+     * Concatenates the file path (if it exists) with the file name making sure to
+     * use the system-dependent path separator 
      * @return concatenation of file path with file name
      */
     public String getFilePathAndName() {
-        return filePath + File.separator + fileName;
+        String fullPath = fileName;
+        String tempFilePath = filePath;
+        
+        if (!StringUtil.isNullOrEmpty(tempFilePath)) {
+            if (tempFilePath.indexOf("/") > -1) {
+                tempFilePath = tempFilePath.replace("/", File.separator);
+            }
+            
+            fullPath = tempFilePath + File.separator + fullPath;
+        }
+        
+        return fullPath;
     }
     
     /**
