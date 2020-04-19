@@ -73,11 +73,25 @@ public class FileInfo {
     }
     
     /**
+     * Gets the remote file path from this file information
+     * @return remote file path from this file information
+     */
+    public String getRemoteFilePath() {
+        return filePath;
+    }
+
+    /**
      * Gets the file path from this file information
      * @return file path from this file information
      */
     public String getFilePath() {
-        return filePath;
+        String tempPath = filePath;
+        
+        if (tempPath.indexOf("/") > -1) {
+            tempPath = tempPath.replace("/", File.separator);
+        }
+        
+        return tempPath;
     }
 
     /**
