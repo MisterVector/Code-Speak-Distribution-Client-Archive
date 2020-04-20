@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.scenes;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
@@ -211,6 +213,27 @@ public class MainWindowController implements Initializable {
         }
     }
 
+    @FXML
+    public void onLaunchProgramButtonClick() throws IOException {
+        TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
+        int selectedIndex = selectionModel.getSelectedIndex();
+        
+        if (selectedIndex > -1) {
+            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
+            Program program = DataHandler.getProgram(programData.getId(), true);
+
+            if (program != null) {
+                String slug = program.getSlug();
+                String launchFile = program.getLaunchFile();
+                String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
+                     + File.separator + slug + File.separator + launchFile;
+                
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec(programLaunchFileLocation);
+            }
+        }
+    }
+    
     @FXML
     public void onInstallButtonClick() throws IOException {
         TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
