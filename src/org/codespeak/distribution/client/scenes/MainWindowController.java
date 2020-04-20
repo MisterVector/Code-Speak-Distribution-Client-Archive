@@ -41,6 +41,8 @@ import org.json.JSONObject;
 public class MainWindowController implements Initializable {
 
     private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
+    private Program currentlySelectedProgram;
+    private Program currentlySelectedInstalledProgram;
     private int currentlySelectedCategoryIndex;
     private int currentlySelectedProgramIndex;
     
@@ -103,6 +105,8 @@ public class MainWindowController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        currentlySelectedProgram = null;
+        currentlySelectedInstalledProgram = null;
         currentlySelectedCategoryIndex = -1;
         currentlySelectedProgramIndex = -1;
         
@@ -210,43 +214,34 @@ public class MainWindowController implements Initializable {
             Program installedProgram = DataHandler.getProgram(programData.getId(), true);
             
             displayProgramControls(program, installedProgram);
+            
+            currentlySelectedProgram = program;
+            currentlySelectedInstalledProgram = installedProgram;
         }
     }
 
     @FXML
     public void onLaunchProgramButtonClick() throws IOException {
-        TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
-        int selectedIndex = selectionModel.getSelectedIndex();
-        
-        if (selectedIndex > -1) {
-            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
-            Program program = DataHandler.getProgram(programData.getId(), true);
+        if (currentlySelectedInstalledProgram != null) {
+            String slug = currentlySelectedInstalledProgram.getSlug();
+            String launchFile = currentlySelectedInstalledProgram.getLaunchFile();
+            String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
+                 + File.separator + slug + File.separator + launchFile;
 
-            if (program != null) {
-                String slug = program.getSlug();
-                String launchFile = program.getLaunchFile();
-                String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
-                     + File.separator + slug + File.separator + launchFile;
-                
-                Runtime runtime = Runtime.getRuntime();
-                runtime.exec(programLaunchFileLocation);
-            }
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec(programLaunchFileLocation);
         }
     }
     
     @FXML
     public void onInstallButtonClick() throws IOException {
-        TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
-        int selectedIndex = selectionModel.getSelectedIndex();
-        
-        if (selectedIndex > -1) {
-            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
-            Program program = DataHandler.getProgram(programData.getId(), false);
+        if (currentlySelectedProgram != null) {
+            currentlySelectedProgram.install();
+            DataHandler.installProgram(currentlySelectedProgram);
             
-            program.install();
-            DataHandler.installProgram(program);
+            displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
             
-            displayProgramControls(program, program);
+            currentlySelectedInstalledProgram = currentlySelectedProgram;
         }
     }
     
