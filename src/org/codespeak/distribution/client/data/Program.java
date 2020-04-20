@@ -207,6 +207,22 @@ public class Program {
         return json;
     }
 
+    @Override
+    public int hashCode() {
+        return id;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Category)) {
+            return false;
+        }
+        
+        Program program = (Program) other;
+        
+        return this.getId() == program.getId();
+    }
+    
     /**
      * Creates a Program object from JSON
      * @param json JSON to construct a Program object from

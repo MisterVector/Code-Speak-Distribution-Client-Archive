@@ -67,6 +67,22 @@ public class Category {
         
         return json;
     }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Category)) {
+            return false;
+        }
+        
+        Category category = (Category) other;
+        
+        return this.getId() == category.getId();
+    }
     
     /**
      * Creates a category object from JSON

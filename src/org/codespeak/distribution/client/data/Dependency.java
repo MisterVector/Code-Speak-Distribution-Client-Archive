@@ -68,6 +68,22 @@ public class Dependency {
         return json;
     }
     
+    @Override
+    public int hashCode() {
+        return id;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Dependency)) {
+            return false;
+        }
+        
+        Dependency dependency = (Dependency) other;
+        
+        return this.getId() == dependency.getId();
+    }
+    
     /**
      * Creates a dependency object from a JSON object
      * @param json JSON object comprising a dependency
