@@ -41,7 +41,7 @@ public class Program {
     private final String version;
     private final Timestamp releaseTime;
     private final List<Dependency> dependencies;
-    private final boolean installed;
+    private boolean installed;
     
     protected Program(int id, Category category, String slug, String name, String description,
                     String sourceURL, String launchFile, String helpFile, String version,
@@ -186,6 +186,8 @@ public class Program {
             readableByteChannel.close();
             outChannel.close();
         }
+        
+        installed = true;
     }
     
     /**
