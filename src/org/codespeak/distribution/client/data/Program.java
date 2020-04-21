@@ -41,10 +41,11 @@ public class Program {
     private final String version;
     private final Timestamp releaseTime;
     private final List<Dependency> dependencies;
+    private final boolean installed;
     
     protected Program(int id, Category category, String slug, String name, String description,
                     String sourceURL, String launchFile, String helpFile, String version,
-                    Timestamp releaseTime, List<Dependency> dependencies) {
+                    Timestamp releaseTime, List<Dependency> dependencies, boolean installed) {
         this.id = id;
         this.category = category;
         this.slug = slug;
@@ -56,6 +57,7 @@ public class Program {
         this.version = version;
         this.releaseTime = releaseTime;
         this.dependencies = dependencies;
+        this.installed = installed;
     }
     
     /**
@@ -143,6 +145,14 @@ public class Program {
         return dependencies;
     }
 
+    /**
+     * Gets if this program object represents an installed program
+     * @return whether this program is installed
+     */
+    public boolean isInstalled() {
+        return installed;
+    }
+    
     /**
      * Installs this program
      * @throws IOException thrown if an error occurs while installing
@@ -293,7 +303,7 @@ public class Program {
              }
          }
          
-         return new Program(id, category, slug, name, description, sourceURL, launchFile, helpFile, version, releaseTime, dependencies);
+         return new Program(id, category, slug, name, description, sourceURL, launchFile, helpFile, version, releaseTime, dependencies, installed);
     }
     
 }
