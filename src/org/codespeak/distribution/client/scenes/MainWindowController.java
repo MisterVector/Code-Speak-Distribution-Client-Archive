@@ -59,7 +59,10 @@ public class MainWindowController implements Initializable {
     @FXML private Button installButton;
     @FXML private Button updateButton;
 
-    private void disableButtons() {
+    private void resetProgramControls() {
+        programNameLabel.setText("Select A Program");
+        programDescriptionLabel.setText("No description. Select a program first.");
+            
         launchProgramButton.setDisable(true);
         viewHelpButton.setDisable(true);
         viewSourceButton.setDisable(true);
@@ -71,7 +74,7 @@ public class MainWindowController implements Initializable {
         String name = null;
         String description = null;
         
-        disableButtons();
+        resetProgramControls();
         
         if (installedProgram != null) {
             name = installedProgram.getName();
@@ -193,10 +196,7 @@ public class MainWindowController implements Initializable {
             
             currentlySelectedProgramIndex = -1;
             
-            programNameLabel.setText("Select A Program");
-            programDescriptionLabel.setText("No description. Select a program first.");
-            
-            disableButtons();
+            resetProgramControls();
         }
     }
     
