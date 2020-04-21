@@ -38,7 +38,7 @@ import org.json.JSONObject;
  *
  * @author ComputerDoctor
  */
-public class MainWindowController implements Initializable {
+public class MainSceneController implements Initializable {
 
     private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
     private Program currentlySelectedProgram;
