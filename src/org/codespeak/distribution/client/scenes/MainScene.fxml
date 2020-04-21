@@ -23,6 +23,11 @@
                     <MenuItem mnemonicParsing="false" text="Quit" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Program">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#onViewHelpMenuItemClick" text="View Help" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#onAboutMenuItemClick" text="About" />
@@ -59,11 +64,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="installButton" disable="true" layoutX="305.0" layoutY="277.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="93.0" text="Install" />
+                  <Button fx:id="installButton" disable="true" layoutX="226.0" layoutY="277.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="93.0" text="Install" />
                   <Button fx:id="launchProgramButton" disable="true" layoutX="11.0" layoutY="277.0" mnemonicParsing="false" onAction="#onLaunchProgramButtonClick" text="Launch Program" />
-                  <Button fx:id="viewSourceButton" disable="true" layoutX="212.0" layoutY="277.0" mnemonicParsing="false" text="View Source" />
-                  <Button fx:id="viewHelpButton" disable="true" layoutX="123.0" layoutY="277.0" mnemonicParsing="false" text="View Help" />
-                  <Button fx:id="updateButton" disable="true" layoutX="409.0" layoutY="277.0" mnemonicParsing="false" text="Update" />
+                  <Button fx:id="viewSourceButton" disable="true" layoutX="130.0" layoutY="277.0" mnemonicParsing="false" text="View Source" />
+                  <Button fx:id="updateButton" disable="true" layoutX="330.0" layoutY="277.0" mnemonicParsing="false" text="Update" />
                </children>
             </AnchorPane>
             <ComboBox fx:id="categoryChoices" layoutX="124.0" layoutY="36.0" onAction="#onCategorySelect" prefHeight="25.0" prefWidth="237.0" />

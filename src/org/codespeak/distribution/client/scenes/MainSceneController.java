@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.scenes;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -31,6 +33,7 @@ import org.codespeak.distribution.client.data.query.QueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
+import org.codespeak.distribution.client.util.AlertUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
@@ -56,7 +59,6 @@ public class MainSceneController implements Initializable {
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
     @FXML private Button launchProgramButton;
-    @FXML private Button viewHelpButton;
     @FXML private Button viewSourceButton;
     @FXML private Button installButton;
     @FXML private Button updateButton;
@@ -66,7 +68,6 @@ public class MainSceneController implements Initializable {
         programDescriptionLabel.setText("No description. Select a program first.");
             
         launchProgramButton.setDisable(true);
-        viewHelpButton.setDisable(true);
         viewSourceButton.setDisable(true);
         installButton.setDisable(true);
         updateButton.setDisable(true);
@@ -85,10 +86,6 @@ public class MainSceneController implements Initializable {
             Timestamp installedReleaseTime = installedProgram.getReleaseTime();
             
             launchProgramButton.setDisable(false);
-            
-            if (!StringUtil.isNullOrEmpty(installedProgram.getHelpFile())) {
-                viewHelpButton.setDisable(false);
-            }
             
             if (installedReleaseTime.after(releaseTime)) {
                 updateButton.setDisable(false);
@@ -180,6 +177,29 @@ public class MainSceneController implements Initializable {
     public void onAboutMenuItemClick() throws IOException {
         Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About").getStage();
         stage.show();
+    }
+
+    @FXML
+    public void onViewHelpMenuItemClick() throws IOException {
+        if (currentlySelectedInstalledProgram != null) {
+            String helpFile = currentlySelectedInstalledProgram.getHelpFile();
+            
+            if (StringUtil.isNullOrEmpty(helpFile)) {
+                Alert alert = AlertUtil.createAlert("No help file is associated with this program.");
+                alert.show();
+                
+                return;
+            }
+            
+            helpFile = Configuration.PROGRAMS_FOLDER + File.separator + currentlySelectedInstalledProgram.getSlug()
+                              + File.separator + helpFile;
+            
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(new File(helpFile));
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
+        }
     }
     
     @FXML
