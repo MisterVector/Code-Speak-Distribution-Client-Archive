@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.handler.DataHandler;
@@ -30,6 +31,7 @@ import org.codespeak.distribution.client.data.query.QueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
+import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -173,6 +175,12 @@ public class MainSceneController implements Initializable {
         
         categoryChoices.getSelectionModel().select("All");
     }    
+
+    @FXML
+    public void onAboutMenuItemClick() throws IOException {
+        Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About").getStage();
+        stage.show();
+    }
     
     @FXML
     public void onCategorySelect(ActionEvent event) {
