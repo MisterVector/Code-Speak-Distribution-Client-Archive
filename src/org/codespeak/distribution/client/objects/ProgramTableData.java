@@ -1,6 +1,7 @@
 package org.codespeak.distribution.client.objects;
 
 import javafx.beans.property.SimpleStringProperty;
+import org.codespeak.distribution.client.data.Program;
 
 /**
  * A class representing program information in a table
@@ -9,24 +10,24 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class ProgramTableData {
    
-    private int id;
+    private Program program;
     private SimpleStringProperty name;
     private SimpleStringProperty version;
     private SimpleStringProperty releaseTime;
     
-    public ProgramTableData(int id, String name, String version, String releaseTime) {
-        this.id = id;
+    public ProgramTableData(Program program, String name, String version, String releaseTime) {
+        this.program = program;
         this.name = new SimpleStringProperty(name);
         this.version = new SimpleStringProperty(version);
         this.releaseTime = new SimpleStringProperty(releaseTime);
     }
     
     /**
-     * Gets the ID of this program
-     * @return ID of this program
+     * Gets the program represented by this table item
+     * @return program represented by this table item
      */
-    public int getId() {
-        return id;
+    public Program getProgram() {
+        return program;
     }
     
     /**

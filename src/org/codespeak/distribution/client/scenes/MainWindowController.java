@@ -164,7 +164,7 @@ public class MainWindowController implements Initializable {
         ObservableList items = programsTable.getItems();
         
         for (Program program : programs) {
-            ProgramTableData programData = new ProgramTableData(program.getId(), program.getName(), program.getVersion(), program.getReleaseTime().toString());
+            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
             items.add(programData);
         }
         
@@ -187,7 +187,7 @@ public class MainWindowController implements Initializable {
             programsList.clear();
             
             for (Program program : programs) {
-                ProgramTableData programData = new ProgramTableData(program.getId(), program.getName(), program.getVersion(), program.getReleaseTime().toString());
+                ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
                 programsList.add(programData);
             }
             
@@ -209,14 +209,17 @@ public class MainWindowController implements Initializable {
             currentlySelectedProgramIndex = selectedIndex;
             
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
+            Program selectedProgram = programData.getProgram();
             
-            Program program = DataHandler.getProgram(programData.getId(), false);
-            Program installedProgram = DataHandler.getProgram(programData.getId(), true);
+            if (selectedProgram.isInstalled()) {
+                currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
+                currentlySelectedInstalledProgram = selectedProgram;
+            } else {
+                currentlySelectedProgram = selectedProgram;
+                currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
+            }
             
-            displayProgramControls(program, installedProgram);
-            
-            currentlySelectedProgram = program;
-            currentlySelectedInstalledProgram = installedProgram;
+            displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
         }
     }
 
