@@ -35,7 +35,7 @@ public class AboutSceneController implements Initializable {
     }    
 
     @FXML
-    public void onCodeSpeakLinkClick(ActionEvent event) throws Exception {
+    public void onCodeSpeakLinkClick() throws Exception {
         desktop.browse(new URI(Configuration.WEBSITE_URL));
     }
     
