@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.handler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -206,7 +207,9 @@ public class DataHandler {
      * Installs a new program
      * @param program the program to install
      */
-    public static void installProgram(Program program) {
+    public static void installProgram(Program program) throws IOException {
+        program.install();
+        
         Category category = program.getCategory();
         
         if (!installedCategories.contains(category)) {

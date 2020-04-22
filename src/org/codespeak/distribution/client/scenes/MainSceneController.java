@@ -295,7 +295,6 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onInstallButtonClick() throws IOException {
         if (currentlySelectedProgram != null) {
-            currentlySelectedProgram.install();
             DataHandler.installProgram(currentlySelectedProgram);
             
             displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
