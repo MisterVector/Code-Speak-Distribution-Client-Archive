@@ -203,6 +203,19 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
+    public void onOpenFolderMenuItemClick() throws IOException {
+        if (currentlySelectedInstalledProgram != null) {
+            String programFolder = Configuration.PROGRAMS_FOLDER + File.separator + currentlySelectedInstalledProgram.getSlug();
+            Desktop desktop = Desktop.getDesktop();
+            
+            desktop.open(new File(programFolder));
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
+        }
+    }
+    
+    @FXML
     public void onCategorySelect(ActionEvent event) {
         SingleSelectionModel<String> selectionModel = categoryChoices.getSelectionModel();
         int selectedIndex = selectionModel.getSelectedIndex();

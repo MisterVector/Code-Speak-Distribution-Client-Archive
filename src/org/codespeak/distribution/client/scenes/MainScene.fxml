@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -26,6 +27,8 @@
                   <Menu mnemonicParsing="false" text="Program">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#onViewHelpMenuItemClick" text="View Help" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onOpenFolderMenuItemClick" text="Open Folder" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Help">
