@@ -3,6 +3,7 @@ package org.codespeak.distribution.client.scenes;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -59,7 +60,6 @@ public class MainSceneController implements Initializable {
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
     @FXML private Button launchProgramButton;
-    @FXML private Button viewSourceButton;
     @FXML private Button installButton;
     @FXML private Button updateButton;
 
@@ -68,7 +68,6 @@ public class MainSceneController implements Initializable {
         programDescriptionLabel.setText("No description. Select a program first.");
             
         launchProgramButton.setDisable(true);
-        viewSourceButton.setDisable(true);
         installButton.setDisable(true);
         updateButton.setDisable(true);
     }
@@ -95,10 +94,6 @@ public class MainSceneController implements Initializable {
             description = program.getDescription();
             
             installButton.setDisable(false);
-        }
-        
-        if (!StringUtil.isNullOrEmpty(program.getSourceURL())) {
-            viewSourceButton.setDisable(false);
         }
         
         programNameLabel.setText(name);
@@ -196,6 +191,26 @@ public class MainSceneController implements Initializable {
             
             Desktop desktop = Desktop.getDesktop();
             desktop.open(new File(helpFile));
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
+        }
+    }
+    
+    @FXML
+    public void onViewSourceMenuItemClick() throws Exception {
+        if (currentlySelectedInstalledProgram != null) {
+            String sourceURL = currentlySelectedInstalledProgram.getSourceURL();
+            
+            if (StringUtil.isNullOrEmpty(sourceURL)) {
+                Alert alert = AlertUtil.createAlert("This program does not have a source repository.");
+                alert.show();
+                
+                return;
+            }
+            
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(new URI(sourceURL));
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
