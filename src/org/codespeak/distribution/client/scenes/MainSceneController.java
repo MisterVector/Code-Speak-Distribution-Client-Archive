@@ -88,7 +88,7 @@ public class MainSceneController implements Initializable {
             
             launchProgramButton.setDisable(false);
             
-            if (installedReleaseTime.after(releaseTime)) {
+            if (releaseTime.after(installedReleaseTime)) {
                 updateButton.setDisable(false);
             }
         } else {
