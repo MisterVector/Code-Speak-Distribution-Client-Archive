@@ -226,6 +226,43 @@ public class DataHandler {
     }
 
     /**
+     * Uninstalls the specified program
+     * @param program program to uninstall
+     * @throws java.io.IOException
+     */
+    public static void uninstallProgram(Program program) throws IOException {
+        program.uninstall();
+
+        installedPrograms.remove(program);
+        
+        Category category = program.getCategory();
+        List<Dependency> deps = program.getDependencies();
+        
+        for (Program checkProgram : installedPrograms) {
+            Category checkCategory = checkProgram.getCategory();
+            List<Dependency> checkDependencies = checkProgram.getDependencies();
+            
+            if (checkCategory.equals(category)) {
+                category = null;
+            }
+            
+            for (Dependency checkDependency : checkDependencies) {
+                if (deps.contains(checkDependency)) {
+                    deps.remove(checkDependency);
+                }
+            }
+        }
+        
+        if (category != null) {
+            installedCategories.remove(category);
+        }
+        
+        for (Dependency dependency : deps) {
+            installedDependencies.remove(dependency);
+        }
+    }
+    
+    /**
      * Gets an unmodifiable list of all programs
      * @param installed whether the programs are installed
      * @return unmodifiable list of all programs

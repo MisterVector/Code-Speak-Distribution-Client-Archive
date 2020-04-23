@@ -15,7 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
@@ -300,6 +302,33 @@ public class MainSceneController implements Initializable {
             displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
             
             currentlySelectedInstalledProgram = currentlySelectedProgram;
+        }
+    }
+    
+    @FXML
+    public void onUninstallMenuItemClick() throws IOException {
+        if (currentlySelectedInstalledProgram != null) {
+            String programName = currentlySelectedInstalledProgram.getName();
+            
+            Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "Are you sure you want to uninstall " + programName + "?");
+
+            ObservableList<ButtonType> buttons = alert.getButtonTypes();
+
+            buttons.clear();
+            buttons.addAll(ButtonType.YES, ButtonType.NO);
+
+            ButtonType buttonType = alert.showAndWait().get();
+
+            if (buttonType == ButtonType.YES) {
+                DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
+
+                displayProgramControls(currentlySelectedProgram, null);
+                
+                currentlySelectedInstalledProgram = null;
+            }
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
         }
     }
     

@@ -30,6 +30,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#onViewSourceMenuItemClick" text="View Source" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onOpenFolderMenuItemClick" text="Open Folder" />
+                        <MenuItem mnemonicParsing="false" onAction="#onUninstallMenuItemClick" text="Uninstall" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Help">

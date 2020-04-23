@@ -10,10 +10,12 @@ import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import org.codespeak.distribution.client.handler.DataHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
@@ -151,6 +153,21 @@ public class Program {
      */
     public boolean isInstalled() {
         return installed;
+    }
+    
+    /**
+     * Uninstalls this program
+     * @throws IOException thrown if an error occurs while installing
+     */
+    public void uninstall() throws IOException {
+        File programFolder = new File(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+
+        Files.walk(programFolder.toPath())
+             .sorted(Comparator.reverseOrder())
+             .map(Path::toFile)
+             .forEach(File::delete);
+        
+        installed = false;
     }
     
     /**
