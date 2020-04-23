@@ -226,7 +226,7 @@ public class Program {
     
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Category)) {
+        if (!(other instanceof Program)) {
             return false;
         }
         
