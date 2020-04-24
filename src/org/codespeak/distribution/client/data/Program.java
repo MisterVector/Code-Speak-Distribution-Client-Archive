@@ -196,7 +196,7 @@ public class Program {
             }
             
             Path localFilePathAndName = programPath.resolve(filePathAndName);
-            ReadableByteChannel readableByteChannel = BackendHandler.getProgramFile(id, remoteFilePathAndName);
+            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, remoteFilePathAndName);
             FileChannel outChannel = new FileOutputStream(localFilePathAndName.toFile()).getChannel();
             
             outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);

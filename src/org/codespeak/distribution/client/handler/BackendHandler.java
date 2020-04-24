@@ -65,15 +65,37 @@ public class BackendHandler {
             return null;
         }
     }
+
+    /**
+     * Gets a readable byte channel of a remote client file
+     * @param relativeFilePath relative file path of remote client file
+     * @return a readable byte channel of the remote client file given
+     * @throws IOException if an error occurred while getting remote file channel
+     */
+    public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws IOException {
+        return getRemoteFileChannel(-1, relativeFilePath);
+    }
     
     /**
-     * Gets a readable byte channel of the specified program file
-     * @param id ID of program
-     * @param programFilePath path to the program file
+     * Gets a readable byte channel of a remote client or program file
+     * @param id if greater than -1, represents program ID, else client
+     * @param relativeFilePath path to the program file
      * @return readable byte channel of the specified program file
+     * @throws IOException if an error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getProgramFile(int id, String programFilePath) throws IOException {
-        URL url = new URL(Configuration.DISTRIBUTION_URL + "/files/" + id + "/" + programFilePath);
+    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws IOException {
+        String remotePath = Configuration.DISTRIBUTION_URL;
+        
+        if (id > -1) {
+            remotePath += "/files/" + id;
+        } else {
+            remotePath += "/client";
+        }
+        
+        remotePath += "/" + relativeFilePath;
+        
+        URL url = new URL(remotePath);
+        
         return Channels.newChannel(url.openStream());
     }
     
