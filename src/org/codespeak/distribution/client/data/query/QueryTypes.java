@@ -15,10 +15,10 @@ public enum QueryTypes {
     GET_PROGRAMS("get_programs", true),
     GET_PROGRAM_FILES("get_program_files", true),
     CHECK_PROGRAM_VERSION("check_program_version"),
-    GET_PROGRAM_CHANGELOG("get_program_changelog"),
+    GET_PROGRAM_CHANGELOG("get_program_changelog", true),
     GET_CLIENT_FILES("get_client_files", true),
     CHECK_CLIENT_VERSION("check_client_version"),
-    GET_CLIENT_CHANGELOG("get_client_changelog");
+    GET_CLIENT_CHANGELOG("get_client_changelog", true);
     
     private final String queryName;
     private final boolean informationListQuery;
