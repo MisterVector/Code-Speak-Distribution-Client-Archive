@@ -166,7 +166,7 @@ public class MainSceneController implements Initializable {
             
         }
         
-        List<Program> programs = DataHandler.getPrograms(false);
+        List<Program> programs = DataHandler.getPrograms();
         ObservableList items = programsTable.getItems();
         
         for (Program program : programs) {

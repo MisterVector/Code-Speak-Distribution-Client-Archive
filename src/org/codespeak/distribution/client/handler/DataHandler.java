@@ -263,6 +263,26 @@ public class DataHandler {
     }
     
     /**
+     * Gets an unmodifiable list of all programs. If the program is installed
+     * then the installed version of that program is returned
+     * @return unmodifiable list of all programs
+     */
+    public static List<Program> getPrograms() {
+        List<Program> ret = new ArrayList<Program>();
+        
+        for (Program program : programs) {
+            if (installedPrograms.contains(program)) {
+                Program installedProgram = getProgram(program.getId(), true);
+                ret.add(installedProgram);
+            } else {
+                ret.add(program);
+            }
+        }
+        
+        return ret;
+    }
+    
+    /**
      * Gets an unmodifiable list of all programs
      * @param installed whether the programs are installed
      * @return unmodifiable list of all programs
