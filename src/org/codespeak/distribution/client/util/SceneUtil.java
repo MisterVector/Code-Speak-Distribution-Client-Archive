@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.DistributionClient;
@@ -34,7 +35,7 @@ public class SceneUtil {
      * @throws IOException IOException in case of failure
      */
     public static StageController getScene(SceneTypes sceneType, String title) throws IOException {
-         return getScene(new Stage(), sceneType, title);
+         return getScene(new Stage(), sceneType, title, true);
     }
     
     /**
@@ -45,29 +46,34 @@ public class SceneUtil {
      * @throws IOException IOException in case of failure
      */
     public static StageController getScene(Stage existingStage, SceneTypes sceneType) throws IOException {
-        return getScene(existingStage, sceneType, Configuration.PROGRAM_NAME);
+        return getScene(existingStage, sceneType, Configuration.PROGRAM_NAME, false);
     }
     
     /**
-     * Opens a scene with an existing stage
-     * @param existingStage existing stage
+     * Prepares a scene for either a new stage or an existing stage
+     * @param stage the stage to be used
      * @param sceneType the type of scene to open
      * @param title the title of the scene
+     * @param newStage determines if the stage is a new stage
      * @return StageController both stage and controller
      * @throws IOException IOException in case of failure
      */
-    public static StageController getScene(Stage existingStage, SceneTypes sceneType, String title) throws IOException {
+    public static StageController getScene(Stage stage, SceneTypes sceneType, String title, boolean newStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(DistributionClient.getInstance().getClass().getResource(sceneType.getPath()));
         
         Parent parent = (Parent) loader.load();
         Scene scene = new Scene(parent);
         
-        existingStage.setResizable(false);
-        existingStage.setScene(scene);
-        existingStage.setTitle(title);
+        if (newStage) {
+            stage.initModality(Modality.APPLICATION_MODAL);
+        }
         
-        return new StageController(existingStage, loader.getController());
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.setTitle(title);
+        
+        return new StageController(stage, loader.getController());
     }
 
 }
