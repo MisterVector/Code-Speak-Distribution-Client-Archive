@@ -8,7 +8,8 @@ package org.codespeak.distribution.client.scenes;
 public enum SceneTypes {
     
     MAIN("MainScene.fxml"),
-    ABOUT("AboutScene.fxml");
+    ABOUT("AboutScene.fxml"),
+    PROGRAM_UPDATE("ProgramUpdateScene.fxml");
     
     private final String fxmlName;
     

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +29,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
+import org.codespeak.distribution.client.data.ChangelogEntry;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
+import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
 import org.codespeak.distribution.client.data.query.QueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
+import org.codespeak.distribution.client.objects.StageController;
 import org.codespeak.distribution.client.util.AlertUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
@@ -61,6 +65,7 @@ public class MainSceneController implements Initializable {
     @FXML private TableColumn<ProgramTableData, String> programsTableReleaseTimeColumn;
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
+    @FXML private Label programUpdateLabel;
     @FXML private Button launchProgramButton;
     @FXML private Button installButton;
     @FXML private Button updateButton;
@@ -68,6 +73,7 @@ public class MainSceneController implements Initializable {
     private void resetProgramControls() {
         programNameLabel.setText("Select A Program");
         programDescriptionLabel.setText("No description. Select a program first.");
+        programUpdateLabel.setText("");
             
         launchProgramButton.setDisable(true);
         installButton.setDisable(true);
@@ -90,6 +96,7 @@ public class MainSceneController implements Initializable {
             
             if (releaseTime.after(installedReleaseTime)) {
                 updateButton.setDisable(false);
+                programUpdateLabel.setText("An update is available!");
             }
         } else {
             name = program.getName();
@@ -170,6 +177,17 @@ public class MainSceneController implements Initializable {
         categoryChoices.getSelectionModel().select("All");
     }    
 
+    /**
+     * Called when a program is updated
+     * @param installedProgram an installed program
+     * @param program the latest information on a program
+     */
+    public void onUpdateProgram(Program program, Program installedProgram) throws IOException {
+        installedProgram.update(program);
+        
+        displayProgramControls(program, installedProgram);
+    }
+    
     @FXML
     public void onAboutMenuItemClick() throws IOException {
         Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About").getStage();
@@ -302,6 +320,31 @@ public class MainSceneController implements Initializable {
             displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
             
             currentlySelectedInstalledProgram = currentlySelectedProgram;
+        }
+    }
+    
+    @FXML
+    public void onUpdateButtonClick() throws IOException {
+        if (currentlySelectedInstalledProgram != null) {
+            int id = currentlySelectedInstalledProgram.getId();
+            String programName = currentlySelectedInstalledProgram.getName();
+            String version = currentlySelectedInstalledProgram.getVersion();
+            InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
+            
+            JSONArray jsonEntries = response.getContents();
+            List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
+            
+            for (int i = 0; i < jsonEntries.length(); i++) {
+                JSONObject obj = jsonEntries.getJSONObject(i);
+                entries.add(ChangelogEntry.fromJSON(obj));
+            }
+            
+            StageController<ProgramUpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_UPDATE, "New version for " + programName);
+            ProgramUpdateSceneController controller = stageController.getController();
+            Stage stage = stageController.getStage();
+            
+            stage.show();
+            controller.showUpdate(this, currentlySelectedProgram, currentlySelectedInstalledProgram, entries);
         }
     }
     

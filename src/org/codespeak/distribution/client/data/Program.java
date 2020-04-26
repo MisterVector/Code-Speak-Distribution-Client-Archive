@@ -12,6 +12,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.codespeak.distribution.client.handler.DataHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -33,16 +34,16 @@ import org.json.JSONObject;
 public class Program {
 
     private final int id;
-    private final Category category;
-    private final String slug;
-    private final String name;
-    private final String description;
-    private final String sourceURL;
-    private final String launchFile;
-    private final String helpFile;
-    private final String version;
-    private final Timestamp releaseTime;
-    private final List<Dependency> dependencies;
+    private Category category;
+    private String slug;
+    private String name;
+    private String description;
+    private String sourceURL;
+    private String launchFile;
+    private String helpFile;
+    private String version;
+    private Timestamp releaseTime;
+    private List<Dependency> dependencies;
     private boolean installed;
     
     protected Program(int id, Category category, String slug, String name, String description,
@@ -205,6 +206,54 @@ public class Program {
         }
         
         installed = true;
+    }
+    
+    /**
+     * Updates this program with the latest files and information using details
+     * from the latest Program object
+     * @param program program to get updated information from
+     * @throws java.io.IOException error thrown if an error occurs during update
+     */
+    public void update(Program program) throws IOException {
+        Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id + "&since_version=" + version);
+        JSONArray jsonFiles = response.getContents();
+        
+        for (int i = 0; i < jsonFiles.length(); i++) {
+            JSONObject obj = jsonFiles.getJSONObject(i);
+            FileInfo file = FileInfo.fromJSON(obj);
+            Path updateFilePath = programPath.resolve(file.getFilePathAndName());
+            File updateFile = updateFilePath.toFile();
+            
+            if (updateFile.exists()) {
+                updateFile.delete();
+            }
+            
+            switch (file.getFileStatus()) {
+                case NEW:
+                case MODIFIED:
+                    ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemoteFilePathAndName());
+                    FileChannel outChannel = new FileOutputStream(updateFile).getChannel();
+                    
+                    outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+                    
+                    readableByteChannel.close();
+                    outChannel.close();
+                    
+                    break;
+            }
+        }
+
+        this.category = program.getCategory();
+        this.slug = program.getSlug();
+        this.name = program.getName();
+        this.description = program.getDescription();
+        this.sourceURL = program.getSourceURL();
+        this.launchFile = program.getLaunchFile();
+        this.helpFile = program.getHelpFile();
+        this.version = program.getVersion();
+        this.releaseTime = program.getReleaseTime();
+        this.dependencies = program.getDependencies();
     }
     
     /**
