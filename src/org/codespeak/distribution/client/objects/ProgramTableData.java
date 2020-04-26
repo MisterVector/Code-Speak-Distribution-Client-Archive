@@ -43,7 +43,7 @@ public class ProgramTableData {
      * @param name name of this program
      */
     public void setName(String name) {
-        this.name = new SimpleStringProperty(name);
+        this.name.set(name);
     }
     
     /**
@@ -59,7 +59,7 @@ public class ProgramTableData {
      * @param version version of this program
      */
     public void setVersion(String version) {
-        this.version = new SimpleStringProperty(version);
+        this.version.set(version);
     }
     
     /**
@@ -75,7 +75,7 @@ public class ProgramTableData {
      * @param releaseTime release time of this program
      */
     public void setReleaseTime(String releaseTime) {
-        this.releaseTime = new SimpleStringProperty(releaseTime);
+        this.releaseTime.set(releaseTime);
     }
     
 }
