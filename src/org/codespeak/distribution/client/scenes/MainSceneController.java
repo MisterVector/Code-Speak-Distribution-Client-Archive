@@ -53,6 +53,7 @@ import org.json.JSONObject;
 public class MainSceneController implements Initializable {
 
     private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
+    private ProgramTableData currentlySelectedProgramTableData;
     private Program currentlySelectedProgram;
     private Program currentlySelectedInstalledProgram;
     private int currentlySelectedCategoryIndex;
@@ -111,6 +112,7 @@ public class MainSceneController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        currentlySelectedProgramTableData = null;
         currentlySelectedProgram = null;
         currentlySelectedInstalledProgram = null;
         currentlySelectedCategoryIndex = -1;
@@ -294,6 +296,8 @@ public class MainSceneController implements Initializable {
                 currentlySelectedProgram = selectedProgram;
                 currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
             }
+            
+            currentlySelectedProgramTableData = programData;
             
             displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
         }
