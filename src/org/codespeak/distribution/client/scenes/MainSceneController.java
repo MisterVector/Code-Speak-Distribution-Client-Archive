@@ -53,7 +53,6 @@ import org.json.JSONObject;
 public class MainSceneController implements Initializable {
 
     private Map<String, Category> categoryNamesMap = new HashMap<String, Category>();
-    private ProgramTableData currentlySelectedProgramTableData;
     private Program currentlySelectedProgram;
     private Program currentlySelectedInstalledProgram;
     private int currentlySelectedCategoryIndex;
@@ -112,7 +111,6 @@ public class MainSceneController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        currentlySelectedProgramTableData = null;
         currentlySelectedProgram = null;
         currentlySelectedInstalledProgram = null;
         currentlySelectedCategoryIndex = -1;
@@ -183,9 +181,18 @@ public class MainSceneController implements Initializable {
      * Called when a program is updated
      * @param installedProgram an installed program
      * @param program the latest information on a program
+     * @throws java.io.IOException
      */
     public void onUpdateProgram(Program program, Program installedProgram) throws IOException {
         installedProgram.update(program);
+        
+        ObservableList<ProgramTableData> programItems = programsTable.getItems();
+        ProgramTableData programData = programItems.get(currentlySelectedProgramIndex);
+        
+        programData.setVersion(installedProgram.getVersion());
+        programData.setReleaseTime(installedProgram.getReleaseTime().toString());
+
+        programItems.set(currentlySelectedProgramIndex, programData);
         
         displayProgramControls(program, installedProgram);
     }
@@ -296,8 +303,6 @@ public class MainSceneController implements Initializable {
                 currentlySelectedProgram = selectedProgram;
                 currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
             }
-            
-            currentlySelectedProgramTableData = programData;
             
             displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
         }
