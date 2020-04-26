@@ -3,6 +3,7 @@ package org.codespeak.distribution.client.handler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
@@ -39,9 +40,15 @@ public class BackendHandler {
      * @return a QueryResponse object containing the response of the query
      */
     public static <T extends QueryResponse> T getQueryResponse(QueryTypes queryType, String otherPart) {
+        URL url = null;
+        
         try {
-            URL url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getQueryName() + otherPart);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getQueryName() + otherPart);
+        } catch (MalformedURLException ex) {
+            return null;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
             StringBuilder sb = new StringBuilder();
             String input;
             
