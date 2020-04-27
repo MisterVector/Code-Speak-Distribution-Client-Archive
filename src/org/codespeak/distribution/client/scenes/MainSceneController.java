@@ -269,7 +269,7 @@ public class MainSceneController implements Initializable {
             
             String selectedCategoryName = categoryChoices.getItems().get(selectedIndex);
             Category category = categoryNamesMap.get(selectedCategoryName);
-            List<Program> programs = DataHandler.getProgramsByCategory(category, false);
+            List<Program> programs = DataHandler.getPrograms(category);
             ObservableList<ProgramTableData> programsList = programsTable.getItems();
             
             programsList.clear();

@@ -268,9 +268,26 @@ public class DataHandler {
      * @return unmodifiable list of all programs
      */
     public static List<Program> getPrograms() {
+        return getPrograms(null);
+    }
+    
+    /**
+     * Gets an unmodifiable list of all programs according to the category, or
+     * all programs if the category is null. It will use the installed version
+     * of the program if available
+     * @param category the category to return, or null for all categories
+     * @return unmodifiable list of all programs
+     */
+    public static List<Program> getPrograms(Category category) {
         List<Program> ret = new ArrayList<Program>();
         
         for (Program program : programs) {
+            Category currentCategory = program.getCategory();
+            
+            if (category != null && category != currentCategory) {
+                continue;
+            }
+            
             if (installedPrograms.contains(program)) {
                 Program installedProgram = getProgram(program.getId(), true);
                 ret.add(installedProgram);
@@ -281,7 +298,7 @@ public class DataHandler {
         
         return Collections.unmodifiableList(ret);
     }
-    
+
     /**
      * Gets an unmodifiable list of all programs
      * @param installed whether the programs are installed
