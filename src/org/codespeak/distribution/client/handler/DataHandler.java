@@ -279,7 +279,7 @@ public class DataHandler {
             }
         }
         
-        return ret;
+        return Collections.unmodifiableList(ret);
     }
     
     /**
