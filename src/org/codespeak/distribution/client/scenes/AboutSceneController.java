@@ -40,6 +40,11 @@ public class AboutSceneController implements Initializable {
     }
     
     @FXML
+    public void onContactMeLinkClick() throws Exception {
+        desktop.browse(new URI(Configuration.CONTACT_ME_PAGE));
+    }
+    
+    @FXML
     public void onCloseWindowButtonClick(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
