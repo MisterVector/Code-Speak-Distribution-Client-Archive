@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="479.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.ProgramDependenciesSceneController">
+   <children>
+      <Label fx:id="programNameLabel" alignment="TOP_CENTER" layoutX="11.0" layoutY="14.0" prefHeight="30.0" prefWidth="685.0" text="Program Name">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <ListView fx:id="dependencyList" layoutX="16.0" layoutY="178.0" onMouseClicked="#onDependencySelect" prefHeight="252.0" prefWidth="244.0" />
+      <Label alignment="TOP_CENTER" layoutX="16.0" layoutY="138.0" prefHeight="27.0" prefWidth="244.0" text="Dependencies">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="16.0" layoutY="439.0" mnemonicParsing="false" onAction="#onInstallDependencyButtonClick" prefHeight="25.0" prefWidth="117.0" text="Install Dependency" />
+      <Label fx:id="dependencyDescriptionLabel" alignment="TOP_LEFT" layoutX="285.0" layoutY="178.0" prefHeight="252.0" prefWidth="416.0" text="No description. Select a dependency first." wrapText="true" />
+      <Button layoutX="287.0" layoutY="439.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="416.0" text="Close" />
+      <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="57.0" prefHeight="72.0" prefWidth="685.0" text="This program requires certain dependencies before it can work properly. Select the dependencies from the list below and click the Install Dependency button to install it. At any point you may click the Test Program button to see if the program works without issues. When finished, click the Close button. If you ever need to return to this window, you can find it by going to Program &gt; View Dependencies." wrapText="true" />
+      <Button layoutX="143.0" layoutY="439.0" mnemonicParsing="false" onAction="#onTestProgramButtonClick" prefHeight="25.0" prefWidth="117.0" text="Test Program" />
+      <Label fx:id="dependencyNameLabel" alignment="TOP_CENTER" layoutX="285.0" layoutY="138.0" prefHeight="27.0" prefWidth="416.0" text="Select A Dependency">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -9,7 +9,8 @@ public enum SceneTypes {
     
     MAIN("MainScene.fxml"),
     ABOUT("AboutScene.fxml"),
-    PROGRAM_UPDATE("ProgramUpdateScene.fxml");
+    PROGRAM_UPDATE("ProgramUpdateScene.fxml"),
+    PROGRAM_DEPENDENCIES("ProgramDependenciesScene.fxml");
     
     private final String fxmlName;
     

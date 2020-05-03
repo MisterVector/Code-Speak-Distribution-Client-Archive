@@ -247,6 +247,22 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
+    public void onViewDependenciesMenuItemClick() throws Exception {
+        if (currentlySelectedInstalledProgram != null) {
+            String programName = currentlySelectedInstalledProgram.getName();
+            StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
+            ProgramDependenciesSceneController controller = stageController.getController();
+            Stage stage = stageController.getStage();
+            
+            stage.show();
+            controller.showProgramDependencies(currentlySelectedInstalledProgram);
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
+        }
+    }
+    
+    @FXML
     public void onOpenFolderMenuItemClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
             String programFolder = Configuration.PROGRAMS_FOLDER + File.separator + currentlySelectedInstalledProgram.getSlug();
@@ -329,6 +345,15 @@ public class MainSceneController implements Initializable {
             displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
             
             currentlySelectedInstalledProgram = currentlySelectedProgram;
+            
+            String programName = currentlySelectedProgram.getName();
+            StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
+            ProgramDependenciesSceneController controller = stageController.getController();
+            Stage stage = stageController.getStage();
+
+            stage.show();
+            controller.showProgramDependencies(currentlySelectedProgram);
+            
         }
     }
     

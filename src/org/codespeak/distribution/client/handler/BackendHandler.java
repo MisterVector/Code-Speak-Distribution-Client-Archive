@@ -105,5 +105,16 @@ public class BackendHandler {
         
         return Channels.newChannel(url.openStream());
     }
+
+    /**
+     * Gets a file channel from a URL
+     * @param remoteURL
+     * @return Readable Byte Channel from the requested URL
+     * @throws IOException if an error occurs
+     */
+    public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws IOException {
+        URL url = new URL(remoteURL);
+        return Channels.newChannel(url.openStream());
+    }
     
 }
