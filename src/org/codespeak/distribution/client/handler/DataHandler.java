@@ -263,15 +263,6 @@ public class DataHandler {
     }
     
     /**
-     * Gets an unmodifiable list of all programs. If the program is installed
-     * then the installed version of that program is returned
-     * @return unmodifiable list of all programs
-     */
-    public static List<Program> getPrograms() {
-        return getPrograms(null);
-    }
-    
-    /**
      * Gets an unmodifiable list of all programs according to the category, or
      * all programs if the category is null. It will use the installed version
      * of the program if available

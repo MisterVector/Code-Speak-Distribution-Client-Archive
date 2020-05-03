@@ -70,6 +70,18 @@ public class MainSceneController implements Initializable {
     @FXML private Button installButton;
     @FXML private Button updateButton;
 
+    private void displayPrograms(Category category) {
+        List<Program> programs = DataHandler.getPrograms(category);
+        ObservableList items = programsTable.getItems();
+
+        items.clear();
+        
+        for (Program program : programs) {
+            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
+            items.add(programData);
+        }
+    }
+    
     private void resetProgramControls() {
         programNameLabel.setText("Select A Program");
         programDescriptionLabel.setText("No description. Select a program first.");
@@ -166,13 +178,7 @@ public class MainSceneController implements Initializable {
             
         }
         
-        List<Program> programs = DataHandler.getPrograms();
-        ObservableList items = programsTable.getItems();
-        
-        for (Program program : programs) {
-            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
-            items.add(programData);
-        }
+        displayPrograms(null);
         
         categoryChoices.getSelectionModel().select("All");
     }    
@@ -285,19 +291,11 @@ public class MainSceneController implements Initializable {
             
             String selectedCategoryName = categoryChoices.getItems().get(selectedIndex);
             Category category = categoryNamesMap.get(selectedCategoryName);
-            List<Program> programs = DataHandler.getPrograms(category);
-            ObservableList<ProgramTableData> programsList = programsTable.getItems();
             
-            programsList.clear();
-            
-            for (Program program : programs) {
-                ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
-                programsList.add(programData);
-            }
+            displayPrograms(category);
+            resetProgramControls();
             
             currentlySelectedProgramIndex = -1;
-            
-            resetProgramControls();
         }
     }
     
