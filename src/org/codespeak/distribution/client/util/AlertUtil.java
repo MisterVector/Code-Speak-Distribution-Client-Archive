@@ -27,7 +27,7 @@ public class AlertUtil {
      * @return the alert with the specified settings
      */
     public static Alert createAlert(String message, String headerText) {
-        return createAlert(message, headerText, Configuration.PROGRAM_NAME);
+        return createAlert(message, headerText, Configuration.PROGRAM_TITLE);
     }
 
     /**
@@ -59,7 +59,7 @@ public class AlertUtil {
      * @return the alert with the specified settings
      */
     public static Alert createAlert(Alert.AlertType type, String message, String headerText) {
-        return createAlert(type, message, headerText, Configuration.PROGRAM_NAME);
+        return createAlert(type, message, headerText, Configuration.PROGRAM_TITLE);
     }
     
     /**

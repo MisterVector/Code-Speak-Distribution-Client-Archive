@@ -340,12 +340,12 @@ public class MainSceneController implements Initializable {
             entries.add(entry);
         }
         
-        StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Code Speak Distribution Client Changelog");
+        StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
         ChangelogSceneController controller = stageController.getController();
         Stage stage = stageController.getStage();
         
         stage.show();
-        controller.showChangelog("Code Speak Distribution Client", entries);
+        controller.showChangelog(Configuration.PROGRAM_NAME, entries);
     }
     
     @FXML

@@ -29,7 +29,7 @@ public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        stage = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_NAME).getStage();
+        stage = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_TITLE).getStage();
         stage.show();
     }
 

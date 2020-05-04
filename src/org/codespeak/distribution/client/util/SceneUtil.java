@@ -24,7 +24,7 @@ public class SceneUtil {
      * @throws IOException IOException in case of failure
      */
     public static StageController getScene(SceneTypes sceneType) throws IOException {
-        return getScene(sceneType, Configuration.PROGRAM_NAME);
+        return getScene(sceneType, Configuration.PROGRAM_TITLE);
     }
 
     /**
@@ -46,7 +46,7 @@ public class SceneUtil {
      * @throws IOException IOException in case of failure
      */
     public static StageController getScene(Stage existingStage, SceneTypes sceneType) throws IOException {
-        return getScene(existingStage, sceneType, Configuration.PROGRAM_NAME, false);
+        return getScene(existingStage, sceneType, Configuration.PROGRAM_TITLE, false);
     }
     
     /**
