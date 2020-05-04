@@ -22,6 +22,7 @@ import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -254,6 +255,49 @@ public class Program {
         this.version = program.getVersion();
         this.releaseTime = program.getReleaseTime();
         this.dependencies = program.getDependencies();
+    }
+
+    /**
+     * Repairs this program
+     * @throws IOException thrown if an error occurs
+     */
+    public void repair() throws IOException {
+        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
+        JSONArray jsonContents = response.getContents();
+        Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        
+        for (int i = 0; i < jsonContents.length(); i++) {
+            JSONObject obj = jsonContents.getJSONObject(i);
+            FileInfo file = FileInfo.fromJSON(obj);
+            Path filePath = programPath.resolve(file.getFilePathAndName());
+            File filePathFile = filePath.toFile();
+            File folderPath = filePath.getParent().toFile();
+            boolean canCreateFile = false;
+            
+            if (filePath.toFile().exists()) {
+                String currentChecksum = file.getChecksum();
+                String oldChecksum = MiscUtil.getFileChecksum(filePath);
+                canCreateFile = !currentChecksum.equals(oldChecksum);
+                
+                if (canCreateFile) {
+                    filePathFile.delete();
+                }
+            } else {
+                canCreateFile = true;
+            }
+            
+            if (canCreateFile) {
+                folderPath.mkdirs();
+                
+                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemoteFilePathAndName());
+                FileChannel outChannel = new FileOutputStream(filePathFile).getChannel();
+                
+                outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+                
+                readableByteChannel.close();
+                outChannel.close();
+            }
+        }
     }
     
     /**

@@ -282,6 +282,31 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
+    public void onProgramRepairButtonClick() throws IOException {
+        if (currentlySelectedInstalledProgram != null) {
+            Timestamp installedReleaseTime = currentlySelectedInstalledProgram.getReleaseTime();
+            Timestamp releaseTime = currentlySelectedProgram.getReleaseTime();
+            
+            if (!installedReleaseTime.equals(releaseTime)) {
+                Alert alert = AlertUtil.createAlert("This program must be at the latest version before it can be repaired.");
+                alert.show();
+                
+                return;
+            }
+
+            currentlySelectedInstalledProgram.repair();
+            
+            String programName = currentlySelectedInstalledProgram.getName();
+            
+            Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
+            alert.show();
+        } else {
+            Alert alert = AlertUtil.createAlert("Select an installed program first.");
+            alert.show();
+        }
+    }
+    
+    @FXML
     public void onProgramViewChangelogButtonClick() throws IOException {
         if (currentlySelectedProgram != null) {
             int id = 0;

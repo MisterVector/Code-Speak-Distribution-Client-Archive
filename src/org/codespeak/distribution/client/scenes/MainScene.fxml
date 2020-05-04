@@ -32,6 +32,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#onViewDependenciesMenuItemClick" text="View Dependencies" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onOpenFolderMenuItemClick" text="Open Folder" />
+                        <MenuItem mnemonicParsing="false" onAction="#onProgramRepairButtonClick" text="Repair" />
                         <MenuItem mnemonicParsing="false" onAction="#onUninstallMenuItemClick" text="Uninstall" />
                     </items>
                   </Menu>
