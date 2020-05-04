@@ -396,9 +396,14 @@ public class MainSceneController implements Initializable {
             String launchFile = currentlySelectedInstalledProgram.getLaunchFile();
             String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
                  + File.separator + slug + File.separator + launchFile;
-
+            String command = programLaunchFileLocation;
+            
+            if (launchFile.endsWith(".jar")) {
+                command = "java -jar \"" + command + "\"";
+            }
+            
             Runtime runtime = Runtime.getRuntime();
-            runtime.exec(programLaunchFileLocation);
+            runtime.exec(command);
         }
     }
     
