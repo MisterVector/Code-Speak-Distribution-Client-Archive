@@ -280,6 +280,73 @@ public class MainSceneController implements Initializable {
             alert.show();
         }
     }
+
+    @FXML
+    public void onProgramViewChangelogButtonClick() throws IOException {
+        if (currentlySelectedProgram != null) {
+            int id = 0;
+            String name = null;
+            String version = null;
+            boolean installed = false;
+
+            if (currentlySelectedInstalledProgram != null) {
+                id = currentlySelectedInstalledProgram.getId();
+                name = currentlySelectedInstalledProgram.getName();
+                version = currentlySelectedInstalledProgram.getVersion();
+                installed = true;
+            } else {
+                id = currentlySelectedProgram.getId();
+                name = currentlySelectedProgram.getName();
+                version = currentlySelectedProgram.getVersion();
+            }
+
+            String otherPart = "&id=" + id;
+
+            if (installed) {
+                otherPart += "&up_to=" + version;
+            }
+            
+            InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
+            JSONArray jsonEntries = response.getContents();
+            List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
+
+            for (int i = 0; i < jsonEntries.length(); i++) {
+                JSONObject obj = jsonEntries.getJSONObject(i);
+                ChangelogEntry entry = ChangelogEntry.fromJSON(obj);
+                entries.add(entry);
+            }
+
+            StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, name + " Changelog");
+            ChangelogSceneController controller = stageController.getController();
+            Stage stage = stageController.getStage();
+
+            stage.show();
+            controller.showChangelog(name, entries);
+        } else {
+            Alert alert = AlertUtil.createAlert("Select a program first.");
+            alert.show();
+        }
+    }
+    
+    @FXML
+    public void onViewChangelogButtonClick() throws IOException {
+        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
+        JSONArray jsonEntries = response.getContents();
+        List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
+        
+        for (int i = 0; i < jsonEntries.length(); i++) {
+            JSONObject obj = jsonEntries.getJSONObject(i);
+            ChangelogEntry entry = ChangelogEntry.fromJSON(obj);
+            entries.add(entry);
+        }
+        
+        StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Code Speak Distribution Client Changelog");
+        ChangelogSceneController controller = stageController.getController();
+        Stage stage = stageController.getStage();
+        
+        stage.show();
+        controller.showChangelog("Code Speak Distribution Client", entries);
+    }
     
     @FXML
     public void onCategorySelect(ActionEvent event) {

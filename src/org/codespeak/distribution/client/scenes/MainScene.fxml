@@ -28,6 +28,7 @@
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#onViewHelpMenuItemClick" text="View Help" />
                         <MenuItem mnemonicParsing="false" onAction="#onViewSourceMenuItemClick" text="View Source" />
+                        <MenuItem mnemonicParsing="false" onAction="#onProgramViewChangelogButtonClick" text="View Changelog" />
                         <MenuItem mnemonicParsing="false" onAction="#onViewDependenciesMenuItemClick" text="View Dependencies" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onOpenFolderMenuItemClick" text="Open Folder" />
@@ -37,6 +38,7 @@
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#onAboutMenuItemClick" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#onViewChangelogButtonClick" text="View Changelog" />
                   </items>
                 </Menu>
               </menus>
