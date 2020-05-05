@@ -5,14 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
+import java.util.List;
 import org.codespeak.distribution.client.Configuration;
-import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
-import org.codespeak.distribution.client.data.query.InformationQueryResponse;
-import org.codespeak.distribution.client.data.query.QueryResponse;
+import org.codespeak.distribution.client.data.Category;
+import org.codespeak.distribution.client.data.ChangelogEntry;
+import org.codespeak.distribution.client.data.CheckVersionResponse;
+import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
+import org.codespeak.distribution.client.data.Dependency;
+import org.codespeak.distribution.client.data.FileInfo;
+import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.data.query.QueryTypes;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -28,18 +34,18 @@ public class BackendHandler {
      * @param queryType the type of query to make
      * @return a QueryResponse object containing the response of the query
      */
-    public static <T extends QueryResponse> T getQueryResponse(QueryTypes queryType) {
-        return getQueryResponse(queryType, "");
+    public static <T> T getDataFromQuery(QueryTypes queryType) {
+        return BackendHandler.getDataFromQuery(queryType, "");
     }
     
     /**
-     * Queries the backend and gets a response
-     * @param <T> An object that extends QueryResponse
+     * Gets data from the backend using the specified query
+     * @param <T> A generic object representing the data from the query
      * @param queryType the type of query to make
      * @param otherPart an additional part of the query
-     * @return a QueryResponse object containing the response of the query
+     * @return a generic object representing the data from the query
      */
-    public static <T extends QueryResponse> T getQueryResponse(QueryTypes queryType, String otherPart) {
+    public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) {
         URL url = null;
         
         try {
@@ -62,15 +68,53 @@ public class BackendHandler {
             
             String response = sb.toString();
             JSONObject json = new JSONObject(response);
+            int statusCode = json.getInt("status");
+            
+            if (statusCode == 1) {
+                Class dataClass = queryType.getDataClass();
+                
+                if (queryType.isListQuery()) {
+                    JSONArray jsonContents = json.getJSONArray("contents");
+                    List<T> listData = new ArrayList<T>();
+                    
+                    for (int i = 0; i < jsonContents.length(); i++) {
+                        JSONObject obj = jsonContents.getJSONObject(i);
+                        
+                        if (dataClass == Dependency.class) {
+                            listData.add((T) Dependency.fromJSON(obj));
+                        } else if (dataClass == Category.class) {
+                            listData.add((T) Category.fromJSON(obj));
+                        } else if (dataClass == Program.class) {
+                            listData.add((T) Program.fromJSON(obj, false));
+                        } else if (dataClass == FileInfo.class) {
+                            listData.add((T) FileInfo.fromJSON(obj));
+                        } else if (dataClass == ChangelogEntry.class) {
+                            listData.add((T) ChangelogEntry.fromJSON(obj));
+                        }
+                    }
+                    
+                    return (T) listData;
+                } else {
+                    JSONObject jsonContents = json.getJSONObject("contents");
 
-            if (queryType.isInformationListQuery()) {
-                return (T) InformationListQueryResponse.fromJSON(json);
-            } else {
-                return (T) InformationQueryResponse.fromJSON(json);
+                    if (dataClass == Dependency.class) {
+                        return (T) Dependency.fromJSON(jsonContents);
+                    } else if (dataClass == Category.class) {
+                        return (T) Category.fromJSON(jsonContents);
+                    } else if (dataClass == Program.class) {
+                        return (T) Program.fromJSON(jsonContents, false);
+                    } else if (dataClass == CheckVersionResponse.class) {
+                        return (T) CheckVersionResponse.fromJSON(jsonContents);
+                    } else if (dataClass == ClientCheckVersionResponse.class) {
+                        return (T) ClientCheckVersionResponse.fromJSON(jsonContents);
+                    }
+                }
             }
         } catch (IOException ex) {
-            return null;
+
         }
+        
+        return null;
     }
 
     /**

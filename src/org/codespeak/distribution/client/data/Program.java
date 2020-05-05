@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.codespeak.distribution.client.Configuration;
-import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.util.MiscUtil;
@@ -177,19 +176,16 @@ public class Program {
      * @throws IOException thrown if an error occurs while installing
      */
     public void install() throws IOException {
-        InformationListQueryResponse queryResponse = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
-        JSONArray jsonFiles = queryResponse.getContents();
+        List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
         File programFolder = new File(Configuration.PROGRAMS_FOLDER + File.separator + slug);
         Path programPath = programFolder.toPath();
         
         programFolder.mkdir();
         
-        for (int i = 0; i < jsonFiles.length(); i++) {
-            JSONObject obj = jsonFiles.getJSONObject(i);
-            FileInfo fileInfo = FileInfo.fromJSON(obj);
-            String filePath = fileInfo.getFilePath();
-            String filePathAndName = fileInfo.getFilePathAndName();
-            String remoteFilePathAndName = fileInfo.getRemoteFilePathAndName();
+        for (FileInfo file : files) {
+            String filePath = file.getFilePath();
+            String filePathAndName = file.getFilePathAndName();
+            String remoteFilePathAndName = file.getRemoteFilePathAndName();
 
             if (!StringUtil.isNullOrEmpty(filePath)) {
                 Path localFilePath = programPath.resolve(filePath);
@@ -216,13 +212,10 @@ public class Program {
      * @throws java.io.IOException error thrown if an error occurs during update
      */
     public void update(Program program) throws IOException {
+        List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id + "&since_version=" + version);
         Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
-        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id + "&since_version=" + version);
-        JSONArray jsonFiles = response.getContents();
         
-        for (int i = 0; i < jsonFiles.length(); i++) {
-            JSONObject obj = jsonFiles.getJSONObject(i);
-            FileInfo file = FileInfo.fromJSON(obj);
+        for (FileInfo file : files) {
             Path updateFilePath = programPath.resolve(file.getFilePathAndName());
             File updateFile = updateFilePath.toFile();
             
@@ -262,13 +255,10 @@ public class Program {
      * @throws IOException thrown if an error occurs
      */
     public void repair() throws IOException {
-        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
-        JSONArray jsonContents = response.getContents();
+        List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
         Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
         
-        for (int i = 0; i < jsonContents.length(); i++) {
-            JSONObject obj = jsonContents.getJSONObject(i);
-            FileInfo file = FileInfo.fromJSON(obj);
+        for (FileInfo file : files) {
             Path filePath = programPath.resolve(file.getFilePathAndName());
             File filePathFile = filePath.toFile();
             File folderPath = filePath.getParent().toFile();

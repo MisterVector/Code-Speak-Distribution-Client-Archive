@@ -34,8 +34,6 @@ import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
-import org.codespeak.distribution.client.data.query.InformationListQueryResponse;
-import org.codespeak.distribution.client.data.query.QueryResponse;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
@@ -134,37 +132,24 @@ public class MainSceneController implements Initializable {
         programsTableVersionColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("version"));
         programsTableReleaseTimeColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("releaseTime"));
 
-        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_CATEGORIES);
-        JSONArray jsonContents = response.getContents();
+        List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
 
-        for (int i = 0; i < jsonContents.length(); i++) {
-            JSONObject obj = jsonContents.getJSONObject(i);
-            Category category = Category.fromJSON(obj);
-            
+        for (Category category : categories) {
             DataHandler.addCategory(category, false);
         }
         
-        response = BackendHandler.getQueryResponse(QueryTypes.GET_DEPENDENCIES);
-        jsonContents = response.getContents();
+        List<Dependency> dependencies = BackendHandler.getDataFromQuery(QueryTypes.GET_DEPENDENCIES);
         
-        for (int i = 0; i < jsonContents.length(); i++) {
-            JSONObject obj = jsonContents.getJSONObject(i);
-            Dependency dependency = Dependency.fromJSON(obj);
-            
+        for (Dependency dependency : dependencies) {
             DataHandler.addDependency(dependency, false);
         }
 
-        response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAMS);
-        jsonContents = response.getContents();
+        List<Program> programs = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAMS);
 
-        for (int i = 0; i < jsonContents.length(); i++) {
-            JSONObject obj = jsonContents.getJSONObject(i);
-            Program program = Program.fromJSON(obj, false);
-            
+        for (Program program : programs) {
             DataHandler.addProgram(program, false);
         }
         
-        List<Category> categories = DataHandler.getCategories(false);
         ObservableList categoryItems = categoryChoices.getItems();
         
         categoryItems.add("All");
@@ -175,7 +160,6 @@ public class MainSceneController implements Initializable {
             
             categoryItems.add(categoryName);
             categoryNamesMap.put(categoryName, category);
-            
         }
         
         displayPrograms(null);
@@ -331,16 +315,7 @@ public class MainSceneController implements Initializable {
                 otherPart += "&up_to=" + version;
             }
             
-            InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
-            JSONArray jsonEntries = response.getContents();
-            List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
-
-            for (int i = 0; i < jsonEntries.length(); i++) {
-                JSONObject obj = jsonEntries.getJSONObject(i);
-                ChangelogEntry entry = ChangelogEntry.fromJSON(obj);
-                entries.add(entry);
-            }
-
+            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
             StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, name + " Changelog");
             ChangelogSceneController controller = stageController.getController();
             Stage stage = stageController.getStage();
@@ -355,16 +330,7 @@ public class MainSceneController implements Initializable {
     
     @FXML
     public void onViewChangelogButtonClick() throws IOException {
-        InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
-        JSONArray jsonEntries = response.getContents();
-        List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
-        
-        for (int i = 0; i < jsonEntries.length(); i++) {
-            JSONObject obj = jsonEntries.getJSONObject(i);
-            ChangelogEntry entry = ChangelogEntry.fromJSON(obj);
-            entries.add(entry);
-        }
-        
+        List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
         StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
         ChangelogSceneController controller = stageController.getController();
         Stage stage = stageController.getStage();
@@ -458,15 +424,7 @@ public class MainSceneController implements Initializable {
             int id = currentlySelectedInstalledProgram.getId();
             String programName = currentlySelectedInstalledProgram.getName();
             String version = currentlySelectedInstalledProgram.getVersion();
-            InformationListQueryResponse response = BackendHandler.getQueryResponse(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
-            
-            JSONArray jsonEntries = response.getContents();
-            List<ChangelogEntry> entries = new ArrayList<ChangelogEntry>();
-            
-            for (int i = 0; i < jsonEntries.length(); i++) {
-                JSONObject obj = jsonEntries.getJSONObject(i);
-                entries.add(ChangelogEntry.fromJSON(obj));
-            }
+            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
             
             StageController<ProgramUpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_UPDATE, "New version for " + programName);
             ProgramUpdateSceneController controller = stageController.getController();
