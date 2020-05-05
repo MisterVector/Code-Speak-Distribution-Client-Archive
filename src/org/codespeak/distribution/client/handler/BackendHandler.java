@@ -59,10 +59,6 @@ public class BackendHandler {
             String input;
             
             while ((input = reader.readLine()) != null) {
-                if (sb.length() > 0) {
-                    sb.append("\n");
-                }
-                
                 sb.append(input);
             }
             
