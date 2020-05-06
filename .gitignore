@@ -29,5 +29,5 @@ target/
 
 # Other stuff
 extra/
-/programs/
+/Programs/
 programs.json
