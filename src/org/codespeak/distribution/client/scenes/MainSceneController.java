@@ -88,6 +88,22 @@ public class MainSceneController implements Initializable {
             displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
         }
     }
+
+    private void launchInstalledProgram() throws IOException {
+            String slug = currentlySelectedInstalledProgram.getSlug();
+            String launchFile = currentlySelectedInstalledProgram.getLaunchFile();
+            String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
+                 + File.separator + slug + File.separator + launchFile;
+            String command = programLaunchFileLocation;
+            
+            if (launchFile.endsWith(".jar")) {
+                command = "java -jar \"" + command + "\"";
+            }
+            
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec(command);
+
+    }
     
     private void displayPrograms(Category category) {
         List<Program> programs = DataHandler.getPrograms(category);
@@ -209,7 +225,7 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onProgramsTableKeyReleased(KeyEvent event) {
+    public void onProgramsTableKeyReleased(KeyEvent event) throws IOException {
         KeyCode code = event.getCode();
         
         if (code == KeyCode.UP || code == KeyCode.DOWN) {
@@ -217,6 +233,10 @@ public class MainSceneController implements Initializable {
             int selectedIndex = selectionModel.getSelectedIndex();
             
             selectProgram(selectedIndex);
+        } else if (code == KeyCode.ENTER) {
+            if (currentlySelectedInstalledProgram != null) {
+                launchInstalledProgram();
+            }
         }
     }
     
@@ -415,18 +435,7 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onLaunchProgramButtonClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
-            String slug = currentlySelectedInstalledProgram.getSlug();
-            String launchFile = currentlySelectedInstalledProgram.getLaunchFile();
-            String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
-                 + File.separator + slug + File.separator + launchFile;
-            String command = programLaunchFileLocation;
-            
-            if (launchFile.endsWith(".jar")) {
-                command = "java -jar \"" + command + "\"";
-            }
-            
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command);
+            launchInstalledProgram();
         }
     }
     
