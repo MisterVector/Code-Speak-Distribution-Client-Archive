@@ -499,6 +499,9 @@ public class MainSceneController implements Initializable {
                 displayProgramControls(currentlySelectedProgram, null);
                 
                 currentlySelectedInstalledProgram = null;
+                
+                Alert uninstallAlert = AlertUtil.createAlert(programName + " has been uninstalled.");
+                uninstallAlert.show();
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
