@@ -26,7 +26,6 @@
                   <Menu mnemonicParsing="false" text="Program">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#onViewHelpMenuItemClick" text="View Help" />
-                        <MenuItem mnemonicParsing="false" onAction="#onViewSourceMenuItemClick" text="View Source" />
                         <MenuItem mnemonicParsing="false" onAction="#onProgramViewChangelogButtonClick" text="View Changelog" />
                         <MenuItem mnemonicParsing="false" onAction="#onViewDependenciesMenuItemClick" text="View Dependencies" />
                         <SeparatorMenuItem mnemonicParsing="false" />

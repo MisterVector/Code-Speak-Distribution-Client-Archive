@@ -279,26 +279,6 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onViewSourceMenuItemClick() throws Exception {
-        if (currentlySelectedInstalledProgram != null) {
-            String sourceURL = currentlySelectedInstalledProgram.getSourceURL();
-            
-            if (StringUtil.isNullOrEmpty(sourceURL)) {
-                Alert alert = AlertUtil.createAlert("This program does not have a source repository.");
-                alert.show();
-                
-                return;
-            }
-            
-            Desktop desktop = Desktop.getDesktop();
-            desktop.browse(new URI(sourceURL));
-        } else {
-            Alert alert = AlertUtil.createAlert("Select an installed program first.");
-            alert.show();
-        }
-    }
-    
-    @FXML
     public void onViewDependenciesMenuItemClick() throws Exception {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();

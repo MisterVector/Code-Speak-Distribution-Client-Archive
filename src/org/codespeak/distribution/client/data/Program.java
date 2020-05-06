@@ -38,7 +38,6 @@ public class Program {
     private String slug;
     private String name;
     private String description;
-    private String sourceURL;
     private String launchFile;
     private String helpFile;
     private String version;
@@ -47,14 +46,13 @@ public class Program {
     private boolean installed;
     
     protected Program(int id, Category category, String slug, String name, String description,
-                    String sourceURL, String launchFile, String helpFile, String version,
-                    Timestamp releaseTime, List<Dependency> dependencies, boolean installed) {
+                    String launchFile, String helpFile, String version, Timestamp releaseTime,
+                    List<Dependency> dependencies, boolean installed) {
         this.id = id;
         this.category = category;
         this.slug = slug;
         this.name = name;
         this.description = description;
-        this.sourceURL = sourceURL;
         this.launchFile = launchFile;
         this.helpFile = helpFile;
         this.version = version;
@@ -103,15 +101,7 @@ public class Program {
         return description;
     }
     
-    /**
-     * Gets the source URL of this program
-     * @return source URL of this program
-     */
-    public String getSourceURL() {
-        return sourceURL;
-    }
-    
-    /**
+   /**
      * Gets the launch file of this program
      * @return launch file of this program
      */
@@ -242,7 +232,6 @@ public class Program {
         this.slug = program.getSlug();
         this.name = program.getName();
         this.description = program.getDescription();
-        this.sourceURL = program.getSourceURL();
         this.launchFile = program.getLaunchFile();
         this.helpFile = program.getHelpFile();
         this.version = program.getVersion();
@@ -303,7 +292,6 @@ public class Program {
         json.put("slug", slug);
         json.put("name", name);
         json.put("description", description);
-        json.put("source_url", sourceURL);
         json.put("launch_file", launchFile);
         json.put("help_file", helpFile);
         json.put("version", version);
@@ -348,7 +336,6 @@ public class Program {
         String slug = "";
         String name = "";
         String description = "";
-        String sourceURL = "";
         String launchFile = "";
         String helpFile = "";
         String version = "";
@@ -376,10 +363,6 @@ public class Program {
             description = json.getString("description");
         }
         
-         if (json.has("source_url")) {
-             sourceURL = json.getString("source_url");
-         }
-         
          if (json.has("launch_file")) {
              launchFile = json.getString("launch_file");
          }
@@ -406,7 +389,7 @@ public class Program {
              }
          }
          
-         return new Program(id, category, slug, name, description, sourceURL, launchFile, helpFile, version, releaseTime, dependencies, installed);
+         return new Program(id, category, slug, name, description, launchFile, helpFile, version, releaseTime, dependencies, installed);
     }
     
 }
