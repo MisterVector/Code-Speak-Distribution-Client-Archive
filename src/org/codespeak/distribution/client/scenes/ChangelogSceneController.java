@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.data.ChangelogEntry;
+import org.codespeak.distribution.client.util.MiscUtil;
 
 /**
  * Controller for the changelog scene
@@ -42,11 +43,13 @@ public class ChangelogSceneController implements Initializable {
         StringBuilder sb = new StringBuilder();
         
         for (ChangelogEntry entry : changelogEntries) {
+            String formattedReleaseTime = MiscUtil.formatTimestamp(entry.getReleaseTime());
+            
             if (sb.length() > 0) {
                 sb.append("\n\n\n");
             }
             
-            sb.append(entry.getVersion()).append(" (").append(entry.getReleaseTime().toString()).append(")")
+            sb.append(entry.getVersion()).append(" (").append(formattedReleaseTime).append(")")
               .append("\n\n\n").append(entry.getContent());
         }
         

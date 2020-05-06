@@ -41,6 +41,7 @@ import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
 import org.codespeak.distribution.client.objects.StageController;
 import org.codespeak.distribution.client.util.AlertUtil;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
@@ -112,7 +113,9 @@ public class MainSceneController implements Initializable {
         items.clear();
         
         for (Program program : programs) {
-            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), program.getReleaseTime().toString());
+            String formattedReleaseTime = MiscUtil.formatTimestamp(program.getReleaseTime());
+            
+            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseTime);
             items.add(programData);
         }
     }

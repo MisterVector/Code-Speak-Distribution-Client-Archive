@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -14,6 +16,8 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class MiscUtil {
 
+    private static final String DEFAULT_DATETIME_FORMAT = "MMMM dd, yyyy hh:mm:ss a";
+    
     private static MessageDigest messageDigest = null;
     
     private static MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
@@ -24,6 +28,16 @@ public class MiscUtil {
         return messageDigest;
     }
 
+    /**
+     * Returns a formatted timestamp string from the specified timestamp
+     * @param timestamp a timestamp to be formatted
+     * @return formatted output of a timestamp
+     */
+    public static String formatTimestamp(Timestamp timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATETIME_FORMAT);
+        return sdf.format(timestamp);
+    }
+    
     /**
      * Gets the checksum of the specified path
      * @param path path to file
