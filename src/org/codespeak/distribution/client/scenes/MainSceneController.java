@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -241,6 +242,11 @@ public class MainSceneController implements Initializable {
                 launchInstalledProgram();
             }
         }
+    }
+ 
+    @FXML
+    public void onQuitMenuItemClick(ActionEvent event) {
+        Platform.exit();
     }
     
     @FXML
