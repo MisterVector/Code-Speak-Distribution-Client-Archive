@@ -278,12 +278,24 @@ public class MainSceneController implements Initializable {
                 return;
             }
 
-            currentlySelectedInstalledProgram.repair();
-            
             String programName = currentlySelectedInstalledProgram.getName();
+            Alert confirmAlert = AlertUtil.createAlert(AlertType.CONFIRMATION, "Repairing this program will overwrite existing "
+                        + "files. Make sure to take backups if you don't want to lose anything. Are you sure you want "
+                        + "to repair this program?", "Repairing " + programName);
             
-            Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
-            alert.show();
+            ObservableList<ButtonType> buttons = confirmAlert.getButtonTypes();
+
+            buttons.clear();
+            buttons.addAll(ButtonType.YES, ButtonType.NO);
+
+            ButtonType buttonType = confirmAlert.showAndWait().get();
+
+            if (buttonType == ButtonType.YES) {
+                currentlySelectedInstalledProgram.repair();
+
+                Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
+                alert.show();
+            }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
