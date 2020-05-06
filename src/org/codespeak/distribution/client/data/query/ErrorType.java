@@ -19,9 +19,9 @@ public enum ErrorType {
 
     /**
      * Gets the code of this error
-     * @return 
+     * @return code of this error
      */
-    public int getErrorTypeCode() {
+    public int getCode() {
         return errorTypeCode;
     }
 
@@ -32,7 +32,7 @@ public enum ErrorType {
      */
     public static ErrorType fromCode(int code) {
         for (ErrorType et : values()) {
-            if (et.getErrorTypeCode() == code) {
+            if (et.getCode() == code) {
                 return et;
             }
         }

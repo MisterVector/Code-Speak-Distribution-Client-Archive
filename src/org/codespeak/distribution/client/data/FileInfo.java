@@ -36,7 +36,7 @@ public class FileInfo {
          * @param statusCode code to match file status
          * @return a file status based on the code
          */
-        public static FileStatus getStatusFromCode(int statusCode) {
+        public static FileStatus fromCode(int statusCode) {
             for (FileStatus fs : values()) {
                 if (fs.getStatusCode() == statusCode) {
                     return fs;
@@ -47,17 +47,17 @@ public class FileInfo {
         }
     }
     
-    private final String fileName;
-    private final String filePath;
+    private final String name;
+    private final String path;
     private final String checksum;
     private final FileStatus status;
     private final String updateVersion;
     private final Timestamp updateTime;
     
-    private FileInfo(String fileName, String filePath, String checksum, FileStatus status,
+    private FileInfo(String name, String path, String checksum, FileStatus status,
                      String updateVersion, Timestamp updateTime) {
-        this.fileName = fileName;
-        this.filePath = filePath;
+        this.name = name;
+        this.path = path;
         this.checksum = checksum;
         this.status = status;
         this.updateVersion = updateVersion;
@@ -65,27 +65,27 @@ public class FileInfo {
     }
     
     /**
-     * Gets the name from this file information
-     * @return name from this file information
+     * Gets the name from this file
+     * @return name from this file
      */
-    public String getFileName() {
-        return fileName;
+    public String getName() {
+        return name;
     }
     
     /**
-     * Gets the remote file path from this file information
-     * @return remote file path from this file information
+     * Gets the remote path from this file
+     * @return remote path from this file
      */
-    public String getRemoteFilePath() {
-        return filePath;
+    public String getRemotePath() {
+        return path;
     }
 
     /**
-     * Gets the file path from this file information
-     * @return file path from this file information
+     * Gets the path from this file
+     * @return path from this file
      */
-    public String getFilePath() {
-        String tempPath = filePath;
+    public String getPath() {
+        String tempPath = path;
         
         if (tempPath.indexOf("/") > -1) {
             tempPath = tempPath.replace("/", File.separator);
@@ -95,67 +95,67 @@ public class FileInfo {
     }
 
     /**
-     * Concatenates the file path (if it exists) with the file name and returns
-     * them both
-     * @return concatenation of file path with file name
+     * Concatenates the remote path (if it exists) with the remote name and
+     * returns them both
+     * @return concatenation of remote path and name
      */
-    public String getRemoteFilePathAndName() {
-        String fullPath = fileName;
+    public String getRemotePathAndName() {
+        String fullPath = name;
         
-        if (!StringUtil.isNullOrEmpty(filePath)) {
-            fullPath = filePath + "/" + fullPath;
+        if (!StringUtil.isNullOrEmpty(path)) {
+            fullPath = path + "/" + fullPath;
         }
         
         return fullPath;
     }
 
     /**
-     * Concatenates the file path (if it exists) with the file name making sure to
+     * Concatenates the path (if it exists) with the name making sure to
      * use the system-dependent path separator 
-     * @return concatenation of file path with file name
+     * @return concatenation of path and name
      */
-    public String getFilePathAndName() {
-        String fullPath = fileName;
-        String tempFilePath = filePath;
+    public String getPathAndName() {
+        String fullPath = name;
+        String tempPath = path;
         
-        if (!StringUtil.isNullOrEmpty(tempFilePath)) {
-            if (tempFilePath.indexOf("/") > -1) {
-                tempFilePath = tempFilePath.replace("/", File.separator);
+        if (!StringUtil.isNullOrEmpty(tempPath)) {
+            if (tempPath.indexOf("/") > -1) {
+                tempPath = tempPath.replace("/", File.separator);
             }
             
-            fullPath = tempFilePath + File.separator + fullPath;
+            fullPath = tempPath + File.separator + fullPath;
         }
         
         return fullPath;
     }
     
     /**
-     * Gets the checksum from this file information
-     * @return checksum from this file information
+     * Gets the checksum of this file
+     * @return checksum of this file
      */
     public String getChecksum() {
         return checksum;
     }
     
     /**
-     * Gets the file status from this file information
-     * @return file status from this file information
+     * Gets the status of this file
+     * @return status of this file
      */
     public FileStatus getFileStatus() {
         return status;
     }
     
     /**
-     * Gets the update version from this file information
-     * @return update version from this file information
+     * Gets the update version of this file
+     * @return update version of this file
      */
     public String getUpdateVersion() {
         return updateVersion;
     }
     
     /**
-     * Gets the update time from this file information
-     * @return update time from this file information
+     * Gets the update time of this file
+     * @return update time of this file
      */
     public Timestamp getUpdateTime() {
         return updateTime;
@@ -168,8 +168,8 @@ public class FileInfo {
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         
-        json.put("file_name", fileName);
-        json.put("file_path", filePath);
+        json.put("file_name", name);
+        json.put("file_path", path);
         json.put("checksum", checksum);
         json.put("status", status.getStatusCode());
         json.put("update_version", updateVersion);
@@ -204,7 +204,7 @@ public class FileInfo {
         }
         
         if (json.has("status")) {
-            status = FileStatus.getStatusFromCode(json.getInt("status"));
+            status = FileStatus.fromCode(json.getInt("status"));
         }
         
         if (json.has("update_version")) {

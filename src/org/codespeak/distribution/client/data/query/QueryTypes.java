@@ -46,7 +46,7 @@ public enum QueryTypes {
      * Gets the name of this query
      * @return name of this query
      */
-    public String getQueryName() {
+    public String getName() {
         return queryName;
     }
 

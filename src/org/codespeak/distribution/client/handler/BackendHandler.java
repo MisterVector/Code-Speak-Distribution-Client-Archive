@@ -49,7 +49,7 @@ public class BackendHandler {
         URL url = null;
         
         try {
-            url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getQueryName() + otherPart);
+            url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart);
         } catch (MalformedURLException ex) {
             return null;
         }

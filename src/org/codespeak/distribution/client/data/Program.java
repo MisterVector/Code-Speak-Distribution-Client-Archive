@@ -183,18 +183,18 @@ public class Program {
         programFolder.mkdir();
         
         for (FileInfo file : files) {
-            String filePath = file.getFilePath();
-            String filePathAndName = file.getFilePathAndName();
-            String remoteFilePathAndName = file.getRemoteFilePathAndName();
+            String currentFilePath = file.getPath();
+            String currentFilePathAndName = file.getPathAndName();
+            String currentRemotePathAndName = file.getRemotePathAndName();
 
-            if (!StringUtil.isNullOrEmpty(filePath)) {
-                Path localFilePath = programPath.resolve(filePath);
+            if (!StringUtil.isNullOrEmpty(currentFilePath)) {
+                Path fullFilePath = programPath.resolve(currentFilePath);
 
-                localFilePath.toFile().mkdirs();
+                fullFilePath.toFile().mkdirs();
             }
             
-            Path localFilePathAndName = programPath.resolve(filePathAndName);
-            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, remoteFilePathAndName);
+            Path localFilePathAndName = programPath.resolve(currentFilePathAndName);
+            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, currentRemotePathAndName);
             FileChannel outChannel = new FileOutputStream(localFilePathAndName.toFile()).getChannel();
             
             outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
@@ -216,7 +216,7 @@ public class Program {
         Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
         
         for (FileInfo file : files) {
-            Path updateFilePath = programPath.resolve(file.getFilePathAndName());
+            Path updateFilePath = programPath.resolve(file.getPathAndName());
             File updateFile = updateFilePath.toFile();
             
             if (updateFile.exists()) {
@@ -226,7 +226,7 @@ public class Program {
             switch (file.getFileStatus()) {
                 case NEW:
                 case MODIFIED:
-                    ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemoteFilePathAndName());
+                    ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemotePathAndName());
                     FileChannel outChannel = new FileOutputStream(updateFile).getChannel();
                     
                     outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
@@ -259,28 +259,29 @@ public class Program {
         Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
         
         for (FileInfo file : files) {
-            Path filePath = programPath.resolve(file.getFilePathAndName());
-            File filePathFile = filePath.toFile();
-            File folderPath = filePath.getParent().toFile();
+            Path currentFilePath = programPath.resolve(file.getPathAndName());
+            File currentFilePathFile = currentFilePath.toFile();
+            File currentFolderPath = currentFilePath.getParent().toFile();
+            
             boolean canCreateFile = false;
             
-            if (filePath.toFile().exists()) {
+            if (currentFilePath.toFile().exists()) {
                 String currentChecksum = file.getChecksum();
-                String oldChecksum = MiscUtil.getFileChecksum(filePath);
+                String oldChecksum = MiscUtil.getFileChecksum(currentFilePath);
                 canCreateFile = !currentChecksum.equals(oldChecksum);
                 
                 if (canCreateFile) {
-                    filePathFile.delete();
+                    currentFilePathFile.delete();
                 }
             } else {
                 canCreateFile = true;
             }
             
             if (canCreateFile) {
-                folderPath.mkdirs();
+                currentFolderPath.mkdirs();
                 
-                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemoteFilePathAndName());
-                FileChannel outChannel = new FileOutputStream(filePathFile).getChannel();
+                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemotePathAndName());
+                FileChannel outChannel = new FileOutputStream(currentFilePathFile).getChannel();
                 
                 outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
                 
