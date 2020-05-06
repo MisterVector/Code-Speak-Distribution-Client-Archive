@@ -26,6 +26,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
@@ -68,6 +70,25 @@ public class MainSceneController implements Initializable {
     @FXML private Button installButton;
     @FXML private Button updateButton;
 
+    private void selectProgram(int selectedIndex) {
+        if (selectedIndex > -1 && selectedIndex != currentlySelectedProgramIndex) {
+            currentlySelectedProgramIndex = selectedIndex;
+            
+            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
+            Program selectedProgram = programData.getProgram();
+            
+            if (selectedProgram.isInstalled()) {
+                currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
+                currentlySelectedInstalledProgram = selectedProgram;
+            } else {
+                currentlySelectedProgram = selectedProgram;
+                currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
+            }
+            
+            displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
+        }
+    }
+    
     private void displayPrograms(Category category) {
         List<Program> programs = DataHandler.getPrograms(category);
         ObservableList items = programsTable.getItems();
@@ -185,6 +206,18 @@ public class MainSceneController implements Initializable {
         programItems.set(currentlySelectedProgramIndex, programData);
         
         displayProgramControls(program, installedProgram);
+    }
+
+    @FXML
+    public void onProgramsTableKeyReleased(KeyEvent event) {
+        KeyCode code = event.getCode();
+        
+        if (code == KeyCode.UP || code == KeyCode.DOWN) {
+            TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
+            int selectedIndex = selectionModel.getSelectedIndex();
+            
+            selectProgram(selectedIndex);
+        }
     }
     
     @FXML
@@ -375,20 +408,7 @@ public class MainSceneController implements Initializable {
         int selectedIndex = selectionModel.getSelectedIndex();
         
         if (selectedIndex > -1 && selectedIndex != currentlySelectedProgramIndex) {
-            currentlySelectedProgramIndex = selectedIndex;
-            
-            ProgramTableData programData = programsTable.getItems().get(selectedIndex);
-            Program selectedProgram = programData.getProgram();
-            
-            if (selectedProgram.isInstalled()) {
-                currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
-                currentlySelectedInstalledProgram = selectedProgram;
-            } else {
-                currentlySelectedProgram = selectedProgram;
-                currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
-            }
-            
-            displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
+            selectProgram(selectedIndex);
         }
     }
 

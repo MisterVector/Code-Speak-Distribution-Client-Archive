@@ -43,7 +43,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <TableView fx:id="programsTable" layoutX="14.0" layoutY="71.0" onMousePressed="#onProgramSelect" prefHeight="283.0" prefWidth="695.0">
+            <TableView fx:id="programsTable" layoutX="14.0" layoutY="71.0" onKeyReleased="#onProgramsTableKeyReleased" onMousePressed="#onProgramSelect" prefHeight="283.0" prefWidth="695.0">
               <columns>
                 <TableColumn fx:id="programsTableNameColumn" prefWidth="315.0" text="Name" />
                 <TableColumn fx:id="programsTableVersionColumn" prefWidth="153.0" text="Version" />
