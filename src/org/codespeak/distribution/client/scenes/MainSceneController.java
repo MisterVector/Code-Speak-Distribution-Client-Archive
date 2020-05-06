@@ -245,7 +245,7 @@ public class MainSceneController implements Initializable {
     
     @FXML
     public void onAboutMenuItemClick() throws IOException {
-        Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About").getStage();
+        Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About " + Configuration.PROGRAM_NAME).getStage();
         stage.show();
     }
 
@@ -384,7 +384,7 @@ public class MainSceneController implements Initializable {
             }
             
             List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
-            StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, name + " Changelog");
+            StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Changelog for " + name);
             ChangelogSceneController controller = stageController.getController();
             Stage stage = stageController.getStage();
 

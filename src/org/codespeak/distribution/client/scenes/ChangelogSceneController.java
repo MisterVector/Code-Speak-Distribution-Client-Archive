@@ -38,7 +38,7 @@ public class ChangelogSceneController implements Initializable {
      * @param changelogEntries 
      */
     public void showChangelog(String changelogName, List<ChangelogEntry> changelogEntries) {
-        changelogNameLabel.setText(changelogName + " Changelog");
+        changelogNameLabel.setText("Changelog for " + changelogName);
         
         StringBuilder sb = new StringBuilder();
         
