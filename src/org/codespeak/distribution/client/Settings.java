@@ -9,8 +9,29 @@ import org.json.JSONObject;
  */
 public class Settings {
     
-    private Settings() {
+    private static final boolean DEFAULT_REMEMBER_SELECTED_CATEGORY = false;
+    
+    private boolean rememberSelectedCategory;
+    
+    private Settings(boolean rememberSelectedCategory) {
+        this.rememberSelectedCategory = rememberSelectedCategory;
+    }
+    
+    /**
+     * Gets whether the selected category is remembered
+     * @return whether the selected category is remembered
+     */
+    public boolean getRememberSelectedCategory() {
+        return rememberSelectedCategory;
+    }
 
+    /**
+     * Sets whether the current category will be remembered
+     * @param rememberSelectedCategory whether the current category will
+     *                                 be remembered
+     */
+    public void setRememberSelectedCategory(boolean rememberSelectedCategory) {
+        this.rememberSelectedCategory = rememberSelectedCategory;
     }
     
     /**
@@ -19,6 +40,8 @@ public class Settings {
      */
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
+        
+        json.put("remember_selected_category", rememberSelectedCategory);
         
         return json;
     }
@@ -29,7 +52,13 @@ public class Settings {
      * @return Settings object created from JSON
      */
     public static Settings fromJSON(JSONObject json) {
-        return new Settings();
+        boolean rememberSelectedCategory = DEFAULT_REMEMBER_SELECTED_CATEGORY;
+        
+        if (json.has("remember_selected_category")) {
+            rememberSelectedCategory = json.getBoolean("remember_selected_category");
+        }
+        
+        return new Settings(rememberSelectedCategory);
     }
     
 }

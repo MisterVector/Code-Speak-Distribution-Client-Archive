@@ -206,10 +206,26 @@ public class MainSceneController implements Initializable {
             categoryItems.add(categoryName);
             categoryNamesMap.put(categoryName, category);
         }
+
+        String selectedCategoryValue = "All";
+        Category selectedCategory = null;
         
-        displayPrograms(null);
+        if (settings.getRememberSelectedCategory()) {
+            if (DataHandler.hasMappedData("selected_category")) {
+                String tempSelectedCategoryValue = DataHandler.getMappedData("selected_category");
+
+                if (!StringUtil.isNullOrEmpty(tempSelectedCategoryValue)
+                        && categoryNamesMap.containsKey(tempSelectedCategoryValue)) {
+                    selectedCategoryValue = tempSelectedCategoryValue;
+                    selectedCategory = categoryNamesMap.get(tempSelectedCategoryValue);
+                }
+            }            
+        } else {
+            DataHandler.setMappedData("selected_category", "All");
+        }
         
-        categoryChoices.getSelectionModel().select("All");
+        displayPrograms(selectedCategory);
+        categoryChoices.getSelectionModel().select(selectedCategoryValue);
     }    
 
     /**
@@ -412,6 +428,8 @@ public class MainSceneController implements Initializable {
             resetProgramControls();
             
             currentlySelectedProgramIndex = -1;
+            
+            DataHandler.setMappedData("selected_category", selectedCategoryName);
         }
     }
     
