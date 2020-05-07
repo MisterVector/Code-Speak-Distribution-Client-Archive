@@ -45,6 +45,8 @@ public class DistributionClient extends Application {
         PrintWriter writer = new PrintWriter(storedProgramsFile);
         writer.write(json.toString(4));
         writer.close();
+        
+        Configuration.writeSettingsToFile();
     }
     
     /**

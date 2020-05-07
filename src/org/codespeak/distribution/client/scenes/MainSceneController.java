@@ -31,6 +31,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.Settings;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
 import org.codespeak.distribution.client.handler.DataHandler;
@@ -59,6 +60,7 @@ public class MainSceneController implements Initializable {
     private Program currentlySelectedInstalledProgram;
     private int currentlySelectedCategoryIndex;
     private int currentlySelectedProgramIndex;
+    private Settings settings;
     
     @FXML private ComboBox<String> categoryChoices;
     @FXML private TableView<ProgramTableData> programsTable;
@@ -173,6 +175,8 @@ public class MainSceneController implements Initializable {
         programsTableVersionColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("version"));
         programsTableReleaseTimeColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("releaseTime"));
 
+        settings = Configuration.getSettings();
+        
         List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
 
         for (Category category : categories) {

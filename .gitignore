@@ -31,3 +31,4 @@ target/
 extra/
 /Programs/
 programs.json
+settings.json
