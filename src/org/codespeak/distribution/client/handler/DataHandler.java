@@ -3,8 +3,10 @@ package org.codespeak.distribution.client.handler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
@@ -25,6 +27,8 @@ public class DataHandler {
     private static List<Category> installedCategories = new ArrayList<Category>();
     private static List<Dependency> installedDependencies = new ArrayList<Dependency>();
     private static List<Program> installedPrograms = new ArrayList<Program>();
+
+    private static Map<String, String> mappedData = new HashMap<String, String>();
     
     /**
      * Adds a category to the list
@@ -319,6 +323,24 @@ public class DataHandler {
     }
     
     /**
+     * Assigns a new mapped data key with its value
+     * @param key the key to the mapped data
+     * @param value value to the mapped data
+     */
+    public static void setMappedData(String key, String value) {
+        mappedData.put(key, value);
+    }
+    
+    /**
+     * Gets a mapped data value by its key
+     * @param key key to the mapped data
+     * @return mapped data value from a key
+     */
+    public static String getMappedData(String key) {
+        return mappedData.get(key);
+    }
+    
+    /**
      * Exports all data to JSON. This includes all installed programs,
      * their categories and dependencies
      * @return JSON representation of various data
@@ -328,6 +350,7 @@ public class DataHandler {
         JSONArray jsonCategories = new JSONArray();
         JSONArray jsonDependencies = new JSONArray();
         JSONArray jsonInstalledPrograms = new JSONArray();
+        JSONObject jsonMappedData = new JSONObject();
         
         for (Category category : installedCategories) {
             jsonCategories.put(category.toJSON());
@@ -341,9 +364,16 @@ public class DataHandler {
             jsonInstalledPrograms.put(program.toJSON());
         }
         
+        for (String key : mappedData.keySet()) {
+            String value = mappedData.get(key);
+            
+            jsonMappedData.put(key, value);
+        }
+        
         json.put("categories", jsonCategories);
         json.put("dependencies", jsonDependencies);
         json.put("programs", jsonInstalledPrograms);
+        json.put("mapped_data", jsonMappedData);
         
         return json;
     }
@@ -381,6 +411,16 @@ public class DataHandler {
                 JSONObject obj = jsonPrograms.getJSONObject(i);
                 Program program = Program.fromJSON(obj, true);
                 installedPrograms.add(program);
+            }
+        }
+        
+        if (json.has("mapped_data")) {
+            JSONObject jsonMappedData = json.getJSONObject("mapped_data");
+            
+            for (String key : jsonMappedData.keySet()) {
+                String value = jsonMappedData.getString(key);
+                
+                mappedData.put(key, value);
             }
         }
     }
