@@ -341,6 +341,15 @@ public class DataHandler {
     }
     
     /**
+     * Checks if there is mapped data by the specified key
+     * @param key
+     * @return 
+     */
+    public static boolean hasMappedData(String key) {
+        return mappedData.containsKey(key);
+    }
+    
+    /**
      * Exports all data to JSON. This includes all installed programs,
      * their categories and dependencies
      * @return JSON representation of various data
