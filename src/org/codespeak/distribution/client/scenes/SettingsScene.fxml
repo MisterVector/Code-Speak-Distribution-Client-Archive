@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="146.0" prefWidth="541.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
+   <children>
+      <Button layoutX="400.0" layoutY="102.0" mnemonicParsing="false" onAction="#onOkButtonClick" text="OK" />
+      <Button layoutX="466.0" layoutY="102.0" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close" />
+      <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <Label fx:id="settingsTitleLabel" alignment="TOP_CENTER" layoutX="15.0" layoutY="14.0" prefHeight="30.0" prefWidth="508.0" text="Settings for %p">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

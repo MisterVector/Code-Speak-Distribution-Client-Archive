@@ -265,6 +265,12 @@ public class MainSceneController implements Initializable {
     }
  
     @FXML
+    public void onSettingsMenuItemClick(ActionEvent event) throws Exception {
+        Stage stage = SceneUtil.getScene(SceneTypes.SETTINGS, "Settings for " + Configuration.PROGRAM_NAME).getStage();
+        stage.show();
+    }
+    
+    @FXML
     public void onQuitMenuItemClick(ActionEvent event) {
         Platform.exit();
     }
