@@ -30,5 +30,5 @@ target/
 # Other stuff
 extra/
 /Programs/
-programs.json
+data.json
 settings.json

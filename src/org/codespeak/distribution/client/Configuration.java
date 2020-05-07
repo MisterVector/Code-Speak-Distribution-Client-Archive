@@ -23,7 +23,7 @@ public class Configuration {
     public static final String DISTRIBUTION_URL = "http://distribution.codespeak.org";
     public static final String BACKEND_URL = DISTRIBUTION_URL + "/data_handler.php";
     public static final String PROGRAMS_FOLDER = "Programs";
-    public static final String STORED_PROGRAMS_FILE = "programs.json";
+    public static final String DATA_FILE = "data.json";
     public static final String SETTINGS_FILE = "settings.json";
     
     private static Settings settings = null;

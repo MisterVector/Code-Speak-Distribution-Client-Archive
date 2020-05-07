@@ -35,14 +35,14 @@ public class DistributionClient extends Application {
 
     @Override
     public void stop() throws FileNotFoundException {
-        JSONObject json = DataHandler.exportInstalledProgramsToJSON();
-        File storedProgramsFile = new File(Configuration.STORED_PROGRAMS_FILE);
+        JSONObject json = DataHandler.exportDataToJSON();
+        File dataFile = new File(Configuration.DATA_FILE);
         
-        if (storedProgramsFile.exists()) {
-            storedProgramsFile.delete();
+        if (dataFile.exists()) {
+            dataFile.delete();
         }
         
-        PrintWriter writer = new PrintWriter(storedProgramsFile);
+        PrintWriter writer = new PrintWriter(dataFile);
         writer.write(json.toString(4));
         writer.close();
         
@@ -54,18 +54,18 @@ public class DistributionClient extends Application {
      */
     public static void main(String[] args) throws IOException {
         File programsFolder = new File(Configuration.PROGRAMS_FOLDER);
-        File storedProgramsFile = new File(Configuration.STORED_PROGRAMS_FILE);
+        File dataFile = new File(Configuration.DATA_FILE);
         
         if (!programsFolder.exists()) {
             programsFolder.mkdir();
         }
         
-        if (storedProgramsFile.exists()) {
-            byte[] bytes = Files.readAllBytes(storedProgramsFile.toPath());
+        if (dataFile.exists()) {
+            byte[] bytes = Files.readAllBytes(dataFile.toPath());
             String jsonString = new String(bytes);
             JSONObject json = new JSONObject(jsonString);
             
-            DataHandler.importInstalledProgramsFromJSON(json);
+            DataHandler.importDataFromJSON(json);
         }
         
         launch(args);

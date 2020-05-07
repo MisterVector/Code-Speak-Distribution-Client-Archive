@@ -319,10 +319,11 @@ public class DataHandler {
     }
     
     /**
-     * Exports all installed programs to JSON
-     * @return JSON representation of all programs
+     * Exports all data to JSON. This includes all installed programs,
+     * their categories and dependencies
+     * @return JSON representation of various data
      */
-    public static JSONObject exportInstalledProgramsToJSON() {
+    public static JSONObject exportDataToJSON() {
         JSONObject json = new JSONObject();
         JSONArray jsonCategories = new JSONArray();
         JSONArray jsonDependencies = new JSONArray();
@@ -348,10 +349,11 @@ public class DataHandler {
     }
     
     /**
-     * Installs all programs from the specified JSON
-     * @param json JSON representing all installed programs
+     * Imports data from JSON. This includes all installed programs, their
+     * categories and dependencies
+     * @param json JSON representing data to import
      */
-    public static void importInstalledProgramsFromJSON(JSONObject json) {
+    public static void importDataFromJSON(JSONObject json) {
         if (json.has("categories")) {
             JSONArray jsonCategories = json.getJSONArray("categories");
             
