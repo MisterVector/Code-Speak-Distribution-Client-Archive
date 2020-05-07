@@ -13,7 +13,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="18.0" layoutY="209.0" onMouseClicked="#onCodeSpeakLinkClick" text="Visit Code Speak" textFill="#000dff" underline="true">
+      <Label layoutX="18.0" layoutY="209.0" onMouseClicked="#onCodeSpeakLinkClick" text="www.codespeak.org" textFill="#000dff" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -32,13 +32,5 @@
          </font>
       </Label>
       <Button layoutX="302.0" layoutY="210.0" mnemonicParsing="false" onAction="#onCloseWindowButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close Window" />
-      <Label layoutX="181.0" layoutY="209.0" onMouseClicked="#onContactMeLinkClick" text="Contact Me" textFill="#000dff" underline="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
    </children>
 </AnchorPane>
