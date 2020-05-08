@@ -95,16 +95,22 @@ public class MainSceneController implements Initializable {
     }
 
     private void launchInstalledProgram() throws IOException {
-            Path programDirectoryAndLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
-            String command = programDirectoryAndLaunchFile.toString();
+            Path programDirectory = currentlySelectedInstalledProgram.getDirectory().toAbsolutePath();
+            Path programDirectoryAndLaunchFile = programDirectory.resolve(currentlySelectedInstalledProgram.getLaunchFile());
+            String programDirectoryAndLaunchFileRaw = programDirectoryAndLaunchFile.toString();
             
-            if (command.endsWith(".jar")) {
-                command = "java -jar \"" + command + "\"";
+            List<String> commands = new ArrayList<String>();
+            
+            if (programDirectoryAndLaunchFileRaw.endsWith(".jar")) {
+                commands.add("java");
+                commands.add("-jar");
             }
             
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command);
-
+            commands.add(programDirectoryAndLaunchFile.toString());
+            
+            ProcessBuilder pb = new ProcessBuilder(commands);
+            pb.directory(programDirectory.toFile());
+            pb.start();
     }
     
     private void displayPrograms(Category category) {
