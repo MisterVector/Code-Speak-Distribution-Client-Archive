@@ -145,13 +145,36 @@ public class Program {
     public boolean isInstalled() {
         return installed;
     }
+
+    /**
+     * Gets the directory of this program
+     * @return directory of this program
+     */
+    public Path getDirectory() {
+        return getDirectory(false);
+    }
+    
+    /**
+     * Gets the directory of this program
+     * @param includeLaunchFile whether the launch file is included
+     * @return directory of this program
+     */
+    public Path getDirectory(boolean includeLaunchFile) {
+        String programPath = Configuration.PROGRAMS_FOLDER + File.separator + slug;
+        
+        if (includeLaunchFile) {
+            programPath += File.separator + launchFile;
+        }
+        
+        return Paths.get(programPath);
+    }
     
     /**
      * Uninstalls this program
      * @throws IOException thrown if an error occurs while installing
      */
     public void uninstall() throws IOException {
-        File programFolder = new File(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        File programFolder = getDirectory().toFile();
 
         Files.walk(programFolder.toPath())
              .sorted(Comparator.reverseOrder())
@@ -167,10 +190,10 @@ public class Program {
      */
     public void install() throws IOException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
-        File programFolder = new File(Configuration.PROGRAMS_FOLDER + File.separator + slug);
-        Path programPath = programFolder.toPath();
+        Path programDirectory = getDirectory();
+        File programDirectoryFile = programDirectory.toFile();
         
-        programFolder.mkdir();
+        programDirectoryFile.mkdir();
         
         for (FileInfo file : files) {
             String currentFilePath = file.getPath();
@@ -178,12 +201,12 @@ public class Program {
             String currentRemotePathAndName = file.getRemotePathAndName();
 
             if (!StringUtil.isNullOrEmpty(currentFilePath)) {
-                Path fullFilePath = programPath.resolve(currentFilePath);
+                Path fullFilePath = programDirectory.resolve(currentFilePath);
 
                 fullFilePath.toFile().mkdirs();
             }
             
-            Path localFilePathAndName = programPath.resolve(currentFilePathAndName);
+            Path localFilePathAndName = programDirectory.resolve(currentFilePathAndName);
             ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, currentRemotePathAndName);
             FileChannel outChannel = new FileOutputStream(localFilePathAndName.toFile()).getChannel();
             
@@ -203,10 +226,10 @@ public class Program {
      */
     public void update(Program program) throws IOException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id + "&since_version=" + version);
-        Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        Path programDirectory = getDirectory();
         
         for (FileInfo file : files) {
-            Path updateFilePath = programPath.resolve(file.getPathAndName());
+            Path updateFilePath = programDirectory.resolve(file.getPathAndName());
             File updateFile = updateFilePath.toFile();
             
             if (updateFile.exists()) {
@@ -245,10 +268,10 @@ public class Program {
      */
     public void repair() throws IOException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
-        Path programPath = Paths.get(Configuration.PROGRAMS_FOLDER + File.separator + slug);
+        Path programDirectory = getDirectory();
         
         for (FileInfo file : files) {
-            Path currentFilePath = programPath.resolve(file.getPathAndName());
+            Path currentFilePath = programDirectory.resolve(file.getPathAndName());
             File currentFilePathFile = currentFilePath.toFile();
             File currentFolderPath = currentFilePath.getParent().toFile();
             

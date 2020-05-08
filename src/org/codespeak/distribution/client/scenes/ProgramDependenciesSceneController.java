@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,11 +113,9 @@ public class ProgramDependenciesSceneController implements Initializable {
 
     @FXML
     public void onTestProgramButtonClick(ActionEvent event) throws IOException {
-        String programFilePath = Configuration.PROGRAMS_FOLDER + File.separator
-                               + program.getSlug() + File.separator
-                               + program.getLaunchFile();
+        Path programDirectoryAndLaunchFile = program.getDirectory(true);
         
-        runtime.exec(programFilePath);
+        runtime.exec(programDirectoryAndLaunchFile.toString());
     }
     
     @FXML

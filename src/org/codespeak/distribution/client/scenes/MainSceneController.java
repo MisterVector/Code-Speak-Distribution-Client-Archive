@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,13 +95,10 @@ public class MainSceneController implements Initializable {
     }
 
     private void launchInstalledProgram() throws IOException {
-            String slug = currentlySelectedInstalledProgram.getSlug();
-            String launchFile = currentlySelectedInstalledProgram.getLaunchFile();
-            String programLaunchFileLocation = Configuration.PROGRAMS_FOLDER 
-                 + File.separator + slug + File.separator + launchFile;
-            String command = programLaunchFileLocation;
+            Path programDirectoryAndLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
+            String command = programDirectoryAndLaunchFile.toString();
             
-            if (launchFile.endsWith(".jar")) {
+            if (command.endsWith(".jar")) {
                 command = "java -jar \"" + command + "\"";
             }
             
@@ -293,11 +291,10 @@ public class MainSceneController implements Initializable {
                 return;
             }
             
-            helpFile = Configuration.PROGRAMS_FOLDER + File.separator + currentlySelectedInstalledProgram.getSlug()
-                              + File.separator + helpFile;
+            Path helpFilePath = currentlySelectedInstalledProgram.getDirectory().resolve(helpFile);
             
             Desktop desktop = Desktop.getDesktop();
-            desktop.open(new File(helpFile));
+            desktop.open(helpFilePath.toFile());
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
@@ -323,10 +320,10 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onOpenFolderMenuItemClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
-            String programFolder = Configuration.PROGRAMS_FOLDER + File.separator + currentlySelectedInstalledProgram.getSlug();
+            Path programDirectory = currentlySelectedInstalledProgram.getDirectory();
             Desktop desktop = Desktop.getDesktop();
             
-            desktop.open(new File(programFolder));
+            desktop.open(programDirectory.toFile());
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
