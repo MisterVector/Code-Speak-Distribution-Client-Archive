@@ -181,24 +181,7 @@ public class MainSceneController implements Initializable {
 
         settings = Configuration.getSettings();
         
-        List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
-
-        for (Category category : categories) {
-            DataHandler.addCategory(category, false);
-        }
-        
-        List<Dependency> dependencies = BackendHandler.getDataFromQuery(QueryTypes.GET_DEPENDENCIES);
-        
-        for (Dependency dependency : dependencies) {
-            DataHandler.addDependency(dependency, false);
-        }
-
-        List<Program> programs = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAMS);
-
-        for (Program program : programs) {
-            DataHandler.addProgram(program, false);
-        }
-        
+        List<Category> categories = DataHandler.getCategories(false);
         ObservableList categoryItems = categoryChoices.getItems();
         
         categoryItems.add("All");

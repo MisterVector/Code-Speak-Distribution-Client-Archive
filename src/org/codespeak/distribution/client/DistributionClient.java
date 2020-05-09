@@ -5,11 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.codespeak.distribution.client.data.Category;
+import org.codespeak.distribution.client.data.Dependency;
+import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.data.query.QueryTypes;
+import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 import org.codespeak.distribution.client.util.SceneUtil;
@@ -53,6 +59,24 @@ public class DistributionClient extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
+
+        for (Category category : categories) {
+            DataHandler.addCategory(category, false);
+        }
+        
+        List<Dependency> dependencies = BackendHandler.getDataFromQuery(QueryTypes.GET_DEPENDENCIES);
+        
+        for (Dependency dependency : dependencies) {
+            DataHandler.addDependency(dependency, false);
+        }
+
+        List<Program> programs = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAMS);
+
+        for (Program program : programs) {
+            DataHandler.addProgram(program, false);
+        }
+        
         File programsFolder = new File(Configuration.PROGRAMS_FOLDER);
         File dataFile = new File(Configuration.DATA_FILE);
         
