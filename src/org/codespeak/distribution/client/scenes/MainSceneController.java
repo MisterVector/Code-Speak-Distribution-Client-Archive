@@ -134,7 +134,7 @@ public class MainSceneController implements Initializable {
     }
     
     private void resetProgramControls() {
-        programNameLabel.setText("Select A Program");
+        programNameLabel.setText("No Program Selected");
         programDescriptionLabel.setText("No description. Select a program first.");
         programUpdateLabel.setText("");
             
