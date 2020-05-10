@@ -27,6 +27,7 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -127,6 +128,9 @@ public class MainSceneController implements Initializable {
             ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseTime);
             items.add(programData);
         }
+
+        Tooltip t = new Tooltip(category == null ? "All programs." : category.getDescription());
+        Tooltip.install(categoryChoices, t);
     }
     
     private void resetProgramControls() {
