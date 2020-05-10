@@ -155,7 +155,7 @@ public class MainSceneController implements Initializable {
             
             if (releaseTime.after(installedReleaseTime)) {
                 updateButton.setDisable(false);
-                programUpdateLabel.setText("An update is available!");
+                programUpdateLabel.setText("A new version is available!");
             }
         } else {
             name = program.getName();
