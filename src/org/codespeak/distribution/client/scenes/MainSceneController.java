@@ -250,15 +250,22 @@ public class MainSceneController implements Initializable {
     public void onProgramsTableKeyReleased(KeyEvent event) throws IOException {
         KeyCode code = event.getCode();
         
-        if (code == KeyCode.UP || code == KeyCode.DOWN) {
-            TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
-            int selectedIndex = selectionModel.getSelectedIndex();
-            
-            selectProgram(selectedIndex);
-        } else if (code == KeyCode.ENTER) {
-            if (currentlySelectedInstalledProgram != null) {
-                launchInstalledProgram();
-            }
+        switch (code) {
+            case UP:
+            case DOWN:
+            case SPACE:
+                TableViewSelectionModel<ProgramTableData> selectionModel = programsTable.getSelectionModel();
+                int selectedIndex = selectionModel.getSelectedIndex();
+
+                selectProgram(selectedIndex);
+                
+                break;
+            case ENTER:
+                if (currentlySelectedInstalledProgram != null) {
+                    launchInstalledProgram();
+                }
+                
+                break;
         }
     }
  
