@@ -108,6 +108,7 @@ public class MainSceneController implements Initializable {
             }
             
             commands.add(programDirectoryAndLaunchFile.toString());
+            commands.add("--csds-launch");
             
             ProcessBuilder pb = new ProcessBuilder(commands);
             pb.directory(programDirectory.toFile());
