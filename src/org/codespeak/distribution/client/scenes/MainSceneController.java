@@ -39,6 +39,7 @@ import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.data.query.QueryException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
@@ -196,7 +197,7 @@ public class MainSceneController implements Initializable {
 
         String selectedCategoryValue = "All";
         Category selectedCategory = null;
-        
+
         if (settings.getRememberSelectedCategory()) {
             if (DataHandler.hasMappedData("selected_category")) {
                 String tempSelectedCategoryValue = DataHandler.getMappedData("selected_category");
@@ -210,7 +211,7 @@ public class MainSceneController implements Initializable {
         } else {
             DataHandler.setMappedData("selected_category", "All");
         }
-        
+
         displayPrograms(selectedCategory);
         categoryChoices.getSelectionModel().select(selectedCategoryValue);
     }    
@@ -222,17 +223,22 @@ public class MainSceneController implements Initializable {
      * @throws java.io.IOException
      */
     public void onUpdateProgram(Program program, Program installedProgram) throws IOException {
-        installedProgram.update(program);
+        try {
+            installedProgram.update(program);
         
-        ObservableList<ProgramTableData> programItems = programsTable.getItems();
-        ProgramTableData programData = programItems.get(currentlySelectedProgramIndex);
-        
-        programData.setVersion(installedProgram.getVersion());
-        programData.setReleaseTime(installedProgram.getReleaseTime().toString());
+            ObservableList<ProgramTableData> programItems = programsTable.getItems();
+            ProgramTableData programData = programItems.get(currentlySelectedProgramIndex);
 
-        programItems.set(currentlySelectedProgramIndex, programData);
-        
-        displayProgramControls(program, installedProgram);
+            programData.setVersion(installedProgram.getVersion());
+            programData.setReleaseTime(installedProgram.getReleaseTime().toString());
+
+            programItems.set(currentlySelectedProgramIndex, programData);
+
+            displayProgramControls(program, installedProgram);
+        } catch (QueryException ex) {
+            Alert alert = ex.buildAlert();
+            alert.show();
+        }
     }
 
     @FXML
@@ -343,12 +349,17 @@ public class MainSceneController implements Initializable {
             buttons.addAll(ButtonType.YES, ButtonType.NO);
 
             ButtonType buttonType = confirmAlert.showAndWait().get();
-
+ 
             if (buttonType == ButtonType.YES) {
-                currentlySelectedInstalledProgram.repair();
+                try {
+                    currentlySelectedInstalledProgram.repair();
 
-                Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
-                alert.show();
+                    Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
+                    alert.show();
+                } catch (QueryException ex) {
+                    Alert alert = ex.buildAlert();
+                    alert.show();
+                }
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
@@ -381,13 +392,18 @@ public class MainSceneController implements Initializable {
                 otherPart += "&up_to=" + version;
             }
             
-            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
-            StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Changelog for " + name);
-            ChangelogSceneController controller = stageController.getController();
-            Stage stage = stageController.getStage();
+            try {
+                List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
+                StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Changelog for " + name);
+                ChangelogSceneController controller = stageController.getController();
+                Stage stage = stageController.getStage();
 
-            stage.show();
-            controller.showChangelog(name, entries);
+                stage.show();
+                controller.showChangelog(name, entries);
+            } catch (QueryException ex) {
+                Alert alert = ex.buildAlert();
+                alert.show();
+            }
         } else {
             Alert alert = AlertUtil.createAlert("Select a program first.");
             alert.show();
@@ -396,13 +412,18 @@ public class MainSceneController implements Initializable {
     
     @FXML
     public void onViewChangelogButtonClick() throws IOException {
-        List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
-        StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
-        ChangelogSceneController controller = stageController.getController();
-        Stage stage = stageController.getStage();
-        
-        stage.show();
-        controller.showChangelog(Configuration.PROGRAM_NAME, entries);
+        try {
+            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
+            StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
+            ChangelogSceneController controller = stageController.getController();
+            Stage stage = stageController.getStage();
+
+            stage.show();
+            controller.showChangelog(Configuration.PROGRAM_NAME, entries);
+        } catch (QueryException ex) {
+            Alert alert = ex.buildAlert();
+            alert.show();
+        }
     }
     
     @FXML
@@ -445,37 +466,46 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onInstallButtonClick() throws IOException {
         if (currentlySelectedProgram != null) {
-            DataHandler.installProgram(currentlySelectedProgram);
-            
-            displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
-            
-            currentlySelectedInstalledProgram = currentlySelectedProgram;
-            
-            String programName = currentlySelectedProgram.getName();
-            StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
-            ProgramDependenciesSceneController controller = stageController.getController();
-            Stage stage = stageController.getStage();
+            try {
+                DataHandler.installProgram(currentlySelectedProgram);
 
-            stage.show();
-            controller.showProgramDependencies(currentlySelectedProgram);
-            
+                displayProgramControls(currentlySelectedProgram, currentlySelectedProgram);
+
+                currentlySelectedInstalledProgram = currentlySelectedProgram;
+
+                String programName = currentlySelectedProgram.getName();
+                StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
+                ProgramDependenciesSceneController controller = stageController.getController();
+                Stage stage = stageController.getStage();
+
+                stage.show();
+                controller.showProgramDependencies(currentlySelectedProgram);
+            } catch (QueryException ex) {
+                Alert alert = ex.buildAlert();
+                alert.show();
+            }
         }
     }
     
     @FXML
     public void onUpdateButtonClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
-            int id = currentlySelectedInstalledProgram.getId();
-            String programName = currentlySelectedInstalledProgram.getName();
-            String version = currentlySelectedInstalledProgram.getVersion();
-            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
-            
-            StageController<ProgramUpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_UPDATE, "New version for " + programName);
-            ProgramUpdateSceneController controller = stageController.getController();
-            Stage stage = stageController.getStage();
-            
-            stage.show();
-            controller.showUpdate(this, currentlySelectedProgram, currentlySelectedInstalledProgram, entries);
+            try {
+                int id = currentlySelectedInstalledProgram.getId();
+                String programName = currentlySelectedInstalledProgram.getName();
+                String version = currentlySelectedInstalledProgram.getVersion();
+                List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
+
+                StageController<ProgramUpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_UPDATE, "New version for " + programName);
+                ProgramUpdateSceneController controller = stageController.getController();
+                Stage stage = stageController.getStage();
+
+                stage.show();
+                controller.showUpdate(this, currentlySelectedProgram, currentlySelectedInstalledProgram, entries);
+            } catch (QueryException ex) {
+                Alert alert = ex.buildAlert();
+                alert.show();
+            }
         }
     }
     

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.data.query.QueryException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.util.MiscUtil;
@@ -186,9 +187,11 @@ public class Program {
     
     /**
      * Installs this program
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurs while performing a query
      * @throws IOException thrown if an error occurs while installing
      */
-    public void install() throws IOException {
+    public void install() throws IOException, QueryException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
         Path programDirectory = getDirectory();
         File programDirectoryFile = programDirectory.toFile();
@@ -222,9 +225,11 @@ public class Program {
      * Updates this program with the latest files and information using details
      * from the latest Program object
      * @param program program to get updated information from
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurs while performing a query
      * @throws java.io.IOException error thrown if an error occurs during update
      */
-    public void update(Program program) throws IOException {
+    public void update(Program program) throws IOException, QueryException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id + "&since_version=" + version);
         Path programDirectory = getDirectory();
         
@@ -264,9 +269,11 @@ public class Program {
 
     /**
      * Repairs this program
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurs while performing a query
      * @throws IOException thrown if an error occurs
      */
-    public void repair() throws IOException {
+    public void repair() throws IOException, QueryException {
         List<FileInfo> files = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_FILES, "&id=" + id);
         Path programDirectory = getDirectory();
         

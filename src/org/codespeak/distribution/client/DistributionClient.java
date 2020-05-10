@@ -10,10 +10,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.data.query.QueryException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.handler.DataHandler;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
  */
 public class DistributionClient extends Application {
     
+    private static QueryException savedException = null;
     private static DistributionClient instance;
     
     public DistributionClient() {
@@ -37,6 +40,11 @@ public class DistributionClient extends Application {
     public void start(Stage stage) throws Exception {
         stage = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_TITLE).getStage();
         stage.show();
+        
+        if (savedException != null) {
+            Alert alert = savedException.buildAlert();
+            alert.show();
+        }
     }
 
     @Override
@@ -59,22 +67,26 @@ public class DistributionClient extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
+        try {
+            List<Category> categories = BackendHandler.getDataFromQuery(QueryTypes.GET_CATEGORIES);
 
-        for (Category category : categories) {
-            DataHandler.addCategory(category, false);
-        }
-        
-        List<Dependency> dependencies = BackendHandler.getDataFromQuery(QueryTypes.GET_DEPENDENCIES);
-        
-        for (Dependency dependency : dependencies) {
-            DataHandler.addDependency(dependency, false);
-        }
+            for (Category category : categories) {
+                DataHandler.addCategory(category, false);
+            }
 
-        List<Program> programs = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAMS);
+            List<Dependency> dependencies = BackendHandler.getDataFromQuery(QueryTypes.GET_DEPENDENCIES);
 
-        for (Program program : programs) {
-            DataHandler.addProgram(program, false);
+            for (Dependency dependency : dependencies) {
+                DataHandler.addDependency(dependency, false);
+            }
+
+            List<Program> programs = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAMS);
+
+            for (Program program : programs) {
+                DataHandler.addProgram(program, false);
+            }
+        } catch (QueryException ex) {
+            savedException = ex;
         }
         
         File programsFolder = new File(Configuration.PROGRAMS_FOLDER);

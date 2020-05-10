@@ -17,6 +17,8 @@ import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.data.query.ErrorType;
+import org.codespeak.distribution.client.data.query.QueryException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,8 +35,10 @@ public class BackendHandler {
      * @param <T> An object that extends QueryResponse
      * @param queryType the type of query to make
      * @return a QueryResponse object containing the response of the query
+     * @throws org.codespeak.distribution.client.data.query.QueryException if
+     * there is an error during the query
      */
-    public static <T> T getDataFromQuery(QueryTypes queryType) {
+    public static <T> T getDataFromQuery(QueryTypes queryType) throws QueryException {
         return BackendHandler.getDataFromQuery(queryType, "");
     }
     
@@ -44,14 +48,16 @@ public class BackendHandler {
      * @param queryType the type of query to make
      * @param otherPart an additional part of the query
      * @return a generic object representing the data from the query
+     * @throws org.codespeak.distribution.client.data.query.QueryException if
+     * there is an error during the query
      */
-    public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) {
+    public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) throws QueryException {
         URL url = null;
         
         try {
             url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart);
         } catch (MalformedURLException ex) {
-            return null;
+            throw new QueryException(ErrorType.ERROR_CRITICAL, "Could not contact the distribution system. URI is unavailable.");
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
@@ -105,12 +111,17 @@ public class BackendHandler {
                         return (T) ClientCheckVersionResponse.fromJSON(jsonContents);
                     }
                 }
+            } else {
+                ErrorType type = ErrorType.fromCode(json.getInt("error_code"));
+                String errorMessage = json.getString("error_message");
+                
+                throw new QueryException(type, errorMessage);
             }
         } catch (IOException ex) {
 
         }
         
-        return null;
+        throw new QueryException(ErrorType.ERROR_CRITICAL, "An error occurred while performing query: " + queryType.getName() + ".");
     }
 
     /**

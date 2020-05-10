@@ -7,6 +7,7 @@ package org.codespeak.distribution.client.data.query;
  */
 public enum ErrorType {
 
+    ERROR_CRITICAL(0), // Not an error in the backend, this is specifically for the client
     ERROR_SEVERE(1),
     ERROR_WARNING(2),
     NONE(-1);

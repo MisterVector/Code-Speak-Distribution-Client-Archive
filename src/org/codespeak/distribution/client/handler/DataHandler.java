@@ -10,6 +10,7 @@ import java.util.Map;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.data.query.QueryException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -210,8 +211,11 @@ public class DataHandler {
     /**
      * Installs a new program
      * @param program the program to install
+     * @throws java.io.IOException error if unable to install program
+     * @throws org.codespeak.distribution.client.data.query.QueryException if
+     * there is an error doing a query
      */
-    public static void installProgram(Program program) throws IOException {
+    public static void installProgram(Program program) throws IOException, QueryException {
         program.install();
         
         Category category = program.getCategory();
