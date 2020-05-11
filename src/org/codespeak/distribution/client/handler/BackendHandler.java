@@ -121,7 +121,7 @@ public class BackendHandler {
 
         }
         
-        throw new QueryException(ErrorType.ERROR_CRITICAL, "An error occurred while performing query: " + queryType.getName() + ".");
+        throw new QueryException(ErrorType.ERROR_CRITICAL, "An error occurred while performing query: " + queryType.getTitle() + ".");
     }
 
     /**

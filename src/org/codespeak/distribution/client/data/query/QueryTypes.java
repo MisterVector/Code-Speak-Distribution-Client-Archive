@@ -15,29 +15,31 @@ import org.codespeak.distribution.client.data.Program;
  */
 public enum QueryTypes {
     
-    GET_DEPENDENCY("get_dependency", Dependency.class),
-    GET_DEPENDENCIES("get_dependencies", Dependency.class, true),
-    GET_CATEGORY("get_category", Category.class),
-    GET_CATEGORIES("get_categories", Category.class, true),
-    GET_PROGRAM("get_program", Program.class),
-    GET_PROGRAMS("get_programs", Program.class, true),
-    GET_PROGRAM_FILES("get_program_files", FileInfo.class, true),
-    CHECK_PROGRAM_VERSION("check_program_version", CheckVersionResponse.class),
-    GET_PROGRAM_CHANGELOG("get_program_changelog", ChangelogEntry.class, true),
-    GET_CLIENT_FILES("get_client_files", FileInfo.class, true),
-    CHECK_CLIENT_VERSION("check_client_version", ClientCheckVersionResponse.class),
-    GET_CLIENT_CHANGELOG("get_client_changelog", ChangelogEntry.class, true);
+    GET_DEPENDENCY("get_dependency", "Getting A Dependency", Dependency.class),
+    GET_DEPENDENCIES("get_dependencies", "Getting Dependencies", Dependency.class, true),
+    GET_CATEGORY("get_category", "Getting A Category", Category.class),
+    GET_CATEGORIES("get_categories", "Getting Categories", Category.class, true),
+    GET_PROGRAM("get_program", "Getting A Program", Program.class),
+    GET_PROGRAMS("get_programs", "Getting Programs", Program.class, true),
+    GET_PROGRAM_FILES("get_program_files", "Getting Program Files", FileInfo.class, true),
+    CHECK_PROGRAM_VERSION("check_program_version", "Checking Program Version", CheckVersionResponse.class),
+    GET_PROGRAM_CHANGELOG("get_program_changelog", "Getting Program Changelog", ChangelogEntry.class, true),
+    GET_CLIENT_FILES("get_client_files", "Getting Client Files", FileInfo.class, true),
+    CHECK_CLIENT_VERSION("check_client_version", "Checking Client Version", ClientCheckVersionResponse.class),
+    GET_CLIENT_CHANGELOG("get_client_changelog", "Getting Client Changelog", ChangelogEntry.class, true);
     
-    private final String queryName;
+    private final String name;
+    private final String title;
     private final Class dataClazz;
     private final boolean listQuery;
     
-    private QueryTypes(String queryName, Class dataClazz) {
-        this(queryName, dataClazz, false);
+    private QueryTypes(String name, String title, Class dataClazz) {
+        this(name, title, dataClazz, false);
     }
     
-    private QueryTypes(String queryName, Class dataClazz, boolean informationListQuery) {
-        this.queryName = queryName;
+    private QueryTypes(String name, String title, Class dataClazz, boolean informationListQuery) {
+        this.name = name;
+        this.title = title;
         this.dataClazz = dataClazz;
         this.listQuery = informationListQuery;
     }
@@ -47,9 +49,17 @@ public enum QueryTypes {
      * @return name of this query
      */
     public String getName() {
-        return queryName;
+        return name;
     }
 
+    /**
+     * Gets the title of this query
+     * @return title of this query
+     */
+    public String getTitle() {
+        return title;
+    }
+    
     /**
      * Gets the class representing the kind of data returned with this query
      * @return class representing the kind of data in query response
