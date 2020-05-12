@@ -21,6 +21,7 @@ import org.codespeak.distribution.client.data.query.ErrorType;
 import org.codespeak.distribution.client.data.query.QueryException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -117,7 +118,7 @@ public class BackendHandler {
                 
                 throw new QueryException(type, errorMessage);
             }
-        } catch (IOException ex) {
+        } catch (IOException | JSONException ex) {
 
         }
         
