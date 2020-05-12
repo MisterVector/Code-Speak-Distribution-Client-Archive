@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +34,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.DistributionClient;
 import org.codespeak.distribution.client.Settings;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
@@ -243,6 +245,8 @@ public class MainSceneController implements Initializable {
         } catch (QueryException ex) {
             Alert alert = ex.buildAlert();
             alert.show();
+            
+            DistributionClient.logError(ex);
         }
     }
 
@@ -371,6 +375,8 @@ public class MainSceneController implements Initializable {
                 } catch (QueryException ex) {
                     Alert alert = ex.buildAlert();
                     alert.show();
+                    
+                    DistributionClient.logError(ex);
                 }
             }
         } else {
@@ -415,6 +421,8 @@ public class MainSceneController implements Initializable {
             } catch (QueryException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
+                
+                DistributionClient.logError(ex);
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select a program first.");
@@ -435,6 +443,8 @@ public class MainSceneController implements Initializable {
         } catch (QueryException ex) {
             Alert alert = ex.buildAlert();
             alert.show();
+            
+            DistributionClient.logError(ex);
         }
     }
     
@@ -495,6 +505,8 @@ public class MainSceneController implements Initializable {
             } catch (QueryException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
+                
+                DistributionClient.logError(ex);
             }
         }
     }
@@ -517,6 +529,8 @@ public class MainSceneController implements Initializable {
             } catch (QueryException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
+                
+                DistributionClient.logError(ex);
             }
         }
     }

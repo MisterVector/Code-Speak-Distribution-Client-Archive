@@ -1,10 +1,14 @@
 package org.codespeak.distribution.client;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Timestamp;
 import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +24,7 @@ import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.scenes.SceneTypes;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.json.JSONObject;
 
@@ -87,6 +92,8 @@ public class DistributionClient extends Application {
             }
         } catch (QueryException ex) {
             savedException = ex;
+            
+            logError(ex);
         }
         
         File programsFolder = new File(Configuration.PROGRAMS_FOLDER);
@@ -113,6 +120,39 @@ public class DistributionClient extends Application {
      */
     public static DistributionClient getInstance() {
         return instance;
+    }
+
+    /**
+     * Gets the logger
+     * @param ex
+     */
+    public static void logError(QueryException ex) {
+        File logsFolder = new File(Configuration.LOGS_FOLDER);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        String logFileDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd");
+        String errorDateFormat = MiscUtil.formatTimestamp(now);
+        String errorLogFile = "error-" + logFileDateFormat + ".log";
+        Path logPath = logsFolder.toPath().resolve(errorLogFile);
+        
+        String message = ex.getMessage();
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        
+        try {
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(logPath.toString(), true)));
+            writer.println("Exception time: " + errorDateFormat);
+            writer.println(message);
+            writer.println("Query used: " + ex.getQuery());
+            writer.println();
+            
+            for (StackTraceElement elem : stackTrace) {
+                writer.println(elem.toString());
+            }
+            
+            writer.println();
+            writer.close();
+        } catch (IOException ioe) {
+            
+        }
     }
     
 }

@@ -34,7 +34,17 @@ public class MiscUtil {
      * @return formatted output of a timestamp
      */
     public static String formatTimestamp(Timestamp timestamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATETIME_FORMAT);
+        return formatTimestamp(timestamp, DEFAULT_DATETIME_FORMAT);
+    }
+    
+    /**
+     * Returns a formatted timestamp string from the specified timestamp
+     * @param timestamp a timestamp to be formatted
+     * @param format The new format for the timestamp
+     * @return formatted output of a timestamp
+     */
+    public static String formatTimestamp(Timestamp timestamp, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(timestamp);
     }
     

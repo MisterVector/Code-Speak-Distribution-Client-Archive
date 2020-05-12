@@ -53,12 +53,13 @@ public class BackendHandler {
      * there is an error during the query
      */
     public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) throws QueryException {
+        String fullQuery = queryType.getName() + otherPart;
         URL url = null;
         
         try {
-            url = new URL(Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart);
+            url = new URL(Configuration.BACKEND_URL + "?query=" + fullQuery);
         } catch (MalformedURLException ex) {
-            throw new QueryException(ErrorType.ERROR_CRITICAL, "Could not contact the distribution system. URI is unavailable.");
+            throw new QueryException(ErrorType.ERROR_CRITICAL, fullQuery, "Could not contact the distribution system. URI is unavailable.");
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
@@ -116,13 +117,13 @@ public class BackendHandler {
                 ErrorType type = ErrorType.fromCode(json.getInt("error_code"));
                 String errorMessage = json.getString("error_message");
                 
-                throw new QueryException(type, errorMessage);
+                throw new QueryException(type, fullQuery, errorMessage);
             }
         } catch (IOException | JSONException ex) {
 
         }
         
-        throw new QueryException(ErrorType.ERROR_CRITICAL, "An error occurred while performing query: " + queryType.getTitle() + ".");
+        throw new QueryException(ErrorType.ERROR_CRITICAL, fullQuery, "An error occurred while performing query: " + queryType.getTitle() + ".");
     }
 
     /**

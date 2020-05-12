@@ -28,6 +28,7 @@ log/
 target/
 
 # Other stuff
+/logs/
 extra/
 /Programs/
 data.json
