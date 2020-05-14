@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
-import org.codespeak.distribution.client.data.query.QueryException;
+import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.handler.DataHandler;
@@ -34,7 +34,7 @@ import org.json.JSONObject;
  */
 public class DistributionClient extends Application {
     
-    private static QueryException savedException = null;
+    private static ClientException savedException = null;
     private static DistributionClient instance;
     
     public DistributionClient() {
@@ -90,7 +90,7 @@ public class DistributionClient extends Application {
             for (Program program : programs) {
                 DataHandler.addProgram(program, false);
             }
-        } catch (QueryException ex) {
+        } catch (ClientException ex) {
             savedException = ex;
             
             logError(ex);
@@ -126,7 +126,7 @@ public class DistributionClient extends Application {
      * Gets the logger
      * @param ex
      */
-    public static void logError(QueryException ex) {
+    public static void logError(ClientException ex) {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         String logFileDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd");
@@ -141,7 +141,7 @@ public class DistributionClient extends Application {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(logPath.toString(), true)));
             writer.println("Exception time: " + errorDateFormat);
             writer.println(message);
-            writer.println("Query used: " + ex.getQuery());
+            writer.println("URL: " + ex.getSource());
             writer.println();
             
             for (StackTraceElement elem : stackTrace) {

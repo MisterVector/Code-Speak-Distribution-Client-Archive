@@ -18,7 +18,7 @@ import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.data.query.ErrorType;
-import org.codespeak.distribution.client.data.query.QueryException;
+import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,10 +36,10 @@ public class BackendHandler {
      * @param <T> An object that extends QueryResponse
      * @param queryType the type of query to make
      * @return a QueryResponse object containing the response of the query
-     * @throws org.codespeak.distribution.client.data.query.QueryException if
+     * @throws org.codespeak.distribution.client.objects.ClientException if
      * there is an error during the query
      */
-    public static <T> T getDataFromQuery(QueryTypes queryType) throws QueryException {
+    public static <T> T getDataFromQuery(QueryTypes queryType) throws ClientException {
         return BackendHandler.getDataFromQuery(queryType, "");
     }
     
@@ -49,17 +49,17 @@ public class BackendHandler {
      * @param queryType the type of query to make
      * @param otherPart an additional part of the query
      * @return a generic object representing the data from the query
-     * @throws org.codespeak.distribution.client.data.query.QueryException if
+     * @throws org.codespeak.distribution.client.objects.ClientException if
      * there is an error during the query
      */
-    public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) throws QueryException {
-        String fullQuery = queryType.getName() + otherPart;
+    public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) throws ClientException {
+        String fullQuery = Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart;
         URL url = null;
         
         try {
-            url = new URL(Configuration.BACKEND_URL + "?query=" + fullQuery);
+            url = new URL(fullQuery);
         } catch (MalformedURLException ex) {
-            throw new QueryException(ErrorType.ERROR_CRITICAL, fullQuery, "Could not contact the distribution system. URI is unavailable.");
+            throw new ClientException(ErrorType.ERROR_CRITICAL, fullQuery, "Could not contact the distribution system. URI is unavailable.");
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
@@ -117,23 +117,23 @@ public class BackendHandler {
                 ErrorType type = ErrorType.fromCode(json.getInt("error_code"));
                 String errorMessage = json.getString("error_message");
                 
-                throw new QueryException(type, fullQuery, errorMessage);
+                throw new ClientException(type, fullQuery, errorMessage);
             }
         } catch (IOException | JSONException ex) {
 
         }
         
-        throw new QueryException(ErrorType.ERROR_CRITICAL, fullQuery, "An error occurred while performing query: " + queryType.getTitle() + ".");
+        throw new ClientException(ErrorType.ERROR_CRITICAL, fullQuery, "An error occurred while performing query: " + queryType.getTitle() + ".");
     }
 
     /**
      * Gets a readable byte channel of a remote client file
      * @param relativeFilePath relative file path of remote client file
      * @return a readable byte channel of the remote client file given
-     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * @throws org.codespeak.distribution.client.objects.ClientException if an
      * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws QueryException {
+    public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws ClientException {
         return getRemoteFileChannel(-1, relativeFilePath);
     }
     
@@ -142,10 +142,10 @@ public class BackendHandler {
      * @param id if greater than -1, represents program ID, else client
      * @param relativeFilePath path to the program file
      * @return readable byte channel of the specified program file
-     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * @throws org.codespeak.distribution.client.objects.ClientException if an
      * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws QueryException {
+    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws ClientException {
         String remotePath = Configuration.DISTRIBUTION_URL;
         
         if (id > -1) {
@@ -163,10 +163,10 @@ public class BackendHandler {
      * Gets a file channel from a URL
      * @param remoteURL
      * @return Readable Byte Channel from the requested URL
-     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * @throws org.codespeak.distribution.client.objects.ClientException if an
      * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws QueryException {
+    public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws ClientException {
         try {
             URL url = new URL(remoteURL);
             
@@ -175,7 +175,7 @@ public class BackendHandler {
             
         }
         
-        throw new QueryException(ErrorType.ERROR_CRITICAL, remoteURL, "An exception occurred while retrieving a remote file.");
+        throw new ClientException(ErrorType.ERROR_CRITICAL, remoteURL, "An exception occurred while retrieving a remote file.");
     }
     
 }

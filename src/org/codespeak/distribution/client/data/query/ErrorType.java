@@ -1,15 +1,18 @@
 package org.codespeak.distribution.client.data.query;
 
 /**
- * An enum containing query error types
+ * An enum containing various error types
  *
  * @author Vector
  */
 public enum ErrorType {
 
-    ERROR_CRITICAL(0), // Not an error in the backend, this is specifically for the client
+    ERROR_CRITICAL(0),
+    
+    // These errors come from the backend
     ERROR_SEVERE(1),
     ERROR_WARNING(2),
+    
     NONE(-1);
 
     private final int errorTypeCode;

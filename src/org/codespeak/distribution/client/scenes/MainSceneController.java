@@ -42,7 +42,7 @@ import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
-import org.codespeak.distribution.client.data.query.QueryException;
+import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.objects.ProgramTableData;
@@ -242,7 +242,7 @@ public class MainSceneController implements Initializable {
             programItems.set(currentlySelectedProgramIndex, programData);
 
             displayProgramControls(program, installedProgram);
-        } catch (QueryException ex) {
+        } catch (ClientException ex) {
             Alert alert = ex.buildAlert();
             alert.show();
             
@@ -372,7 +372,7 @@ public class MainSceneController implements Initializable {
 
                     Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
                     alert.show();
-                } catch (QueryException ex) {
+                } catch (ClientException ex) {
                     Alert alert = ex.buildAlert();
                     alert.show();
                     
@@ -418,7 +418,7 @@ public class MainSceneController implements Initializable {
 
                 stage.show();
                 controller.showChangelog(name, entries);
-            } catch (QueryException ex) {
+            } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
@@ -440,7 +440,7 @@ public class MainSceneController implements Initializable {
 
             stage.show();
             controller.showChangelog(Configuration.PROGRAM_NAME, entries);
-        } catch (QueryException ex) {
+        } catch (ClientException ex) {
             Alert alert = ex.buildAlert();
             alert.show();
             
@@ -488,6 +488,8 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onInstallButtonClick() throws IOException {
         if (currentlySelectedProgram != null) {
+            String programName = currentlySelectedProgram.getName();
+
             try {
                 DataHandler.installProgram(currentlySelectedProgram);
 
@@ -495,14 +497,13 @@ public class MainSceneController implements Initializable {
 
                 currentlySelectedInstalledProgram = currentlySelectedProgram;
 
-                String programName = currentlySelectedProgram.getName();
                 StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
                 ProgramDependenciesSceneController controller = stageController.getController();
                 Stage stage = stageController.getStage();
 
                 stage.show();
                 controller.showProgramDependencies(currentlySelectedProgram);
-            } catch (QueryException ex) {
+            } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
@@ -514,9 +515,10 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onUpdateButtonClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
+            String programName = currentlySelectedInstalledProgram.getName();
+
             try {
                 int id = currentlySelectedInstalledProgram.getId();
-                String programName = currentlySelectedInstalledProgram.getName();
                 String version = currentlySelectedInstalledProgram.getVersion();
                 List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
 
@@ -526,7 +528,7 @@ public class MainSceneController implements Initializable {
 
                 stage.show();
                 controller.showUpdate(this, currentlySelectedProgram, currentlySelectedInstalledProgram, entries);
-            } catch (QueryException ex) {
+            } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 

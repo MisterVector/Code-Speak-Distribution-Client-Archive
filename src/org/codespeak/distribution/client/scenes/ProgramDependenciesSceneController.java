@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.util.AlertUtil;
 
@@ -95,16 +96,21 @@ public class ProgramDependenciesSceneController implements Initializable {
             String URL = currentlySelectedDependency.getURL();
             String ext = URL.substring(URL.lastIndexOf("."));
             
-            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannelFromURL(URL);
-            File tempFile = File.createTempFile("csds_client", ext);
-            FileChannel outChannel = new FileOutputStream(tempFile).getChannel();
-            
-            outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-            
-            readableByteChannel.close();
-            outChannel.close();
-            
-            runtime.exec("cmd /c " + tempFile.toString());
+            try {
+                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannelFromURL(URL);
+                File tempFile = File.createTempFile("csds_client", ext);
+                FileChannel outChannel = new FileOutputStream(tempFile).getChannel();
+
+                outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+
+                readableByteChannel.close();
+                outChannel.close();
+
+                runtime.exec("cmd /c " + tempFile.toString());
+            } catch (ClientException ex) {
+                Alert alert = ex.buildAlert();
+                alert.show();
+            }
         } else {
             Alert alert = AlertUtil.createAlert("Select a dependency first.");
             alert.show();

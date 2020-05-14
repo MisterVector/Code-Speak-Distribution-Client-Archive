@@ -1,46 +1,47 @@
-package org.codespeak.distribution.client.data.query;
+package org.codespeak.distribution.client.objects;
 
 import java.util.logging.Level;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import org.codespeak.distribution.client.data.query.ErrorType;
 import org.codespeak.distribution.client.util.AlertUtil;
 
 /**
- * An exception that is thrown when a query has an error
+ * An exception that is thrown when the client has an error
  *
  * @author Vector
  */
-public class QueryException extends Exception {
+public class ClientException extends Exception {
     
     private final ErrorType type;
-    private final String query;
+    private final String source;
     
-    public QueryException(ErrorType type, String query, String message) {
+    public ClientException(ErrorType type, String source, String message) {
         super(message);
         
         this.type = type;
-        this.query = query;
+        this.source = source;
     }
     
     /**
-     * Gets the query error type from this exception
-     * @return query error type from this exception
+     * Gets the error type from this exception
+     * @return error type from this exception
      */
     public ErrorType getErrorType() {
         return type;
     }
 
     /**
-     * Gets the query associated with this exception
-     * @return query associated with this exception
+     * Gets the source associated with this exception
+     * @return source associated with this exception
      */
-    public String getQuery() {
-        return query;
+    public String getSource() {
+        return source;
     }
     
     /**
-     * Gets the log level of this query exception
-     * @return log level of this query exception
+     * Gets the log level of this exception
+     * @return log level of this exception
      */
     public Level getLogLevel() {
         switch (type) {
@@ -74,6 +75,6 @@ public class QueryException extends Exception {
                 break;
         }
 
-        return AlertUtil.createAlert(alertType, message, "Query Error");
+        return AlertUtil.createAlert(alertType, message, "Program Error");
     }
 }
