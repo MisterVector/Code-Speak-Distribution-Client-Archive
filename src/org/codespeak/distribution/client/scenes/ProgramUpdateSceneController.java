@@ -27,7 +27,6 @@ public class ProgramUpdateSceneController implements Initializable {
     private Program installedProgram;
     
     @FXML private Label programUpdateLabel;
-    @FXML private Label programNewVersionLabel;
     @FXML private Label programChangesSinceLabel;
     @FXML private TextArea programChangesText;
     
@@ -53,8 +52,7 @@ public class ProgramUpdateSceneController implements Initializable {
         this.program = program;
         this.installedProgram = installedProgram;
         
-        programUpdateLabel.setText("A new " + program.getName() + " update is available!");
-        programNewVersionLabel.setText("New version: " + program.getVersion());
+        programUpdateLabel.setText(program.getName() + " version " + program.getVersion() + " is available!");
         programChangesSinceLabel.setText("Changes since " + installedProgram.getVersion());
         
         StringBuilder sb = new StringBuilder();
