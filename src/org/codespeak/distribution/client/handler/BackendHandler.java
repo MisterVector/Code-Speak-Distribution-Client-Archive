@@ -130,9 +130,10 @@ public class BackendHandler {
      * Gets a readable byte channel of a remote client file
      * @param relativeFilePath relative file path of remote client file
      * @return a readable byte channel of the remote client file given
-     * @throws IOException if an error occurred while getting remote file channel
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws IOException {
+    public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws QueryException {
         return getRemoteFileChannel(-1, relativeFilePath);
     }
     
@@ -141,9 +142,10 @@ public class BackendHandler {
      * @param id if greater than -1, represents program ID, else client
      * @param relativeFilePath path to the program file
      * @return readable byte channel of the specified program file
-     * @throws IOException if an error occurred while getting remote file channel
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws IOException {
+    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws QueryException {
         String remotePath = Configuration.DISTRIBUTION_URL;
         
         if (id > -1) {
@@ -154,20 +156,26 @@ public class BackendHandler {
         
         remotePath += "/" + relativeFilePath;
         
-        URL url = new URL(remotePath);
-        
-        return Channels.newChannel(url.openStream());
+        return getRemoteFileChannelFromURL(remotePath);
     }
 
     /**
      * Gets a file channel from a URL
      * @param remoteURL
      * @return Readable Byte Channel from the requested URL
-     * @throws IOException if an error occurs
+     * @throws org.codespeak.distribution.client.data.query.QueryException if an
+     * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws IOException {
-        URL url = new URL(remoteURL);
-        return Channels.newChannel(url.openStream());
+    public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws QueryException {
+        try {
+            URL url = new URL(remoteURL);
+            
+            return Channels.newChannel(url.openStream());
+        } catch (IOException ex) {
+            
+        }
+        
+        throw new QueryException(ErrorType.ERROR_CRITICAL, remoteURL, "An exception occurred while retrieving a remote file.");
     }
     
 }
