@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="253.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.AboutSceneController">
+<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.AboutSceneController">
    <children>
       <Label alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="402.0" text="Code Speak Distribution Client">
          <font>

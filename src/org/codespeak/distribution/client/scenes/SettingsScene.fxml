@@ -6,11 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="146.0" prefWidth="541.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
+<AnchorPane id="AnchorPane" prefHeight="146.0" prefWidth="526.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
    <children>
-      <Button layoutX="400.0" layoutY="102.0" mnemonicParsing="false" onAction="#onOkButtonClick" text="OK" />
-      <Button layoutX="466.0" layoutY="102.0" mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close" />
+      <Button layoutX="367.0" layoutY="107.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="64.0" text="OK" />
+      <Button layoutX="444.0" layoutY="107.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="64.0" text="Close" />
       <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
          <font>
             <Font size="14.0" />
