@@ -53,7 +53,7 @@ public class ProgramUpdateSceneController implements Initializable {
         this.installedProgram = installedProgram;
         
         programUpdateLabel.setText(program.getName() + " version " + program.getVersion() + " is available!");
-        programChangesSinceLabel.setText("Changes since " + installedProgram.getVersion());
+        programChangesSinceLabel.setText("Changes since version " + installedProgram.getVersion());
         
         StringBuilder sb = new StringBuilder();
         
