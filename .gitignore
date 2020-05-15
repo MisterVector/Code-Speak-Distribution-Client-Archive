@@ -30,6 +30,6 @@ target/
 # Other stuff
 /logs/
 extra/
-/Programs/
+/programs/
 data.json
 settings.json
