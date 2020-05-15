@@ -20,6 +20,7 @@ import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.data.query.ErrorType;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
+import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,22 +135,22 @@ public class BackendHandler {
      * error occurred while getting remote file channel
      */
     public static ReadableByteChannel getRemoteFileChannel(String relativeFilePath) throws ClientException {
-        return getRemoteFileChannel(-1, relativeFilePath);
+        return getRemoteFileChannel("", relativeFilePath);
     }
     
     /**
      * Gets a readable byte channel of a remote client or program file
-     * @param id if greater than -1, represents program ID, else client
+     * @param slug the slug of a program
      * @param relativeFilePath path to the program file
      * @return readable byte channel of the specified program file
      * @throws org.codespeak.distribution.client.objects.ClientException if an
      * error occurred while getting remote file channel
      */
-    public static ReadableByteChannel getRemoteFileChannel(int id, String relativeFilePath) throws ClientException {
+    public static ReadableByteChannel getRemoteFileChannel(String slug, String relativeFilePath) throws ClientException {
         String remotePath = Configuration.DISTRIBUTION_URL;
         
-        if (id > -1) {
-            remotePath += "/files/" + id;
+        if (!StringUtil.isNullOrEmpty(slug)) {
+            remotePath += "/files/" + slug;
         } else {
             remotePath += "/client";
         }

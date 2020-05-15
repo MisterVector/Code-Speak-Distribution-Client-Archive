@@ -210,7 +210,7 @@ public class Program {
             }
             
             Path localFilePathAndName = programDirectory.resolve(currentFilePathAndName);
-            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, currentRemotePathAndName);
+            ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(slug, currentRemotePathAndName);
             FileChannel outChannel = new FileOutputStream(localFilePathAndName.toFile()).getChannel();
             
             outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
@@ -244,7 +244,7 @@ public class Program {
             switch (file.getFileStatus()) {
                 case NEW:
                 case MODIFIED:
-                    ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemotePathAndName());
+                    ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(slug, file.getRemotePathAndName());
                     FileChannel outChannel = new FileOutputStream(updateFile).getChannel();
                     
                     outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
@@ -299,7 +299,7 @@ public class Program {
             if (canCreateFile) {
                 currentFolderPath.mkdirs();
                 
-                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(id, file.getRemotePathAndName());
+                ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(slug, file.getRemotePathAndName());
                 FileChannel outChannel = new FileOutputStream(currentFilePathFile).getChannel();
                 
                 outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
