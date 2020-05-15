@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="479.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.ProgramDependenciesSceneController">
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="715.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.ProgramDependenciesSceneController">
    <children>
       <Label fx:id="programNameLabel" alignment="TOP_CENTER" layoutX="11.0" layoutY="14.0" prefHeight="30.0" prefWidth="685.0" text="Program Name">
          <font>
