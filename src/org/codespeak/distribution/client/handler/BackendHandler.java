@@ -12,7 +12,6 @@ import java.util.List;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
-import org.codespeak.distribution.client.data.CheckVersionResponse;
 import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
@@ -108,8 +107,6 @@ public class BackendHandler {
                         return (T) Category.fromJSON(jsonContents);
                     } else if (dataClass == Program.class) {
                         return (T) Program.fromJSON(jsonContents, false);
-                    } else if (dataClass == CheckVersionResponse.class) {
-                        return (T) CheckVersionResponse.fromJSON(jsonContents);
                     } else if (dataClass == ClientCheckVersionResponse.class) {
                         return (T) ClientCheckVersionResponse.fromJSON(jsonContents);
                     }

@@ -9,22 +9,17 @@ import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
 
 /**
- * An enum containing all query types valid for this client
+ * An enum containing all query types used by this client
  *
  * @author Vector
  */
 public enum QueryTypes {
     
-    GET_DEPENDENCY("get_dependency", "Getting A Dependency", Dependency.class),
     GET_DEPENDENCIES("get_dependencies", "Getting Dependencies", Dependency.class, true),
-    GET_CATEGORY("get_category", "Getting A Category", Category.class),
     GET_CATEGORIES("get_categories", "Getting Categories", Category.class, true),
-    GET_PROGRAM("get_program", "Getting A Program", Program.class),
     GET_PROGRAMS("get_programs", "Getting Programs", Program.class, true),
     GET_PROGRAM_FILES("get_program_files", "Getting Program Files", FileInfo.class, true),
-    CHECK_PROGRAM_VERSION("check_program_version", "Checking Program Version", CheckVersionResponse.class),
     GET_PROGRAM_CHANGELOG("get_program_changelog", "Getting Program Changelog", ChangelogEntry.class, true),
-    GET_CLIENT_FILES("get_client_files", "Getting Client Files", FileInfo.class, true),
     CHECK_CLIENT_VERSION("check_client_version", "Checking Client Version", ClientCheckVersionResponse.class),
     GET_CLIENT_CHANGELOG("get_client_changelog", "Getting Client Changelog", ChangelogEntry.class, true);
     
