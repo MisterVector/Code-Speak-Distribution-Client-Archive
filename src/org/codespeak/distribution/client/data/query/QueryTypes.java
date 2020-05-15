@@ -2,7 +2,6 @@ package org.codespeak.distribution.client.data.query;
 
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
-import org.codespeak.distribution.client.data.CheckVersionResponse;
 import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
