@@ -40,6 +40,8 @@
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#onAboutMenuItemClick" text="About" />
                         <MenuItem mnemonicParsing="false" onAction="#onViewChangelogButtonClick" text="View Changelog" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onClientCheckForUpdateMenuClick" text="Check for Update" />
                   </items>
                 </Menu>
               </menus>

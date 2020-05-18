@@ -4,8 +4,10 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +40,7 @@ import org.codespeak.distribution.client.DistributionClient;
 import org.codespeak.distribution.client.Settings;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
+import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.FileInfo;
@@ -564,6 +567,62 @@ public class MainSceneController implements Initializable {
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
+        }
+    }
+
+    @FXML
+    public void onClientCheckForUpdateMenuClick() {
+        try {
+            ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
+            
+            Timestamp requestReleaseTime = response.getRequestReleaseTime();
+            Timestamp releaseTime = response.getReleaseTime();
+            String version = response.getVersion();
+            
+            if (releaseTime.after(requestReleaseTime)) {
+                String message = "A new version of the client is available!\n\n"
+                        + "Current version: " + Configuration.PROGRAM_VERSION + "\n"
+                        + "New version: " + version + "\n\n"
+                        + "Would you like to update?";
+                Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, message, "New Update Available!");
+                
+                alert.getButtonTypes().setAll(new ButtonType[] {ButtonType.YES, ButtonType.NO});
+
+                ButtonType buttonType = alert.showAndWait().get();
+                
+                if (buttonType == ButtonType.YES) {
+                    Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
+                    List<String> commands = new ArrayList<String>();
+                    File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+                    
+                    if (Configuration.UPDATER_FILE.endsWith(".jar")) {
+                        commands.add("java");
+                        commands.add("-jar");
+                    }
+                    
+                    commands.add(updaterPath.toString());
+                    commands.add("--version");
+                    commands.add(Configuration.PROGRAM_VERSION);
+                    commands.add("--launch-file");
+                    commands.add(applicationFile.toString());
+                    
+                    ProcessBuilder pb = new ProcessBuilder(commands);
+                    pb.directory(new File("."));
+                    pb.start();
+                    
+                    Platform.exit();
+                }
+            } else {
+                Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "The client is on the latest version!");
+                alert.show();
+            }
+        } catch (URISyntaxException | IOException ex) {
+            
+        } catch (ClientException ex) {
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
         }
     }
     
