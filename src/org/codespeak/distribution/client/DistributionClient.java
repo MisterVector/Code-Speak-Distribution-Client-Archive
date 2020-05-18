@@ -23,6 +23,8 @@ import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.handler.DataHandler;
+import org.codespeak.distribution.client.objects.StageController;
+import org.codespeak.distribution.client.scenes.MainSceneController;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
@@ -43,8 +45,12 @@ public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        stage = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_TITLE).getStage();
+        StageController<MainSceneController> stageController = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_TITLE);
+        stage = stageController.getStage();
+        MainSceneController controller = stageController.getController();
+        
         stage.show();
+        controller.checkClientUpdate(true);
         
         if (savedException != null) {
             Alert alert = savedException.buildAlert();

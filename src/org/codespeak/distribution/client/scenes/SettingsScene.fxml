@@ -6,19 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="146.0" prefWidth="526.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
+<AnchorPane id="AnchorPane" prefHeight="151.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
    <children>
-      <Button layoutX="367.0" layoutY="107.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="64.0" text="OK" />
-      <Button layoutX="444.0" layoutY="107.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="64.0" text="Close" />
+      <Button layoutX="495.0" layoutY="112.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="64.0" text="OK" />
+      <Button layoutX="572.0" layoutY="112.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="64.0" text="Close" />
       <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
          <font>
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <Label fx:id="settingsTitleLabel" alignment="TOP_CENTER" layoutX="15.0" layoutY="14.0" prefHeight="30.0" prefWidth="508.0" text="Settings for %p">
+      <Label fx:id="settingsTitleLabel" alignment="TOP_CENTER" layoutX="25.0" layoutY="14.0" prefHeight="30.0" prefWidth="615.0" text="Settings for %p">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <CheckBox fx:id="showClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Show Client Update Notification On Startup">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>

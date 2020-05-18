@@ -227,6 +227,69 @@ public class MainSceneController implements Initializable {
     }    
 
     /**
+     * Checks for client update
+     * @param startup if this update is being called on program startup
+     */
+    public void checkClientUpdate(boolean startup) {
+        try {
+            ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
+            
+            if (!startup || settings.getShowClientUpdateOnStartup()) {
+                Timestamp requestReleaseTime = response.getRequestReleaseTime();
+                Timestamp releaseTime = response.getReleaseTime();
+                String version = response.getVersion();
+
+                if (releaseTime.after(requestReleaseTime)) {
+                    String message = "A new version of the client is available!\n\n"
+                            + "Current version: " + Configuration.PROGRAM_VERSION + "\n"
+                            + "New version: " + version + "\n\n"
+                            + "Would you like to update?";
+                    Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, message, "New Update Available!");
+
+                    alert.getButtonTypes().setAll(new ButtonType[] {ButtonType.YES, ButtonType.NO});
+
+                    ButtonType buttonType = alert.showAndWait().get();
+
+                    if (buttonType == ButtonType.YES) {
+                        Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
+                        List<String> commands = new ArrayList<String>();
+                        File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+                        if (Configuration.UPDATER_FILE.endsWith(".jar")) {
+                            commands.add("java");
+                            commands.add("-jar");
+                        }
+
+                        commands.add(updaterPath.toString());
+                        commands.add("--version");
+                        commands.add(Configuration.PROGRAM_VERSION);
+                        commands.add("--launch-file");
+                        commands.add(applicationFile.toString());
+
+                        ProcessBuilder pb = new ProcessBuilder(commands);
+                        pb.directory(new File("."));
+                        pb.start();
+
+                        Platform.exit();
+                    }
+                } else {
+                    if (!startup) {
+                        Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "The client is on the latest version!");
+                        alert.show();
+                    }
+                }                
+            }
+        } catch (URISyntaxException | IOException ex) {
+            
+        } catch (ClientException ex) {
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
+        }
+    }
+    
+    /**
      * Called when a program is updated
      * @param installedProgram an installed program
      * @param program the latest information on a program
@@ -572,58 +635,7 @@ public class MainSceneController implements Initializable {
 
     @FXML
     public void onClientCheckForUpdateMenuClick() {
-        try {
-            ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
-            
-            Timestamp requestReleaseTime = response.getRequestReleaseTime();
-            Timestamp releaseTime = response.getReleaseTime();
-            String version = response.getVersion();
-            
-            if (releaseTime.after(requestReleaseTime)) {
-                String message = "A new version of the client is available!\n\n"
-                        + "Current version: " + Configuration.PROGRAM_VERSION + "\n"
-                        + "New version: " + version + "\n\n"
-                        + "Would you like to update?";
-                Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, message, "New Update Available!");
-                
-                alert.getButtonTypes().setAll(new ButtonType[] {ButtonType.YES, ButtonType.NO});
-
-                ButtonType buttonType = alert.showAndWait().get();
-                
-                if (buttonType == ButtonType.YES) {
-                    Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
-                    List<String> commands = new ArrayList<String>();
-                    File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-                    
-                    if (Configuration.UPDATER_FILE.endsWith(".jar")) {
-                        commands.add("java");
-                        commands.add("-jar");
-                    }
-                    
-                    commands.add(updaterPath.toString());
-                    commands.add("--version");
-                    commands.add(Configuration.PROGRAM_VERSION);
-                    commands.add("--launch-file");
-                    commands.add(applicationFile.toString());
-                    
-                    ProcessBuilder pb = new ProcessBuilder(commands);
-                    pb.directory(new File("."));
-                    pb.start();
-                    
-                    Platform.exit();
-                }
-            } else {
-                Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "The client is on the latest version!");
-                alert.show();
-            }
-        } catch (URISyntaxException | IOException ex) {
-            
-        } catch (ClientException ex) {
-            Alert alert = ex.buildAlert();
-            alert.show();
-            
-            DistributionClient.logError(ex);
-        }
+        checkClientUpdate(false);
     }
     
 }
