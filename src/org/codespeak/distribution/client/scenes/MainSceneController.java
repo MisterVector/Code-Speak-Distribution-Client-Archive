@@ -470,14 +470,8 @@ public class MainSceneController implements Initializable {
                 version = currentlySelectedProgram.getVersion();
             }
 
-            String otherPart = "&id=" + id;
-
-            if (installed) {
-                otherPart += "&up_to=" + version;
-            }
-            
             try {
-                List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, otherPart);
+                List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id);
                 StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, "Changelog for " + name);
                 ChangelogSceneController controller = stageController.getController();
                 Stage stage = stageController.getStage();
@@ -499,7 +493,7 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onViewChangelogButtonClick() throws IOException {
         try {
-            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&up_to=" + Configuration.PROGRAM_VERSION);
+            List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG);
             StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
             ChangelogSceneController controller = stageController.getController();
             Stage stage = stageController.getStage();
