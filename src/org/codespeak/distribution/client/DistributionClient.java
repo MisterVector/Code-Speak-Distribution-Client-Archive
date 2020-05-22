@@ -151,7 +151,7 @@ public class DistributionClient extends Application {
             writer.println(message);
             
             if (!StringUtil.isNullOrEmpty(source)) {
-                writer.println("Source: " + ex.getSource());                
+                writer.println("Source: " + source);                
             }
             
             writer.println();
