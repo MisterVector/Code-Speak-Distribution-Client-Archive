@@ -16,6 +16,10 @@ public class ClientException extends Exception {
     private final ErrorType type;
     private final String source;
     
+    public ClientException(ErrorType type, String message) {
+        this(type, "", message);
+    }
+    
     public ClientException(ErrorType type, String source, String message) {
         super(message);
         
@@ -77,4 +81,5 @@ public class ClientException extends Exception {
 
         return AlertUtil.createAlert(alertType, message, "Program Error");
     }
+
 }

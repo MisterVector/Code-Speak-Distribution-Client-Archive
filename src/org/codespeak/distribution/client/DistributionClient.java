@@ -28,6 +28,7 @@ import org.codespeak.distribution.client.scenes.MainSceneController;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
+import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
 
 /**
@@ -141,13 +142,18 @@ public class DistributionClient extends Application {
         Path logPath = logsFolder.toPath().resolve(errorLogFile);
         
         String message = ex.getMessage();
+        String source = ex.getSource();
         StackTraceElement[] stackTrace = ex.getStackTrace();
         
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(logPath.toString(), true)));
             writer.println("Exception time: " + errorDateFormat);
             writer.println(message);
-            writer.println("Source: " + ex.getSource());
+            
+            if (!StringUtil.isNullOrEmpty(source)) {
+                writer.println("Source: " + ex.getSource());                
+            }
+            
             writer.println();
             
             for (StackTraceElement elem : stackTrace) {
