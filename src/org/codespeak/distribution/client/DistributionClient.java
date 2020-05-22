@@ -147,7 +147,7 @@ public class DistributionClient extends Application {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(logPath.toString(), true)));
             writer.println("Exception time: " + errorDateFormat);
             writer.println(message);
-            writer.println("URL: " + ex.getSource());
+            writer.println("Source: " + ex.getSource());
             writer.println();
             
             for (StackTraceElement elem : stackTrace) {
