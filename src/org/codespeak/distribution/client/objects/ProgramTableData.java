@@ -13,13 +13,13 @@ public class ProgramTableData {
     private Program program;
     private SimpleStringProperty name;
     private SimpleStringProperty version;
-    private SimpleStringProperty releaseTime;
+    private SimpleStringProperty releaseDate;
     
-    public ProgramTableData(Program program, String name, String version, String releaseTime) {
+    public ProgramTableData(Program program, String name, String version, String releaseDate) {
         this.program = program;
         this.name = new SimpleStringProperty(name);
         this.version = new SimpleStringProperty(version);
-        this.releaseTime = new SimpleStringProperty(releaseTime);
+        this.releaseDate = new SimpleStringProperty(releaseDate);
     }
     
     /**
@@ -63,11 +63,11 @@ public class ProgramTableData {
     }
     
     /**
-     * Gets the release time of this program
-     * @return release time of this program
+     * Gets the release date of this program
+     * @return release date of this program
      */
-    public String getReleaseTime() {
-        return releaseTime.get();
+    public String getReleaseDate() {
+        return releaseDate.get();
     }
     
     /**
@@ -75,7 +75,7 @@ public class ProgramTableData {
      * @param releaseTime release time of this program
      */
     public void setReleaseTime(String releaseTime) {
-        this.releaseTime.set(releaseTime);
+        this.releaseDate.set(releaseTime);
     }
     
 }

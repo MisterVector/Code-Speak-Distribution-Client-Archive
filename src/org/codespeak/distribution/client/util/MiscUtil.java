@@ -16,7 +16,7 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class MiscUtil {
 
-    private static final String DEFAULT_DATETIME_FORMAT = "MMMM dd, yyyy hh:mm:ss a";
+    private static final String DEFAULT_DATETIME_FORMAT = "MMMM d, yyyy";
     
     private static MessageDigest messageDigest = null;
     

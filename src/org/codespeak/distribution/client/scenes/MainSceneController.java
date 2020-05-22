@@ -74,7 +74,7 @@ public class MainSceneController implements Initializable {
     @FXML private TableView<ProgramTableData> programsTable;
     @FXML private TableColumn<ProgramTableData, String> programsTableNameColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableVersionColumn;
-    @FXML private TableColumn<ProgramTableData, String> programsTableReleaseTimeColumn;
+    @FXML private TableColumn<ProgramTableData, String> programsTableReleaseDateColumn;
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
     @FXML private Label programUpdateLabel;
@@ -128,9 +128,9 @@ public class MainSceneController implements Initializable {
         items.clear();
         
         for (Program program : programs) {
-            String formattedReleaseTime = MiscUtil.formatTimestamp(program.getReleaseTime());
+            String formattedReleaseDate = MiscUtil.formatTimestamp(program.getReleaseTime());
             
-            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseTime);
+            ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseDate);
             items.add(programData);
         }
 
@@ -188,7 +188,7 @@ public class MainSceneController implements Initializable {
         
         programsTableNameColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("name"));
         programsTableVersionColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("version"));
-        programsTableReleaseTimeColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("releaseTime"));
+        programsTableReleaseDateColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("releaseDate"));
 
         settings = Configuration.getSettings();
         
