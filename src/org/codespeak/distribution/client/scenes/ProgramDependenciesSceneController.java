@@ -106,7 +106,14 @@ public class ProgramDependenciesSceneController implements Initializable {
                 readableByteChannel.close();
                 outChannel.close();
 
-                runtime.exec("cmd /c " + tempFile.toString());
+                String command = tempFile.toString();
+                String OS = System.getProperty("os.name");
+                
+                if (OS.startsWith("Windows")) {
+                    command = "cmd /c " + command;
+                }
+                
+                runtime.exec(command);
             } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
