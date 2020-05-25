@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.scenes;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -188,6 +191,20 @@ public class MainSceneController implements Initializable {
         currentlySelectedProgramIndex = -1;
         
         programsTable.setEditable(false);
+        programsTable.widthProperty().addListener(new ChangeListener<Number>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Number> source, Number oldWidth, Number newWidth)
+            {
+                TableHeaderRow header = (TableHeaderRow) programsTable.lookup("TableHeaderRow");
+                header.reorderingProperty().addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        header.setReordering(false);
+                    }
+                });
+            }
+        });
         
         programsTableNameColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("name"));
         programsTableVersionColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("version"));
