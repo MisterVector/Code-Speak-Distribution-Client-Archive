@@ -48,8 +48,11 @@ import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
+import org.codespeak.distribution.client.objects.ClientUpdater;
 import org.codespeak.distribution.client.objects.ProgramTableData;
+import org.codespeak.distribution.client.objects.ProgramUpdater;
 import org.codespeak.distribution.client.objects.StageController;
+import org.codespeak.distribution.client.objects.Updater;
 import org.codespeak.distribution.client.util.AlertUtil;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
@@ -240,38 +243,14 @@ public class MainSceneController implements Initializable {
                 String version = response.getVersion();
 
                 if (releaseTime.after(requestReleaseTime)) {
-                    String message = "A new version of the client is available!\n\n"
-                            + "Current version: " + Configuration.PROGRAM_VERSION + "\n"
-                            + "New version: " + version + "\n\n"
-                            + "Would you like to update?";
-                    Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, message, "New Update Available!");
-
-                    alert.getButtonTypes().setAll(new ButtonType[] {ButtonType.YES, ButtonType.NO});
-
-                    ButtonType buttonType = alert.showAndWait().get();
-
-                    if (buttonType == ButtonType.YES) {
-                        Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
-                        List<String> commands = new ArrayList<String>();
-                        File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-
-                        if (Configuration.UPDATER_FILE.endsWith(".jar")) {
-                            commands.add("java");
-                            commands.add("-jar");
-                        }
-
-                        commands.add(updaterPath.toString());
-                        commands.add("--version");
-                        commands.add(Configuration.PROGRAM_VERSION);
-                        commands.add("--launch-file");
-                        commands.add(applicationFile.toString());
-
-                        ProcessBuilder pb = new ProcessBuilder(commands);
-                        pb.directory(new File("."));
-                        pb.start();
-
-                        Platform.exit();
-                    }
+                    List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&since_version=" + Configuration.PROGRAM_VERSION);
+                    StageController<UpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.UPDATE, "New verion for " + Configuration.PROGRAM_NAME);
+                    Stage stage = stageController.getStage();
+                    UpdateSceneController controller = stageController.getController();
+                    Updater updater = new ClientUpdater(Configuration.PROGRAM_VERSION, version, entries);
+                 
+                    stage.show();
+                    controller.showUpdate(updater);
                 } else {
                     if (!startup) {
                         Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "The client is on the latest version!");
@@ -279,7 +258,7 @@ public class MainSceneController implements Initializable {
                     }
                 }                
             }
-        } catch (URISyntaxException | IOException ex) {
+        } catch (IOException ex) {
             
         } catch (ClientException ex) {
             Alert alert = ex.buildAlert();
@@ -582,12 +561,13 @@ public class MainSceneController implements Initializable {
                 String version = currentlySelectedInstalledProgram.getVersion();
                 List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_PROGRAM_CHANGELOG, "&id=" + id + "&since_version=" + version);
 
-                StageController<ProgramUpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_UPDATE, "New version for " + programName);
-                ProgramUpdateSceneController controller = stageController.getController();
+                StageController<UpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.UPDATE, "New version for " + programName);
+                UpdateSceneController controller = stageController.getController();
                 Stage stage = stageController.getStage();
+                Updater updater = new ProgramUpdater(currentlySelectedProgram, currentlySelectedInstalledProgram, this, entries);
 
                 stage.show();
-                controller.showUpdate(this, currentlySelectedProgram, currentlySelectedInstalledProgram, entries);
+                controller.showUpdate(updater);
             } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();

@@ -1,8 +1,6 @@
 package org.codespeak.distribution.client.scenes;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.data.ChangelogEntry;
-import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.objects.Updater;
 import org.codespeak.distribution.client.util.MiscUtil;
 
 /**
@@ -20,44 +18,36 @@ import org.codespeak.distribution.client.util.MiscUtil;
  *
  * @author Vector
  */
-public class ProgramUpdateSceneController implements Initializable {
+public class UpdateSceneController implements Initializable {
 
-    private MainSceneController controller;
-    private Program program;
-    private Program installedProgram;
+    private Updater updater = null;
     
-    @FXML private Label programUpdateLabel;
-    @FXML private Label programChangesSinceLabel;
-    @FXML private TextArea programChangesText;
+    @FXML private Label versionNotificationLabel;
+    @FXML private Label changesSinceLabel;
+    @FXML private TextArea changesSinceText;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        program = null;
-        installedProgram = null;
+        
     }
     
     /**
      * Called when a program update is being displayed. The information here
      * will be used to display various pieces of information
-     * @param controller
-     * @param program
-     * @param installedProgram
-     * @param changelogEntries 
+     * @param updater updater representing the client/program being updated
      */
-    public void showUpdate(MainSceneController controller, Program program, Program installedProgram, List<ChangelogEntry> changelogEntries) {
-        this.controller = controller;
-        this.program = program;
-        this.installedProgram = installedProgram;
+    public void showUpdate(Updater updater) {
+        this.updater = updater;
         
-        programUpdateLabel.setText(program.getName() + " version " + program.getVersion() + " is available!");
-        programChangesSinceLabel.setText("Changes since version " + installedProgram.getVersion());
+        versionNotificationLabel.setText(updater.getName() + " version " + updater.getCurrentVersion() + " is available!");
+        changesSinceLabel.setText("Changes since version " + updater.getPreviousVersion());
         
         StringBuilder sb = new StringBuilder();
         
-        for (ChangelogEntry entry : changelogEntries) {
+        for (ChangelogEntry entry : updater.getEntries()) {
             String formattedReleaseTime = MiscUtil.formatTimestamp(entry.getReleaseTime());
             
             if (sb.length() > 0) {
@@ -68,12 +58,12 @@ public class ProgramUpdateSceneController implements Initializable {
               .append("\n\n\n").append(entry.getContent());
         }
         
-        programChangesText.setText(sb.toString());
+        changesSinceText.setText(sb.toString());
     }
     
     @FXML
-    public void onUpdateButtonClick(ActionEvent event) throws IOException {
-        controller.onUpdateProgram(program, installedProgram);
+    public void onUpdateButtonClick(ActionEvent event) throws Exception {
+        updater.update();
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();

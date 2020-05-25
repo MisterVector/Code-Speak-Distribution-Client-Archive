@@ -10,7 +10,7 @@ public enum SceneTypes {
     MAIN("MainScene.fxml"),
     ABOUT("AboutScene.fxml"),
     CHANGELOG("ChangelogScene.fxml"),
-    PROGRAM_UPDATE("ProgramUpdateScene.fxml"),
+    UPDATE("UpdateScene.fxml"),
     PROGRAM_DEPENDENCIES("ProgramDependenciesScene.fxml"),
     SETTINGS("SettingsScene.fxml");
     
