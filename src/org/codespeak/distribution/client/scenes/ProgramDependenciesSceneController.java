@@ -35,7 +35,7 @@ import org.codespeak.distribution.client.util.AlertUtil;
 public class ProgramDependenciesSceneController implements Initializable {
 
     private Map<String, Dependency> dependencyNameMap = new HashMap<String, Dependency>();
-    private Program program;
+    private Path programDirectoryAndLaunchFile;
     private Dependency currentlySelectedDependency;
     private Runtime runtime;
     
@@ -49,21 +49,21 @@ public class ProgramDependenciesSceneController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        program = null;
         currentlySelectedDependency = null;
         runtime = Runtime.getRuntime();
     }    
     
     /**
      * Called when displaying dependency information from a program
-     * @param program program to show dependency information from
+     * @param programName name of the program
+     * @param dependencies dependencies of the program
+     * @param programLaunchFile launch file of the program
      */
-    public void showProgramDependencies(Program program) {
-        this.program = program;
+    public void showProgramDependencies(String programName, List<Dependency> dependencies, Path programLaunchFile) {
+        this.programDirectoryAndLaunchFile = programLaunchFile;
         
-        programNameLabel.setText(program.getName());
+        programNameLabel.setText(programName);
         
-        List<Dependency> dependencies = program.getDependencies();
         ObservableList<String> dependencyItems = dependencyList.getItems();
         
         for (Dependency dependency : dependencies) {
@@ -126,8 +126,6 @@ public class ProgramDependenciesSceneController implements Initializable {
 
     @FXML
     public void onTestProgramButtonClick(ActionEvent event) throws IOException {
-        Path programDirectoryAndLaunchFile = program.getDirectory(true);
-        
         runtime.exec(programDirectoryAndLaunchFile.toString());
     }
     

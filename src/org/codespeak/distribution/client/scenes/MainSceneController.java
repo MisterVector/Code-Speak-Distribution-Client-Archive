@@ -378,12 +378,14 @@ public class MainSceneController implements Initializable {
     public void onViewDependenciesMenuItemClick() throws Exception {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();
+            List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies();
+            Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
             StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
             ProgramDependenciesSceneController controller = stageController.getController();
             Stage stage = stageController.getStage();
             
             stage.show();
-            controller.showProgramDependencies(currentlySelectedInstalledProgram);
+            controller.showProgramDependencies(programName, dependencies, programLaunchFile);
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
@@ -553,12 +555,14 @@ public class MainSceneController implements Initializable {
 
                 currentlySelectedInstalledProgram = currentlySelectedProgram;
 
+                List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies();
+                Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
                 StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
                 ProgramDependenciesSceneController controller = stageController.getController();
                 Stage stage = stageController.getStage();
 
                 stage.show();
-                controller.showProgramDependencies(currentlySelectedProgram);
+                controller.showProgramDependencies(programName, dependencies, programLaunchFile);
             } catch (ClientException ex) {
                 Alert alert = ex.buildAlert();
                 alert.show();
