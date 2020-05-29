@@ -118,7 +118,7 @@ public class BackendHandler {
                 throw new ClientException(type, fullQuery, errorMessage);
             }
         } catch (IOException | JSONException ex) {
-            System.out.println(ex.getMessage());
+
         }
         
         throw new ClientException(ErrorType.ERROR_CRITICAL, fullQuery, "An error occurred while performing query: " + queryType.getTitle() + ".");
