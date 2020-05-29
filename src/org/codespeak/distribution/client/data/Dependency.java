@@ -13,12 +13,14 @@ public class Dependency {
     private final String name;
     private final String description;
     private final String url;
+    private final boolean hideOnClient;
     
-    private Dependency(int id, String name, String description, String url) {
+    private Dependency(int id, String name, String description, String url, boolean hideOnClient) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.url = url;
+        this.hideOnClient = hideOnClient;
     }
     
     /**
@@ -54,6 +56,14 @@ public class Dependency {
     }
     
     /**
+     * Gets if this dependency is hidden on the client
+     * @return if this dependency is hidden on the client
+     */
+    public boolean isHideOnClient() {
+        return hideOnClient;
+    }
+    
+    /**
      * Converts this dependency object to JSON
      * @return JSON representation of this Dependency object
      */
@@ -64,6 +74,7 @@ public class Dependency {
         json.put("name", name);
         json.put("description", description);
         json.put("url", url);
+        json.put("hideOnClient", hideOnClient);
         
         return json;
     }
@@ -94,7 +105,8 @@ public class Dependency {
         String name = "";
         String description = "";
         String url = "";
-        
+        boolean hideOnClient = false;
+
         if (json.has("id")) {
             id = json.getInt("id");
         }
@@ -111,7 +123,11 @@ public class Dependency {
             url = json.getString("url");
         }
         
-        return new Dependency(id, name, description, url);
+        if (json.has("hide_on_client")) {
+            hideOnClient = json.getBoolean("hide_on_client");
+        }
+
+        return new Dependency(id, name, description, url, hideOnClient);
     }
     
 }

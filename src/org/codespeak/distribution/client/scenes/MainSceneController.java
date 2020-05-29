@@ -378,7 +378,7 @@ public class MainSceneController implements Initializable {
     public void onViewDependenciesMenuItemClick() throws Exception {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();
-            List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies();
+            List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies(false);
 
             if (dependencies.size() > 0) {
                 Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
@@ -561,7 +561,7 @@ public class MainSceneController implements Initializable {
 
                 currentlySelectedInstalledProgram = currentlySelectedProgram;
 
-                List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies();
+                List<Dependency> dependencies = currentlySelectedInstalledProgram.getDependencies(false);
                 
                 if (dependencies.size() > 0) {
                     Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);

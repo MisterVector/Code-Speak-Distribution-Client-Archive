@@ -136,7 +136,24 @@ public class Program {
      * @return list of dependencies of this program
      */
     public List<Dependency> getDependencies() {
-        return dependencies;
+        return getDependencies(true);
+    }
+
+    /**
+     * Gets a list of dependencies of this program
+     * @param allowHidden whether hidden dependencies are returned
+     * @return list of dependencies of this program
+     */
+    public List<Dependency> getDependencies(boolean allowHidden) {
+        List<Dependency> ret = new ArrayList<Dependency>();
+        
+        for (Dependency dependency : dependencies) {
+            if (allowHidden || !dependency.isHideOnClient()) {
+                ret.add(dependency);
+            }
+        }
+        
+        return ret;
     }
 
     /**
