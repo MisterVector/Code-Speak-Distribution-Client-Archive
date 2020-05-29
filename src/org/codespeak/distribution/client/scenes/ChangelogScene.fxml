@@ -13,7 +13,7 @@
             <Font name="Courier New" size="12.0" />
          </font>
       </TextArea>
-      <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="721.0" text="Close" />
+      <Button layoutX="25.0" layoutY="569.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="729.0" text="Close" />
       <Label fx:id="changelogNameLabel" alignment="TOP_CENTER" layoutX="29.0" layoutY="14.0" prefHeight="30.0" prefWidth="721.0" text="\%p Changelog">
          <font>
             <Font name="System Bold" size="20.0" />
