@@ -54,7 +54,7 @@ public class UpdateSceneController implements Initializable {
                 sb.append("\n\n\n");
             }
             
-            sb.append(entry.getVersion()).append(" (").append(formattedReleaseTime).append(")")
+            sb.append("Version ").append(entry.getVersion()).append(" - Released on ").append(formattedReleaseTime)
               .append("\n\n\n").append(entry.getContent());
         }
         
