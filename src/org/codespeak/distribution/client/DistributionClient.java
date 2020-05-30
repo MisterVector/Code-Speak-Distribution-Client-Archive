@@ -137,23 +137,26 @@ public class DistributionClient extends Application {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         String logFileDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd");
-        String errorDateFormat = MiscUtil.formatTimestamp(now);
+        String errorDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd hh:MM:ss a");
         String errorLogFile = "error-" + logFileDateFormat + ".log";
         Path logPath = logsFolder.toPath().resolve(errorLogFile);
-        
-        String message = ex.getMessage();
+
+        String title = ex.getTitle();
         String source = ex.getSource();
+        String message = ex.getMessage();
         StackTraceElement[] stackTrace = ex.getStackTrace();
         
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(logPath.toString(), true)));
             writer.println("Exception time: " + errorDateFormat);
-            writer.println(message);
+            writer.println();
+            writer.println(title);
             
             if (!StringUtil.isNullOrEmpty(source)) {
                 writer.println("Source: " + source);                
+
             }
-            
+            writer.println(message);
             writer.println();
             
             for (StackTraceElement elem : stackTrace) {

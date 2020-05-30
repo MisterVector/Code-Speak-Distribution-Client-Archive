@@ -56,10 +56,14 @@ public class BackendHandler {
         String fullQuery = Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart;
         URL url = null;
         
+        String title =  "An error occurred while performing query: " + queryType.getTitle() + ".";
+        ErrorType type = ErrorType.ERROR_SEVERE;
+        Exception exception = null;
+        
         try {
             url = new URL(fullQuery);
         } catch (MalformedURLException ex) {
-            throw new ClientException(ErrorType.ERROR_CRITICAL, fullQuery, "Could not contact the distribution system. URI is unavailable.");
+            exception = ex;
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
@@ -112,16 +116,15 @@ public class BackendHandler {
                     }
                 }
             } else {
-                ErrorType type = ErrorType.fromCode(json.getInt("error_code"));
+                type = ErrorType.fromCode(json.getInt("error_code"));
                 String errorMessage = json.getString("error_message");
-                
-                throw new ClientException(type, fullQuery, errorMessage);
+                exception = new Exception(errorMessage);
             }
         } catch (IOException | JSONException ex) {
-
+            exception = ex;
         }
         
-        throw new ClientException(ErrorType.ERROR_CRITICAL, fullQuery, "An error occurred while performing query: " + queryType.getTitle() + ".");
+        throw new ClientException(type, title, fullQuery, exception);
     }
 
     /**
@@ -170,10 +173,8 @@ public class BackendHandler {
             
             return Channels.newChannel(url.openStream());
         } catch (IOException ex) {
-            
+            throw new ClientException(ErrorType.ERROR_CRITICAL, "An exception occurred while fetching a remote file", remoteURL, ex);
         }
-        
-        throw new ClientException(ErrorType.ERROR_CRITICAL, remoteURL, "An exception occurred while retrieving a remote file.");
     }
     
 }

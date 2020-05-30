@@ -14,16 +14,18 @@ import org.codespeak.distribution.client.util.AlertUtil;
 public class ClientException extends Exception {
     
     private final ErrorType type;
+    private final String title;
     private final String source;
     
-    public ClientException(ErrorType type, String message) {
-        this(type, "", message);
+    public ClientException(ErrorType type, String title, Exception ex) {
+        this(type, title, "", ex);
     }
     
-    public ClientException(ErrorType type, String source, String message) {
-        super(message);
+    public ClientException(ErrorType type, String title, String source, Exception ex) {
+        super(ex);
         
         this.type = type;
+        this.title = title;
         this.source = source;
     }
     
@@ -35,6 +37,14 @@ public class ClientException extends Exception {
         return type;
     }
 
+    /**
+     * Gets the title of this exception
+     * @return title of this exception
+     */
+    public String getTitle() {
+        return title;
+    }
+    
     /**
      * Gets the source associated with this exception
      * @return source associated with this exception
