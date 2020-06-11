@@ -75,7 +75,7 @@ public class ClientException extends Exception {
      */
     public Alert buildAlert() {
         AlertType alertType = AlertType.INFORMATION;
-        String message = super.getMessage();
+        String message = title + "\n\n" + super.getMessage();
         
         switch (type) {
             case ERROR_CRITICAL:
