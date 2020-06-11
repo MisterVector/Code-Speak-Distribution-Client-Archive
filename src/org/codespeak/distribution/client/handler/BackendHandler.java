@@ -173,7 +173,7 @@ public class BackendHandler {
             
             return Channels.newChannel(url.openStream());
         } catch (IOException ex) {
-            throw new ClientException(ErrorType.ERROR_CRITICAL, "An exception occurred while fetching a remote file", remoteURL, ex);
+            throw new ClientException(ErrorType.ERROR_CRITICAL, "An exception occurred while fetching a remote file.", remoteURL, ex);
         }
     }
     
