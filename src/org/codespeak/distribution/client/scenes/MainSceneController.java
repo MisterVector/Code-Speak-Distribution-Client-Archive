@@ -476,18 +476,12 @@ public class MainSceneController implements Initializable {
 
             int id = 0;
             String name = null;
-            String version = null;
-            boolean installed = false;
 
             if (currentlySelectedInstalledProgram != null) {
                 id = currentlySelectedInstalledProgram.getId();
                 name = currentlySelectedInstalledProgram.getName();
-                version = currentlySelectedInstalledProgram.getVersion();
-                installed = true;
             } else {
                 id = currentlySelectedProgram.getId();
-                name = currentlySelectedProgram.getName();
-                version = currentlySelectedProgram.getVersion();
             }
 
             try {
