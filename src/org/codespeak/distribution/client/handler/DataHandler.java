@@ -283,7 +283,7 @@ public class DataHandler {
         for (Program program : programs) {
             Category currentCategory = program.getCategory();
             
-            if (category != null && category != currentCategory) {
+            if (category != null && !category.equals(currentCategory)) {
                 continue;
             }
             
@@ -437,5 +437,5 @@ public class DataHandler {
             }
         }
     }
-    
 }
+    
