@@ -20,7 +20,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <CheckBox fx:id="showClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Show Client Update Notification On Startup">
+      <CheckBox fx:id="checkClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Check Client Update On Startup">
          <font>
             <Font size="14.0" />
          </font>

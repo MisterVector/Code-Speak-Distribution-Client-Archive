@@ -252,11 +252,11 @@ public class MainSceneController implements Initializable {
             
             return;
         }
-        
-        try {
-            ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
-            
-            if (!startup || settings.getShowClientUpdateOnStartup()) {
+
+        if (!startup || settings.getCheckClientUpdateOnStartup()) {
+            try {
+                ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
+
                 Timestamp requestReleaseTime = response.getRequestReleaseTime();
                 Timestamp releaseTime = response.getReleaseTime();
                 String version = response.getVersion();
@@ -267,7 +267,7 @@ public class MainSceneController implements Initializable {
                     Stage stage = stageController.getStage();
                     UpdateSceneController controller = stageController.getController();
                     Updater updater = new ClientUpdater(Configuration.PROGRAM_VERSION, version, entries);
-                 
+
                     stage.show();
                     controller.showUpdate(updater);
                 } else {
@@ -276,14 +276,14 @@ public class MainSceneController implements Initializable {
                         alert.show();
                     }
                 }                
+            } catch (IOException ex) {
+
+            } catch (ClientException ex) {
+                Alert alert = ex.buildAlert();
+                alert.show();
+
+                DistributionClient.logError(ex);
             }
-        } catch (IOException ex) {
-            
-        } catch (ClientException ex) {
-            Alert alert = ex.buildAlert();
-            alert.show();
-            
-            DistributionClient.logError(ex);
         }
     }
     

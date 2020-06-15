@@ -23,7 +23,7 @@ public class SettingsSceneController implements Initializable {
     
     @FXML private Label settingsTitleLabel;
     @FXML private CheckBox rememberCurrentlySelectedCategoryCheck;
-    @FXML private CheckBox showClientUpdateOnStartupCheck;
+    @FXML private CheckBox checkClientUpdateOnStartupCheck;
     
     /**
      * Initializes the controller class.
@@ -34,13 +34,13 @@ public class SettingsSceneController implements Initializable {
         
         settingsTitleLabel.setText("Settings for " + Configuration.PROGRAM_NAME);
         rememberCurrentlySelectedCategoryCheck.setSelected(settings.getRememberSelectedCategory());
-        showClientUpdateOnStartupCheck.setSelected(settings.getShowClientUpdateOnStartup());
+        checkClientUpdateOnStartupCheck.setSelected(settings.getCheckClientUpdateOnStartup());
     }
     
     @FXML
     public void onOkButtonClick(ActionEvent event) {
         settings.setRememberSelectedCategory(rememberCurrentlySelectedCategoryCheck.isSelected());
-        settings.setShowClientUpdateOnStartup(showClientUpdateOnStartupCheck.isSelected());
+        settings.setCheckClientUpdateOnStartup(checkClientUpdateOnStartupCheck.isSelected());
         
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
