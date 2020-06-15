@@ -85,12 +85,12 @@ public class DataHandler {
     }
     
     /**
-     * Gets an unmodifiable list of all categories
-     * @param installed whether the categories are installed
+     * Gets an unmodifiable list of all categories. The installed categories
+     * will be used if the current list of categories is empty
      * @return unmodifiable list of all categories
      */
-    public static List<Category> getCategories(boolean installed) {
-        return (installed ? Collections.unmodifiableList(installedCategories) : Collections.unmodifiableList(categories));
+    public static List<Category> getCategories() {
+        return (categories.size() > 0 ? Collections.unmodifiableList(categories) : Collections.unmodifiableList(installedCategories));
     }
 
     /**
@@ -272,29 +272,37 @@ public class DataHandler {
     
     /**
      * Gets an unmodifiable list of all programs according to the category, or
-     * all programs if the category is null. It will use the installed version
-     * of the program if available
+     * all programs if the category is null. It starts by building a list of all
+     * installed programs, and then includes the latest programs if not yet
+     * added to the list
      * @param category the category to return, or null for all categories
      * @return unmodifiable list of all programs
      */
     public static List<Program> getPrograms(Category category) {
         List<Program> ret = new ArrayList<Program>();
         
-        for (Program program : programs) {
+        for (Program program : installedPrograms) {
             Category currentCategory = program.getCategory();
-            
+
             if (category != null && !category.equals(currentCategory)) {
                 continue;
             }
             
-            if (installedPrograms.contains(program)) {
-                Program installedProgram = getProgram(program.getId(), true);
-                ret.add(installedProgram);
-            } else {
+            ret.add(program);
+        }
+
+        for (Program program : programs) {
+            Category currentCategory = program.getCategory();
+
+            if (category != null && !category.equals(currentCategory)) {
+                continue;
+            }
+
+            if (!ret.contains(program)) {
                 ret.add(program);
             }
         }
-        
+
         return Collections.unmodifiableList(ret);
     }
 

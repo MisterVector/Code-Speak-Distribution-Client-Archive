@@ -85,6 +85,24 @@ public class MainSceneController implements Initializable {
     @FXML private Button installButton;
     @FXML private Button updateButton;
 
+    private void populateCategories() {
+        List<Category> categories = DataHandler.getCategories();
+        ObservableList categoryItems = categoryChoices.getItems();
+        
+        categoryNamesMap.clear();
+        categoryItems.clear();
+        
+        categoryItems.add("All");
+        categoryNamesMap.put("All", null);
+        
+        for (Category category : categories) {
+            String categoryName = category.getName();
+            
+            categoryItems.add(categoryName);
+            categoryNamesMap.put(categoryName, category);
+        }
+    }
+    
     private void selectProgram(int selectedIndex) {
         if (selectedIndex > -1 && selectedIndex != currentlySelectedProgramIndex) {
             currentlySelectedProgramIndex = selectedIndex;
@@ -92,12 +110,17 @@ public class MainSceneController implements Initializable {
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
             Program selectedProgram = programData.getProgram();
             
-            if (selectedProgram.isInstalled()) {
-                currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
-                currentlySelectedInstalledProgram = selectedProgram;
+            if (DistributionClient.isOnline()) {
+                if (selectedProgram.isInstalled()) {
+                    currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
+                    currentlySelectedInstalledProgram = selectedProgram;
+                } else {
+                    currentlySelectedProgram = selectedProgram;
+                    currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
+                }                
             } else {
                 currentlySelectedProgram = selectedProgram;
-                currentlySelectedInstalledProgram = DataHandler.getProgram(selectedProgram.getId(), true);
+                currentlySelectedInstalledProgram = selectedProgram;
             }
             
             displayProgramControls(currentlySelectedProgram, currentlySelectedInstalledProgram);
@@ -194,20 +217,9 @@ public class MainSceneController implements Initializable {
         programsTableReleaseDateColumn.setCellValueFactory(new PropertyValueFactory<ProgramTableData, String>("releaseDate"));
 
         settings = Configuration.getSettings();
-        
-        List<Category> categories = DataHandler.getCategories(false);
-        ObservableList categoryItems = categoryChoices.getItems();
-        
-        categoryItems.add("All");
-        categoryNamesMap.put("All", null);
-        
-        for (Category category : categories) {
-            String categoryName = category.getName();
-            
-            categoryItems.add(categoryName);
-            categoryNamesMap.put(categoryName, category);
-        }
 
+        populateCategories();
+        
         String selectedCategoryValue = "All";
         Category selectedCategory = null;
 
@@ -234,6 +246,13 @@ public class MainSceneController implements Initializable {
      * @param startup if this update is being called on program startup
      */
     public void checkClientUpdate(boolean startup) {
+        if (!DistributionClient.isOnline()) {
+            Alert alert = AlertUtil.createAlert("Unable to check for client update at this time.");
+            alert.show();
+            
+            return;
+        }
+        
         try {
             ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
             
@@ -397,6 +416,13 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onProgramRepairButtonClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
+            if (!DistributionClient.isOnline()) {
+                Alert alert = AlertUtil.createAlert("Unable to repair program at this time.");
+                alert.show();
+
+                return;
+            }
+
             Timestamp installedReleaseTime = currentlySelectedInstalledProgram.getReleaseTime();
             Timestamp releaseTime = currentlySelectedProgram.getReleaseTime();
             
@@ -441,6 +467,13 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onProgramViewChangelogButtonClick() throws IOException {
         if (currentlySelectedProgram != null) {
+            if (!DistributionClient.isOnline()) {
+                Alert alert = AlertUtil.createAlert("Unable to view program changelog at this time.");
+                alert.show();
+
+                return;
+            }
+
             int id = 0;
             String name = null;
             String version = null;
@@ -479,6 +512,13 @@ public class MainSceneController implements Initializable {
     
     @FXML
     public void onViewChangelogButtonClick() throws IOException {
+        if (!DistributionClient.isOnline()) {
+            Alert alert = AlertUtil.createAlert("Unable to view changelog at this time.");
+            alert.show();
+
+            return;
+        }
+
         try {
             List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG);
             StageController<ChangelogSceneController> stageController = SceneUtil.getScene(SceneTypes.CHANGELOG, Configuration.PROGRAM_NAME + " Changelog");
@@ -508,7 +548,7 @@ public class MainSceneController implements Initializable {
             
             displayPrograms(category);
             resetProgramControls();
-            
+
             currentlySelectedProgramIndex = -1;
             
             DataHandler.setMappedData("selected_category", selectedCategoryName);
@@ -607,9 +647,22 @@ public class MainSceneController implements Initializable {
             if (buttonType == ButtonType.YES) {
                 DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
 
-                displayProgramControls(currentlySelectedProgram, null);
-                
-                currentlySelectedInstalledProgram = null;
+                if (DistributionClient.isOnline()) {
+                    currentlySelectedInstalledProgram = null;
+
+                    displayProgramControls(currentlySelectedProgram, null);
+                } else {
+                    currentlySelectedProgram = null;
+                    currentlySelectedInstalledProgram = null;
+                    currentlySelectedProgramIndex = -1;
+                    currentlySelectedCategoryIndex = 0;
+
+                    populateCategories();
+                    displayPrograms(null);
+                    resetProgramControls();
+
+                    categoryChoices.getSelectionModel().select("All");
+                }
                 
                 Alert uninstallAlert = AlertUtil.createAlert(programName + " has been uninstalled.");
                 uninstallAlert.show();

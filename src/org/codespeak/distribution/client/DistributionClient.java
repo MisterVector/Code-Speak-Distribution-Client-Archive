@@ -39,6 +39,7 @@ public class DistributionClient extends Application {
     
     private static ClientException savedException = null;
     private static DistributionClient instance;
+    private static boolean online = true;
     
     public DistributionClient() {
         instance = this;
@@ -46,7 +47,13 @@ public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        StageController<MainSceneController> stageController = SceneUtil.getScene(SceneTypes.MAIN, Configuration.PROGRAM_TITLE);
+        String title = Configuration.PROGRAM_TITLE;
+        
+        if (!online) {
+            title += " - Offline";
+        }
+        
+        StageController<MainSceneController> stageController = SceneUtil.getScene(SceneTypes.MAIN, title);
         stage = stageController.getStage();
         MainSceneController controller = stageController.getController();
         
@@ -99,6 +106,7 @@ public class DistributionClient extends Application {
             }
         } catch (ClientException ex) {
             savedException = ex;
+            online = false;
             
             logError(ex);
         }
@@ -168,6 +176,14 @@ public class DistributionClient extends Application {
         } catch (IOException ioe) {
             
         }
+    }
+    
+    /**
+     * Checks if the client is online
+     * @return if the client is online
+     */
+    public static boolean isOnline() {
+        return online;
     }
     
 }
