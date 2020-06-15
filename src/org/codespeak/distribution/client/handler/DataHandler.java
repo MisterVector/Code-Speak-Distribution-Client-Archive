@@ -63,28 +63,6 @@ public class DataHandler {
     }
     
     /**
-     * Removes a category by its ID
-     * @param id ID of category
-     * @param installed whether the category is installed
-     * @return Category object from deleted category
-     */
-    public static Category removeCategory(int id, boolean installed) {
-        List<Category> cats = (installed ? installedCategories : categories);
-        
-        for (Iterator<Category> it = cats.iterator(); it.hasNext();) {
-            Category category = it.next();
-            
-            if (category.getId() == id) {
-                it.remove();
-                
-                return category;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
      * Gets an unmodifiable list of all categories. The installed categories
      * will be used if the current list of categories is empty
      * @return unmodifiable list of all categories
@@ -105,7 +83,7 @@ public class DataHandler {
             dependencies.add(dependency);            
         }
     }
-    
+
     /**
      * Gets a dependency by its ID
      * @param id ID of dependency
@@ -124,37 +102,6 @@ public class DataHandler {
         return null;
     }
 
-    /**
-     * Removes a dependency by its ID
-     * @param id ID of dependency
-     * @param installed whether the dependency is installed
-     * @return Dependency object from deleted dependency
-     */
-    public static Dependency removeDependency(int id, boolean installed) {
-        List<Dependency> deps = (installed ? installedDependencies : dependencies);
-        
-        for (Iterator<Dependency> it = deps.iterator(); it.hasNext();) {
-            Dependency dependency = it.next();
-            
-            if (dependency.getId() == id) {
-                it.remove();
-                
-                return dependency;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Gets an unmodifiable list of all dependencies
-     * @param installed whether the dependencies are installed
-     * @return unmodifiable list of all dependencies
-     */
-    public static List<Dependency> getDependencies(boolean installed) {
-        return (installed ? Collections.unmodifiableList(installedDependencies) : Collections.unmodifiableList(dependencies));
-    }
-    
     /**
      * Adds a program to the list of programs
      * @param program program to add
@@ -186,28 +133,6 @@ public class DataHandler {
         return null;
     }
     
-    /**
-     * Deletes a program by its ID
-     * @param id ID of program
-     * @param installed whether the program is installed
-     * @return Program object from deleted program
-     */
-    public static Program deleteProgram(int id, boolean installed) {
-        List<Program> progs = (installed ? installedPrograms : programs);
-        
-        for (Iterator<Program> it = progs.iterator(); it.hasNext();) {
-            Program program = it.next();
-            
-            if (program.getId() == id) {
-                it.remove();
-                
-                return program;
-            }
-        }
-        
-        return null;
-    }
-
     /**
      * Installs a new program
      * @param program the program to install
@@ -304,34 +229,6 @@ public class DataHandler {
         }
 
         return Collections.unmodifiableList(ret);
-    }
-
-    /**
-     * Gets an unmodifiable list of all programs
-     * @param installed whether the programs are installed
-     * @return unmodifiable list of all programs
-     */
-    public static List<Program> getPrograms(boolean installed) {
-        return (installed ? Collections.unmodifiableList(installedPrograms) : Collections.unmodifiableList(programs));
-    }
-    
-    /**
-     * Gets a list of programs by a specific category
-     * @param category the category to search for, or null for all programs
-     * @param installed whether the programs are installed
-     * @return a list of programs by category
-     */
-    public static List<Program> getProgramsByCategory(Category category, boolean installed) {
-        List<Program> progs = (installed ? installedPrograms : programs);
-        List<Program> ret = new ArrayList<Program>();
-        
-        for (Program program : progs) {
-            if (category == null || category == program.getCategory()) {
-                ret.add(program);
-            }
-        }
-        
-        return ret;
     }
     
     /**
@@ -445,5 +342,6 @@ public class DataHandler {
             }
         }
     }
+    
 }
     
