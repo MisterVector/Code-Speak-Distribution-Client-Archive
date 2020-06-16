@@ -1,20 +1,15 @@
 package org.codespeak.distribution.client.scenes;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,7 +38,6 @@ import org.codespeak.distribution.client.data.ChangelogEntry;
 import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
 import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.data.Dependency;
-import org.codespeak.distribution.client.data.FileInfo;
 import org.codespeak.distribution.client.data.Program;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
@@ -57,8 +51,6 @@ import org.codespeak.distribution.client.util.AlertUtil;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
