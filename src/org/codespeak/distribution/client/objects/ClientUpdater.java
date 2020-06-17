@@ -55,7 +55,9 @@ public class ClientUpdater extends Updater {
 
         commands.add(updaterPath.toString());
         commands.add("--version");
-        commands.add(Configuration.PROGRAM_VERSION);
+        commands.add(previousVersion);
+        commands.add("--new-version");
+        commands.add(currentVersion);
         commands.add("--launch-file");
         commands.add(applicationFile.toString());
 
