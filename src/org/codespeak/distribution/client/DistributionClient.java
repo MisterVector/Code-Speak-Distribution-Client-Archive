@@ -135,8 +135,8 @@ public class DistributionClient extends Application {
     }
 
     /**
-     * Gets the logger
-     * @param ex
+     * Logs the specified ClientException to file
+     * @param ex the exception to log
      */
     public static void logError(ClientException ex) {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
