@@ -50,7 +50,7 @@
               <columns>
                 <TableColumn fx:id="programsTableNameColumn" prefWidth="347.0" text="Name" />
                 <TableColumn fx:id="programsTableVersionColumn" prefWidth="167.0" text="Version" />
-                  <TableColumn fx:id="programsTableReleaseDateColumn" prefWidth="203.0" text="Release Time" />
+                  <TableColumn fx:id="programsTableReleaseDateColumn" prefWidth="203.0" text="Release Date" />
               </columns>
             </TableView>
             <Label layoutX="14.0" layoutY="36.0" text="Select Category">
