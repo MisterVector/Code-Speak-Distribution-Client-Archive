@@ -73,7 +73,7 @@
                   <Button fx:id="installButton" disable="true" layoutX="151.0" layoutY="278.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="120.0" text="Install" />
                   <Button fx:id="launchProgramButton" disable="true" layoutX="14.0" layoutY="278.0" mnemonicParsing="false" onAction="#onLaunchProgramButtonClick" prefHeight="25.0" prefWidth="120.0" text="Launch Program" />
                   <Button fx:id="updateButton" disable="true" layoutX="288.0" layoutY="277.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="120.0" text="Update" />
-                  <Label fx:id="programUpdateLabel" layoutX="422.0" layoutY="277.0" textFill="RED">
+                  <Label fx:id="programDetailsLabel" layoutX="422.0" layoutY="277.0" textFill="RED">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

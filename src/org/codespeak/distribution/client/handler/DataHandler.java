@@ -63,11 +63,23 @@ public class DataHandler {
     
     /**
      * Gets an unmodifiable list of all categories. The installed categories
-     * will be used if the current list of categories is empty
+     * will be added first, and any remaining categories will be included
      * @return unmodifiable list of all categories
      */
     public static List<Category> getCategories() {
-        return (categories.size() > 0 ? Collections.unmodifiableList(categories) : Collections.unmodifiableList(installedCategories));
+        List<Category> ret = new ArrayList<Category>();
+        
+        for (Category category : installedCategories) {
+            ret.add(category);
+        }
+        
+        for (Category category : categories) {
+            if (!ret.contains(category)) {
+                ret.add(category);
+            }
+        }
+        
+        return ret;
     }
 
     /**
@@ -255,6 +267,25 @@ public class DataHandler {
      */
     public static boolean hasMappedData(String key) {
         return mappedData.containsKey(key);
+    }
+    
+    /**
+     * Goes through all installed programs and marks if any are detached from
+     * the distribution system
+     */
+    public static void markDetachedPrograms() {
+        for (Program program : installedPrograms) {
+            boolean detached = true;
+            
+            for (Program program2 : programs) {
+                if (program2.equals(program)) {
+                    detached = false;
+                    break;
+                }
+            }
+            
+            program.setDetached(detached);
+        }
     }
     
     /**

@@ -72,7 +72,7 @@ public class MainSceneController implements Initializable {
     @FXML private TableColumn<ProgramTableData, String> programsTableReleaseDateColumn;
     @FXML private Label programNameLabel;
     @FXML private Label programDescriptionLabel;
-    @FXML private Label programUpdateLabel;
+    @FXML private Label programDetailsLabel;
     @FXML private Button launchProgramButton;
     @FXML private Button installButton;
     @FXML private Button updateButton;
@@ -104,7 +104,12 @@ public class MainSceneController implements Initializable {
             
             if (DistributionClient.isOnline()) {
                 if (selectedProgram.isInstalled()) {
-                    currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
+                    if (selectedProgram.isDetached()) {
+                        currentlySelectedProgram = selectedProgram;
+                    } else {
+                        currentlySelectedProgram = DataHandler.getProgram(selectedProgram.getId(), false);
+                    }
+                    
                     currentlySelectedInstalledProgram = selectedProgram;
                 } else {
                     currentlySelectedProgram = selectedProgram;
@@ -159,7 +164,7 @@ public class MainSceneController implements Initializable {
     private void resetProgramControls() {
         programNameLabel.setText("No Program Selected");
         programDescriptionLabel.setText("No description. Select a program first.");
-        programUpdateLabel.setText("");
+        programDetailsLabel.setText("");
             
         launchProgramButton.setDisable(true);
         installButton.setDisable(true);
@@ -180,9 +185,13 @@ public class MainSceneController implements Initializable {
             
             launchProgramButton.setDisable(false);
             
-            if (releaseTime.after(installedReleaseTime)) {
-                updateButton.setDisable(false);
-                programUpdateLabel.setText("A new version is available!");
+            if (installedProgram.isDetached()) {
+                programDetailsLabel.setText("This program is no longer maintained.");
+            } else {
+                if (releaseTime.after(installedReleaseTime)) {
+                    updateButton.setDisable(false);
+                    programDetailsLabel.setText("A new version is available!");
+                }                
             }
         } else {
             name = program.getName();
@@ -210,6 +219,10 @@ public class MainSceneController implements Initializable {
 
         settings = Configuration.getSettings();
 
+        if (DistributionClient.isOnline()) {
+            DataHandler.markDetachedPrograms();
+        }
+        
         populateCategories();
         
         String selectedCategoryValue = "All";
@@ -415,6 +428,13 @@ public class MainSceneController implements Initializable {
                 return;
             }
 
+            if (currentlySelectedInstalledProgram.isDetached()) {
+                Alert alert = AlertUtil.createAlert("Unable to repair. This program is no longer available.");
+                alert.show();
+                
+                return;
+            }
+            
             Timestamp installedReleaseTime = currentlySelectedInstalledProgram.getReleaseTime();
             Timestamp releaseTime = currentlySelectedProgram.getReleaseTime();
             
@@ -463,6 +483,13 @@ public class MainSceneController implements Initializable {
                 Alert alert = AlertUtil.createAlert("Unable to view program changelog at this time.");
                 alert.show();
 
+                return;
+            }
+
+            if (currentlySelectedInstalledProgram.isDetached()) {
+                Alert alert = AlertUtil.createAlert("Unable to view changelog. This program is no longer available.");
+                alert.show();
+                
                 return;
             }
 

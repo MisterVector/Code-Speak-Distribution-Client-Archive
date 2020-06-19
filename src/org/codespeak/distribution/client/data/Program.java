@@ -40,6 +40,7 @@ public class Program {
     private Timestamp releaseTime;
     private List<Dependency> dependencies;
     private boolean installed;
+    private boolean detached = false;
     
     protected Program(int id, Category category, String slug, String name, String description,
                     String launchFile, String helpFile, String version, Timestamp releaseTime,
@@ -159,6 +160,22 @@ public class Program {
         return installed;
     }
 
+    /**
+     * Checks if this program is detached from the distribution system
+     * @return if this program is detached from the distribution system
+     */
+    public boolean isDetached() {
+        return detached;
+    }
+    
+    /**
+     * Sets if this program is detached from the distribution system
+     * @param detached if this program is detached from the distribution system
+     */
+    public void setDetached(boolean detached) {
+        this.detached = detached;
+    }
+    
     /**
      * Gets the directory of this program
      * @return directory of this program
