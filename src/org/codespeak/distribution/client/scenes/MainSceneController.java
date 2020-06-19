@@ -667,7 +667,7 @@ public class MainSceneController implements Initializable {
             if (buttonType == ButtonType.YES) {
                 DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
 
-                if (DistributionClient.isOnline()) {
+                if (DistributionClient.isOnline() && !currentlySelectedInstalledProgram.isDetached()) {
                     currentlySelectedInstalledProgram = null;
 
                     displayProgramControls(currentlySelectedProgram, null);
