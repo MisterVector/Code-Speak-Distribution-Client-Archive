@@ -264,7 +264,7 @@ public class MainSceneController implements Initializable {
                     controller.showUpdate(updater);
                 } else {
                     if (!startup) {
-                        Alert alert = AlertUtil.createAlert(AlertType.CONFIRMATION, "The client is on the latest version!");
+                        Alert alert = AlertUtil.createAlert(AlertType.INFORMATION, "The client is on the latest version!");
                         alert.show();
                     }
                 }                
