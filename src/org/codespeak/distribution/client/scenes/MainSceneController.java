@@ -373,6 +373,13 @@ public class MainSceneController implements Initializable {
             
             Path helpFilePath = currentlySelectedInstalledProgram.getDirectory().resolve(helpFile);
             
+            if (!helpFilePath.toFile().exists()) {
+                Alert alert = AlertUtil.createAlert("The help file has been deleted.");
+                alert.show();
+                
+                return;
+            }
+            
             Desktop desktop = Desktop.getDesktop();
             desktop.open(helpFilePath.toFile());
         } else {
