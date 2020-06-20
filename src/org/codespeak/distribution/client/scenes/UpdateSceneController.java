@@ -51,11 +51,11 @@ public class UpdateSceneController implements Initializable {
             String formattedReleaseTime = MiscUtil.formatTimestamp(entry.getReleaseTime());
             
             if (sb.length() > 0) {
-                sb.append("\n\n\n");
+                sb.append("\n\n");
             }
             
             sb.append("Version ").append(entry.getVersion()).append(" - Released on ").append(formattedReleaseTime)
-              .append("\n\n\n").append(entry.getContent());
+              .append("\n\n").append(entry.getContent());
         }
         
         changesSinceText.setText(sb.toString());
