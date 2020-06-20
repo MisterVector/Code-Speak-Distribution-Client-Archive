@@ -493,12 +493,13 @@ public class MainSceneController implements Initializable {
                 return;
             }
 
-            if (currentlySelectedInstalledProgram.isDetached()) {
+            if (currentlySelectedProgram.isDetached()) {
                 Alert alert = AlertUtil.createAlert("Unable to view changelog. This program is no longer available.");
                 alert.show();
-                
+
                 return;
             }
+
 
             int id = 0;
             String name = null;
@@ -508,6 +509,7 @@ public class MainSceneController implements Initializable {
                 name = currentlySelectedInstalledProgram.getName();
             } else {
                 id = currentlySelectedProgram.getId();
+                name = currentlySelectedProgram.getName();
             }
 
             try {
