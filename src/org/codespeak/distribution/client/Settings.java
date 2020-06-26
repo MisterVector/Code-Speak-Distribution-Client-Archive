@@ -106,7 +106,7 @@ public class Settings {
         }
         
         if (json.has("backup_before_removing_text_files")) {
-            backupBeforeRemovingTextFiles = json.getBoolean("backup_non_empty_text_files_on_update");
+            backupBeforeRemovingTextFiles = json.getBoolean("backup_before_removing_text_files");
         }
         
         return new Settings(rememberSelectedCategory, checkClientUpdateOnStartup, backupBeforeRemovingTextFiles);
