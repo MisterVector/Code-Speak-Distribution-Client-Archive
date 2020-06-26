@@ -306,6 +306,10 @@ public class Program {
             switch (file.getFileStatus()) {
                 case NEW:
                 case MODIFIED:
+                    Path parentPath = updateFilePath.getParent();
+                    
+                    MiscUtil.ensurePathExists(parentPath);
+                    
                     ReadableByteChannel readableByteChannel = BackendHandler.getRemoteFileChannel(slug, file.getRemotePathAndName());
                     FileChannel outChannel = new FileOutputStream(updateFile).getChannel();
                     
