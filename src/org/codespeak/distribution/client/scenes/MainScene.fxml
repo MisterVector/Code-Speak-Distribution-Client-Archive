@@ -21,6 +21,7 @@
                 <Menu mnemonicParsing="false" text="File">
                   <items>
                         <MenuItem mnemonicParsing="false" onAction="#onSettingsMenuItemClick" text="Settings" />
+                        <MenuItem mnemonicParsing="false" onAction="#onOpenBackupFolderMenuItemClick" text="Open Backup Folder" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem mnemonicParsing="false" onAction="#onQuitMenuItemClick" text="Quit" />
                   </items>

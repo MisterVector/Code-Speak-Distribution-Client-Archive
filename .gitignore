@@ -28,6 +28,7 @@ log/
 target/
 
 # Other stuff
+/backups/
 /logs/
 extra/
 /programs/

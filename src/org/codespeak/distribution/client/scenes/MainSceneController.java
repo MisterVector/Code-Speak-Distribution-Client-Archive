@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -341,7 +342,22 @@ public class MainSceneController implements Initializable {
                 break;
         }
     }
- 
+
+    @FXML
+    public void onOpenBackupFolderMenuItemClick(ActionEvent event) throws Exception {
+        Path backupFolder = Paths.get(Configuration.BACKUPS_FOLDER);
+        
+        if (!backupFolder.toFile().exists()) {
+            Alert alert = AlertUtil.createAlert("There are no program backups.");
+            alert.show();
+            
+            return;
+        }
+        
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(backupFolder.toFile());
+    }
+    
     @FXML
     public void onSettingsMenuItemClick(ActionEvent event) throws Exception {
         Stage stage = SceneUtil.getScene(SceneTypes.SETTINGS, "Settings for " + Configuration.PROGRAM_NAME).getStage();

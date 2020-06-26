@@ -1,8 +1,10 @@
 package org.codespeak.distribution.client.data;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.DistributionClient;
+import org.codespeak.distribution.client.data.FileInfo.FileStatus;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
@@ -41,6 +45,29 @@ public class Program {
     private List<Dependency> dependencies;
     private boolean installed;
     private boolean detached = false;
+    
+    private void backupFile(Path programDirectory, Path fileToBackupPath) throws IOException {
+        Path backupPath = Paths.get(Configuration.BACKUPS_FOLDER).resolve(slug);
+        Path parentDirectory = fileToBackupPath.getParent();
+        
+        if (parentDirectory != null) {
+            backupPath = backupPath.resolve(parentDirectory);
+        }
+        
+        MiscUtil.ensurePathExists(backupPath);
+        
+        String filename = fileToBackupPath.getFileName().toString();
+        Path originalFilePath = programDirectory.resolve(fileToBackupPath);
+        Path newBackupFilePath = MiscUtil.getNonExistentPath(backupPath, filename);
+        
+        ReadableByteChannel readableByteChannel = Channels.newChannel(new FileInputStream(originalFilePath.toFile()));
+        FileChannel outChannel = new FileOutputStream(newBackupFilePath.toFile()).getChannel();
+                    
+        outChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+
+        readableByteChannel.close();
+        outChannel.close();
+    }
     
     protected Program(int id, Category category, String slug, String name, String description,
                     String launchFile, String helpFile, String version, Timestamp releaseTime,
@@ -263,10 +290,16 @@ public class Program {
         Path programDirectory = getDirectory();
         
         for (FileInfo file : files) {
-            Path updateFilePath = programDirectory.resolve(file.getPathAndName());
+            Path filePath = Paths.get(file.getPathAndName());
+            Path updateFilePath = programDirectory.resolve(filePath);
             File updateFile = updateFilePath.toFile();
             
             if (updateFile.exists()) {
+                if (file.getFileStatus() == FileStatus.REMOVED && Configuration.getSettings().getBackupBeforeRemovingTextFiles()
+                        && MiscUtil.isNonEmptyTextFile(updateFilePath)) {
+                    backupFile(programDirectory, filePath);
+                }
+                
                 updateFile.delete();
             }
             

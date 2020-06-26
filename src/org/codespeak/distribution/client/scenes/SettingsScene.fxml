@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="151.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
+<AnchorPane id="AnchorPane" prefHeight="173.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
    <children>
-      <Button layoutX="381.0" layoutY="112.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="120.0" text="OK" />
-      <Button layoutX="516.0" layoutY="112.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="120.0" text="Close" />
+      <Button layoutX="379.0" layoutY="137.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="120.0" text="OK" />
+      <Button layoutX="516.0" layoutY="137.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="120.0" text="Close" />
       <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
          <font>
             <Font size="14.0" />
@@ -21,6 +21,11 @@
          </font>
       </Label>
       <CheckBox fx:id="checkClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Check Client Update On Startup">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="backupBeforeRemovingTextFilesCheck" layoutX="25.0" layoutY="105.0" mnemonicParsing="false" text="Backup Before Removing Text Files">
          <font>
             <Font size="14.0" />
          </font>

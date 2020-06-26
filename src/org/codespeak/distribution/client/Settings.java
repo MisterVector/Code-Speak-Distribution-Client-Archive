@@ -11,13 +11,16 @@ public class Settings {
     
     private static final boolean DEFAULT_REMEMBER_SELECTED_CATEGORY = false;
     private static final boolean DEFAULT_CHECK_CLIENT_UPDATE_ON_STARTUP = true;
+    private static final boolean DEFAULT_BACKUP_BEFORE_REMOVING_TEXT_FILES = true;
     
     private boolean rememberSelectedCategory;
     private boolean checkClientUpdateOnStartup;
+    private boolean backupBeforeRemovingTextFiles;
     
-    private Settings(boolean rememberSelectedCategory, boolean checkClientUpdateOnStartup) {
+    private Settings(boolean rememberSelectedCategory, boolean checkClientUpdateOnStartup, boolean backupBeforeRemovingTextFiles) {
         this.rememberSelectedCategory = rememberSelectedCategory;
         this.checkClientUpdateOnStartup = checkClientUpdateOnStartup;
+        this.backupBeforeRemovingTextFiles = backupBeforeRemovingTextFiles;
     }
     
     /**
@@ -55,6 +58,22 @@ public class Settings {
     }
     
     /**
+     * Gets if the client is backing up text files before removing them
+     * @return if the client is backing up text files before removing them
+     */
+    public boolean getBackupBeforeRemovingTextFiles() {
+        return backupBeforeRemovingTextFiles;
+    }
+    
+    /**
+     * Sets if the client is backing up text files before removing them
+     * @param backupBeforeRemovingTextFiles if the client is backing up non-empty text files on update
+     */
+    public void setBackupBeforeRemovingTextFiles(boolean backupBeforeRemovingTextFiles) {
+        this.backupBeforeRemovingTextFiles = backupBeforeRemovingTextFiles;
+    }
+    
+    /**
      * Converts this Settings object to JSON
      * @return JSON representation of this Settings object
      */
@@ -63,6 +82,7 @@ public class Settings {
         
         json.put("remember_selected_category", rememberSelectedCategory);
         json.put("check_client_update_on_startup", checkClientUpdateOnStartup);
+        json.put("backup_before_removing_text_files", backupBeforeRemovingTextFiles);
         
         return json;
     }
@@ -75,6 +95,7 @@ public class Settings {
     public static Settings fromJSON(JSONObject json) {
         boolean rememberSelectedCategory = DEFAULT_REMEMBER_SELECTED_CATEGORY;
         boolean checkClientUpdateOnStartup = DEFAULT_CHECK_CLIENT_UPDATE_ON_STARTUP;
+        boolean backupBeforeRemovingTextFiles = DEFAULT_BACKUP_BEFORE_REMOVING_TEXT_FILES;
         
         if (json.has("remember_selected_category")) {
             rememberSelectedCategory = json.getBoolean("remember_selected_category");
@@ -84,7 +105,11 @@ public class Settings {
             checkClientUpdateOnStartup = json.getBoolean("check_client_update_on_startup");
         }
         
-        return new Settings(rememberSelectedCategory, checkClientUpdateOnStartup);
+        if (json.has("backup_before_removing_text_files")) {
+            backupBeforeRemovingTextFiles = json.getBoolean("backup_non_empty_text_files_on_update");
+        }
+        
+        return new Settings(rememberSelectedCategory, checkClientUpdateOnStartup, backupBeforeRemovingTextFiles);
     }
     
 }

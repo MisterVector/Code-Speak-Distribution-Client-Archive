@@ -21,6 +21,7 @@ public class Configuration {
     public static final String CONTACT_ME_PAGE = WEBSITE_URL + "/contact";
     public static final String DISTRIBUTION_URL = "https://distribution.codespeak.org";
     public static final String BACKEND_URL = DISTRIBUTION_URL + "/data_handler.php";
+    public static final String BACKUPS_FOLDER = "backups";
     public static final String PROGRAMS_FOLDER = "programs";
     public static final String LOGS_FOLDER = "logs";
     public static final String DATA_FILE = "data.json";

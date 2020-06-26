@@ -1,5 +1,6 @@
 package org.codespeak.distribution.client.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,4 +69,70 @@ public class MiscUtil {
         return null;
     }
 
+    /**
+     * Takes the specified parent folder and file and checks if the file
+     * resolved to the parent folder exists, looping until the file no
+     * longer exists, and is then returned
+     * @param parentFolder parent directory to be resolved against a file
+     * @param filename file (without the extension) to be resolved with parent
+     * directory
+     * @return new path including the parent directory and file that represents
+     * a file that does not exist
+     */
+    public static Path getNonExistentPath(Path parentFolder, String filename) {
+        boolean exists = false;
+        int nextNumber = 2;
+        Path fullPath = null;
+        String newFile = filename;
+        
+        do {
+            fullPath = parentFolder.resolve(newFile);
+            exists = fullPath.toFile().exists();
+            
+            if (exists) {
+                String fileWithoutExtension = filename.substring(0, filename.lastIndexOf("."));
+                String ext = filename.substring(filename.lastIndexOf(".") + 1);
+
+                newFile = fileWithoutExtension + " (" + nextNumber + ")" + "." + ext;
+                nextNumber++;
+            }
+        } while (exists);
+        
+        return fullPath;
+    }
+
+    /**
+     * Ensures that the specified path exists by making sure that the directory
+     * structure is created if not all of it exists
+     * @param path the path to ensure that it exists
+     */
+    public static void ensurePathExists(Path path) {
+        File file = path.toFile();
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+    
+    /**
+     * Checks if the specified file is a non-empty text file
+     * @param programFilePath the path to the program file being checked
+     * @return if the specified file is a non-empty text file
+     */
+    public static boolean isNonEmptyTextFile(Path programFilePath) {
+        if (programFilePath.toFile().length() > 0) {
+            String filename = programFilePath.getFileName().toString();
+            int lastIndex = filename.lastIndexOf(".");
+            
+            if (lastIndex > -1) {
+                String ext = filename.substring(lastIndex + 1).toLowerCase();
+
+                return (ext.equals("txt") || ext.equals("log") || ext.equals("ini")
+                        || ext.equals("rtf"));                            
+            }
+        }
+
+        return false;
+    }
+    
 }
