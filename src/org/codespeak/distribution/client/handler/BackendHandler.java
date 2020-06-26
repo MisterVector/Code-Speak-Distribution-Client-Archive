@@ -9,6 +9,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.List;
+import javax.net.ssl.HttpsURLConnection;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
@@ -55,18 +56,21 @@ public class BackendHandler {
     public static <T> T getDataFromQuery(QueryTypes queryType, String otherPart) throws ClientException {
         String fullQuery = Configuration.BACKEND_URL + "?query=" + queryType.getName() + otherPart;
         URL url = null;
+        HttpsURLConnection connection = null;
         
         String title =  "An error occurred while performing query: " + queryType.getTitle() + ".";
         ErrorType type = ErrorType.ERROR_SEVERE;
         Exception exception = null;
-        
+
         try {
             url = new URL(fullQuery);
-        } catch (MalformedURLException ex) {
+            connection = (HttpsURLConnection) url.openConnection();  
+            connection.setRequestProperty("User-Agent", "CodeSpeakDistributionClient/" + Configuration.PROGRAM_VERSION);
+        } catch (IOException ex) {
             exception = ex;
         }
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+        
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder sb = new StringBuilder();
             String input;
             
