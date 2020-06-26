@@ -69,7 +69,7 @@ public class Program {
         outChannel.close();
     }
     
-    protected Program(int id, Category category, String slug, String name, String description,
+    private Program(int id, Category category, String slug, String name, String description,
                     String launchFile, String helpFile, String version, Timestamp releaseTime,
                     List<Dependency> dependencies, boolean installed) {
         this.id = id;

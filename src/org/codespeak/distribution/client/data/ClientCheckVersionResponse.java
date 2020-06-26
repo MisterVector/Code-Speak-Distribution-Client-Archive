@@ -15,7 +15,7 @@ public class ClientCheckVersionResponse {
     private final String version;
     private final Timestamp releaseTime;
     
-    protected ClientCheckVersionResponse(String requestVersion, Timestamp requestReleaseTime, String version, Timestamp releaseTime) {
+    private ClientCheckVersionResponse(String requestVersion, Timestamp requestReleaseTime, String version, Timestamp releaseTime) {
         this.requestVersion = requestVersion;
         this.requestReleaseTime = requestReleaseTime;
         this.version = version;
