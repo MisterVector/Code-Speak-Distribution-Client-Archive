@@ -172,12 +172,17 @@ public class BackendHandler {
      * error occurred while getting remote file channel
      */
     public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws ClientException {
+        String title =  "An exception occurred while fetching a remote file.";
+        ErrorType type = ErrorType.ERROR_SEVERE;
+
         try {
             URL url = new URL(remoteURL);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();  
+            connection.setRequestProperty("User-Agent", "CodeSpeakDistributionClient/" + Configuration.PROGRAM_VERSION);
             
-            return Channels.newChannel(url.openStream());
+            return Channels.newChannel(connection.getInputStream());
         } catch (IOException ex) {
-            throw new ClientException(ErrorType.ERROR_CRITICAL, "An exception occurred while fetching a remote file.", remoteURL, ex);
+            throw new ClientException(type, title, remoteURL, ex);
         }
     }
     
