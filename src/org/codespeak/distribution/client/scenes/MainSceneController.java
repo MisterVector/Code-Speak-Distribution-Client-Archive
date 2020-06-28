@@ -1,6 +1,7 @@
 package org.codespeak.distribution.client.scenes;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -571,6 +572,21 @@ public class MainSceneController implements Initializable {
             
             DistributionClient.logError(ex);
         }
+    }
+    
+    @FXML
+    public void onViewHelpMenuItemClick(ActionEvent event) throws IOException {
+        File file = new File(Configuration.README_FILE);
+        
+        if (!file.exists()) {
+            Alert alert = AlertUtil.createAlert(("The read me file does not exist."));
+            alert.show();
+            
+            return;
+        }
+        
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(file);
     }
     
     @FXML

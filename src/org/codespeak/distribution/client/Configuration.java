@@ -27,6 +27,7 @@ public class Configuration {
     public static final String DATA_FILE = "data.json";
     public static final String SETTINGS_FILE = "settings.json";
     public static final String UPDATER_FILE = "Code_Speak_Distribution_Updater.jar";
+    public static final String README_FILE = "Read Me.pdf";
     
     private static Settings settings = null;
 
