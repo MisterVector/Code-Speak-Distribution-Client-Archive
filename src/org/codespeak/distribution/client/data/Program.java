@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.codespeak.distribution.client.Configuration;
-import org.codespeak.distribution.client.DistributionClient;
 import org.codespeak.distribution.client.data.FileInfo.FileStatus;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
