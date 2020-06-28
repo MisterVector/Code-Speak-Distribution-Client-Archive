@@ -47,7 +47,7 @@ public class DistributionClient extends Application {
         String title = Configuration.PROGRAM_TITLE;
         
         if (!online) {
-            title += " - Offline";
+            title += " - Currently Offline";
         }
         
         StageController<MainSceneController> stageController = SceneUtil.getScene(SceneTypes.MAIN, title);
