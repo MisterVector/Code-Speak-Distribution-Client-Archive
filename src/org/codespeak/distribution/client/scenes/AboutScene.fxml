@@ -13,6 +13,16 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
+      <Label layoutX="181.0" layoutY="67.0" prefHeight="10.0" prefWidth="76.0" text="By Vector">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_LEFT" layoutX="18.0" layoutY="108.0" prefHeight="63.0" prefWidth="402.0" text="This is a program that interacts with the Code Speak Distribution System. It is used to manage the installation of programs served through the system." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
       <Label layoutX="18.0" layoutY="209.0" onMouseClicked="#onCodeSpeakLinkClick" text="www.codespeak.org" textFill="#000dff" underline="true">
          <font>
             <Font size="18.0" />
@@ -20,16 +30,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </Label>
-      <Label alignment="TOP_LEFT" layoutX="18.0" layoutY="108.0" prefHeight="63.0" prefWidth="402.0" text="This is a program that interacts with the Code Speak Distribution System. It is used to manage the installation of programs served through the system." wrapText="true">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="181.0" layoutY="67.0" prefHeight="10.0" prefWidth="76.0" text="By Vector">
-         <font>
-            <Font size="18.0" />
-         </font>
       </Label>
       <Button layoutX="302.0" layoutY="210.0" mnemonicParsing="false" onAction="#onCloseWindowButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close Window" />
    </children>

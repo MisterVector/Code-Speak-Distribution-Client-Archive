@@ -13,16 +13,16 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="changesSinceText" editable="false" layoutX="20.0" layoutY="99.0" prefHeight="453.0" prefWidth="849.0" wrapText="true">
-         <font>
-            <Font name="Courier New" size="14.0" />
-         </font>
-      </TextArea>
       <Label fx:id="changesSinceLabel" alignment="TOP_CENTER" layoutX="20.0" layoutY="62.0" prefHeight="27.0" prefWidth="849.0" text="Changes since %v">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <TextArea fx:id="changesSinceText" editable="false" layoutX="20.0" layoutY="99.0" prefHeight="453.0" prefWidth="849.0" wrapText="true">
+         <font>
+            <Font name="Courier New" size="14.0" />
+         </font>
+      </TextArea>
       <Button layoutX="20.0" layoutY="569.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="400.0" text="Update" />
       <Button layoutX="466.0" layoutY="569.0" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="25.0" prefWidth="400.0" text="Cancel" />
    </children>

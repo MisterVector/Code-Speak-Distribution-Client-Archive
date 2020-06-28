@@ -8,18 +8,16 @@
 
 <AnchorPane id="AnchorPane" prefHeight="173.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.SettingsSceneController">
    <children>
-      <Button layoutX="379.0" layoutY="137.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="120.0" text="OK" />
-      <Button layoutX="516.0" layoutY="137.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="120.0" text="Close" />
-      <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </CheckBox>
       <Label fx:id="settingsTitleLabel" alignment="TOP_CENTER" layoutX="25.0" layoutY="14.0" prefHeight="30.0" prefWidth="615.0" text="Settings for %p">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <CheckBox fx:id="rememberCurrentlySelectedCategoryCheck" layoutX="25.0" layoutY="70.0" mnemonicParsing="false" text="Remember Currently Selected Category">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
       <CheckBox fx:id="checkClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Check Client Update On Startup">
          <font>
             <Font size="14.0" />
@@ -30,5 +28,7 @@
             <Font size="14.0" />
          </font>
       </CheckBox>
+      <Button layoutX="379.0" layoutY="137.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="120.0" text="OK" />
+      <Button layoutX="516.0" layoutY="137.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="120.0" text="Close" />
    </children>
 </AnchorPane>

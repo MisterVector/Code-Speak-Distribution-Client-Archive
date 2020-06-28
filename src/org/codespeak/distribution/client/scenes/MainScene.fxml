@@ -48,6 +48,12 @@
                 </Menu>
               </menus>
             </MenuBar>
+            <Label layoutX="14.0" layoutY="36.0" text="Select Category">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="categoryChoices" layoutX="124.0" layoutY="36.0" onAction="#onCategorySelect" prefHeight="25.0" prefWidth="237.0" />
             <TableView fx:id="programsTable" layoutX="14.0" layoutY="71.0" onKeyReleased="#onProgramsTableKeyReleased" onMousePressed="#onProgramSelect" prefHeight="283.0" prefWidth="729.0">
               <columns>
                 <TableColumn fx:id="programsTableNameColumn" prefWidth="347.0" text="Name" />
@@ -55,11 +61,6 @@
                   <TableColumn fx:id="programsTableReleaseDateColumn" prefWidth="203.0" text="Release Date" />
               </columns>
             </TableView>
-            <Label layoutX="14.0" layoutY="36.0" text="Select Category">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
             <AnchorPane layoutX="14.0" layoutY="362.0" prefHeight="304.0" prefWidth="695.0">
                <children>
                   <Label fx:id="programNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="713.0" text="No Program Selected" textAlignment="CENTER" wrapText="true">
@@ -72,8 +73,8 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="installButton" disable="true" layoutX="151.0" layoutY="278.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="120.0" text="Install" />
                   <Button fx:id="launchProgramButton" disable="true" layoutX="14.0" layoutY="278.0" mnemonicParsing="false" onAction="#onLaunchProgramButtonClick" prefHeight="25.0" prefWidth="120.0" text="Launch Program" />
+                  <Button fx:id="installButton" disable="true" layoutX="151.0" layoutY="278.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="120.0" text="Install" />
                   <Button fx:id="updateButton" disable="true" layoutX="288.0" layoutY="277.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="120.0" text="Update" />
                   <Label fx:id="programDetailsLabel" layoutX="422.0" layoutY="277.0" textFill="RED">
                      <font>
@@ -82,7 +83,6 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ComboBox fx:id="categoryChoices" layoutX="124.0" layoutY="36.0" onAction="#onCategorySelect" prefHeight="25.0" prefWidth="237.0" />
          </children>
       </AnchorPane>
    </children>
