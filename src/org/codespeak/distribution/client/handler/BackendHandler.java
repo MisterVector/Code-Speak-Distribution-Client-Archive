@@ -67,7 +67,7 @@ public class BackendHandler {
             connection = (HttpsURLConnection) url.openConnection();  
             connection.setRequestProperty("User-Agent", "CodeSpeakDistributionClient/" + Configuration.PROGRAM_VERSION);
         } catch (IOException ex) {
-            exception = ex;
+            throw new ClientException(type, title, fullQuery, ex);
         }
         
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -122,7 +122,7 @@ public class BackendHandler {
             } else {
                 type = ErrorType.fromCode(json.getInt("error_code"));
                 String errorMessage = json.getString("error_message");
-                exception = new Exception(errorMessage);
+                throw new ClientException(type, title, fullQuery, new Exception(errorMessage));
             }
         } catch (IOException | JSONException ex) {
             exception = ex;
