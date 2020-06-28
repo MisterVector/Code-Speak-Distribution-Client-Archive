@@ -294,22 +294,37 @@ public class DataHandler {
      * @return JSON representation of various data
      */
     public static JSONObject exportDataToJSON() {
+        List<Category> savedCategories = new ArrayList<Category>();
+        List<Dependency> savedDependencies = new ArrayList<Dependency>();
+        
         JSONObject json = new JSONObject();
         JSONArray jsonCategories = new JSONArray();
         JSONArray jsonDependencies = new JSONArray();
         JSONArray jsonInstalledPrograms = new JSONArray();
         JSONObject jsonMappedData = new JSONObject();
+
+        for (Program program : installedPrograms) {
+            jsonInstalledPrograms.put(program.toJSON());
+            
+            Category category = program.getCategory();
+            
+            if (!savedCategories.contains(category)) {
+                savedCategories.add(category);
+            }
+            
+            for (Dependency dependency : program.getDependencies()) {
+                if (!savedDependencies.contains(dependency)) {
+                    savedDependencies.add(dependency);
+                }
+            }
+        }
         
-        for (Category category : installedCategories) {
+        for (Category category : savedCategories) {
             jsonCategories.put(category.toJSON());
         }
         
-        for (Dependency dependency : installedDependencies) {
+        for (Dependency dependency : savedDependencies) {
             jsonDependencies.put(dependency.toJSON());
-        }
-        
-        for (Program program : installedPrograms) {
-            jsonInstalledPrograms.put(program.toJSON());
         }
         
         for (String key : mappedData.keySet()) {
