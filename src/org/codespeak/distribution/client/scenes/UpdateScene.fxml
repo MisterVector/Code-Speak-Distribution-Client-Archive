@@ -13,7 +13,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="changesSinceLabel" alignment="TOP_CENTER" layoutX="20.0" layoutY="62.0" prefHeight="27.0" prefWidth="849.0" text="Changes since %v">
+      <Label fx:id="changesSinceLabel" alignment="TOP_CENTER" layoutX="20.0" layoutY="62.0" prefHeight="27.0" prefWidth="849.0" text="Showing changes since version %v">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

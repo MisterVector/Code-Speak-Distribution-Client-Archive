@@ -43,7 +43,7 @@ public class UpdateSceneController implements Initializable {
         this.updater = updater;
         
         versionNotificationLabel.setText(updater.getName() + " version " + updater.getCurrentVersion() + " is available!");
-        changesSinceLabel.setText("Changes since version " + updater.getPreviousVersion());
+        changesSinceLabel.setText("Showing changes since version " + updater.getPreviousVersion());
         
         StringBuilder sb = new StringBuilder();
         
