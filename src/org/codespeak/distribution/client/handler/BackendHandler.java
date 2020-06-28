@@ -60,7 +60,6 @@ public class BackendHandler {
         
         String title =  "An error occurred while performing query: " + queryType.getTitle() + ".";
         ErrorType type = ErrorType.ERROR_SEVERE;
-        Exception exception = null;
 
         try {
             url = new URL(fullQuery);
@@ -108,16 +107,19 @@ public class BackendHandler {
                     return (T) listData;
                 } else {
                     JSONObject jsonContents = json.getJSONObject("contents");
+                    Object obj = null;
 
                     if (dataClass == Dependency.class) {
-                        return (T) Dependency.fromJSON(jsonContents);
+                        obj = Dependency.fromJSON(jsonContents);
                     } else if (dataClass == Category.class) {
-                        return (T) Category.fromJSON(jsonContents);
+                        obj = Category.fromJSON(jsonContents);
                     } else if (dataClass == Program.class) {
-                        return (T) Program.fromJSON(jsonContents, false);
+                        obj = Program.fromJSON(jsonContents, false);
                     } else if (dataClass == ClientCheckVersionResponse.class) {
-                        return (T) ClientCheckVersionResponse.fromJSON(jsonContents);
+                        obj = ClientCheckVersionResponse.fromJSON(jsonContents);
                     }
+                    
+                    return (T) obj;
                 }
             } else {
                 type = ErrorType.fromCode(json.getInt("error_code"));
@@ -125,10 +127,8 @@ public class BackendHandler {
                 throw new ClientException(type, title, fullQuery, new Exception(errorMessage));
             }
         } catch (IOException | JSONException ex) {
-            exception = ex;
+            throw new ClientException(type, title, fullQuery, ex);
         }
-        
-        throw new ClientException(type, title, fullQuery, exception);
     }
 
     /**
