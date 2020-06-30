@@ -13,14 +13,14 @@ public class Dependency {
     private final String name;
     private final String description;
     private final String url;
-    private final boolean hideOnClient;
+    private final boolean displayOnClient;
     
-    private Dependency(int id, String name, String description, String url, boolean hideOnClient) {
+    private Dependency(int id, String name, String description, String url, boolean displayOnClient) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.url = url;
-        this.hideOnClient = hideOnClient;
+        this.displayOnClient = displayOnClient;
     }
     
     /**
@@ -56,11 +56,11 @@ public class Dependency {
     }
     
     /**
-     * Gets if this dependency is hidden on the client
-     * @return if this dependency is hidden on the client
+     * Gets if this dependency is displayed on the client
+     * @return if this dependency is displayed on the client
      */
-    public boolean isHideOnClient() {
-        return hideOnClient;
+    public boolean isDisplayOnClient() {
+        return displayOnClient;
     }
     
     /**
@@ -74,7 +74,7 @@ public class Dependency {
         json.put("name", name);
         json.put("description", description);
         json.put("url", url);
-        json.put("hideOnClient", hideOnClient);
+        json.put("display_on_client", displayOnClient);
         
         return json;
     }
@@ -105,7 +105,7 @@ public class Dependency {
         String name = "";
         String description = "";
         String url = "";
-        boolean hideOnClient = false;
+        boolean displayOnClient = false;
 
         if (json.has("id")) {
             id = json.getInt("id");
@@ -123,11 +123,11 @@ public class Dependency {
             url = json.getString("url");
         }
         
-        if (json.has("hide_on_client")) {
-            hideOnClient = json.getBoolean("hide_on_client");
+        if (json.has("display_on_client")) {
+            displayOnClient = json.getBoolean("display_on_client");
         }
 
-        return new Dependency(id, name, description, url, hideOnClient);
+        return new Dependency(id, name, description, url, displayOnClient);
     }
     
 }
