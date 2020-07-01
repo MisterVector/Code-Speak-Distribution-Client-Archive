@@ -57,14 +57,14 @@ public class ProgramDependenciesSceneController implements Initializable {
      * @param dependencies dependencies of the program
      * @param programLaunchFile launch file of the program
      */
-    public void showProgramDependencies(String programName, List<Dependency> dependencies, Path programLaunchFile) {
+    public void showProgramDependencies(String programName, Map<Dependency, Long> dependencies, Path programLaunchFile) {
         this.programDirectoryAndLaunchFile = programLaunchFile;
         
         programNameLabel.setText(programName);
         
         ObservableList<String> dependencyItems = dependencyList.getItems();
         
-        for (Dependency dependency : dependencies) {
+        for (Dependency dependency : dependencies.keySet()) {
             String name = dependency.getName();
             
             dependencyItems.add(name);

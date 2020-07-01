@@ -13,14 +13,12 @@ public class Dependency {
     private final String name;
     private final String description;
     private final String url;
-    private final boolean displayOnClient;
     
-    private Dependency(int id, String name, String description, String url, boolean displayOnClient) {
+    private Dependency(int id, String name, String description, String url) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.url = url;
-        this.displayOnClient = displayOnClient;
     }
     
     /**
@@ -56,14 +54,6 @@ public class Dependency {
     }
     
     /**
-     * Gets if this dependency is displayed on the client
-     * @return if this dependency is displayed on the client
-     */
-    public boolean isDisplayOnClient() {
-        return displayOnClient;
-    }
-    
-    /**
      * Converts this dependency object to JSON
      * @return JSON representation of this Dependency object
      */
@@ -74,7 +64,6 @@ public class Dependency {
         json.put("name", name);
         json.put("description", description);
         json.put("url", url);
-        json.put("display_on_client", displayOnClient);
         
         return json;
     }
@@ -105,7 +94,6 @@ public class Dependency {
         String name = "";
         String description = "";
         String url = "";
-        boolean displayOnClient = false;
 
         if (json.has("id")) {
             id = json.getInt("id");
@@ -123,11 +111,7 @@ public class Dependency {
             url = json.getString("url");
         }
         
-        if (json.has("display_on_client")) {
-            displayOnClient = json.getBoolean("display_on_client");
-        }
-
-        return new Dependency(id, name, description, url, displayOnClient);
+        return new Dependency(id, name, description, url);
     }
     
 }

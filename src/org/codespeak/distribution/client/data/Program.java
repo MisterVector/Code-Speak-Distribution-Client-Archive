@@ -14,7 +14,10 @@ import org.codespeak.distribution.client.handler.DataHandler;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.data.FileInfo.FileStatus;
 import org.codespeak.distribution.client.objects.ClientException;
@@ -41,7 +44,7 @@ public class Program {
     private String helpFile;
     private String version;
     private Timestamp releaseTime;
-    private List<Dependency> dependencies;
+    private Map<Dependency, Long> dependencies = new HashMap<Dependency, Long>();
     private boolean installed;
     private boolean detached = false;
     
@@ -70,7 +73,7 @@ public class Program {
     
     private Program(int id, Category category, String slug, String name, String description,
                     String launchFile, String helpFile, String version, Timestamp releaseTime,
-                    List<Dependency> dependencies, boolean installed) {
+                    Map<Dependency, Long> dependencies, boolean installed) {
         this.id = id;
         this.category = category;
         this.slug = slug;
@@ -154,25 +157,28 @@ public class Program {
     }
 
     /**
-     * Gets a list of dependencies of this program
-     * @return list of dependencies of this program
+     * Gets a map of dependencies and their flags for this program
+     * @return map of dependencies and their flags for this program
      */
-    public List<Dependency> getDependencies() {
+    public Map<Dependency, Long> getDependencies() {
         return getDependencies(false);
     }
 
     /**
-     * Gets a list of dependencies of this program
+     * Gets a map of dependencies and their flags for this program
      * @param clientDisplayOnly whether to only return dependencies that are
      * displayed on the client
      * @return list of dependencies of this program
      */
-    public List<Dependency> getDependencies(boolean clientDisplayOnly) {
-        List<Dependency> ret = new ArrayList<Dependency>();
+    public Map<Dependency, Long> getDependencies(boolean clientDisplayOnly) {
+        Map<Dependency, Long> ret = new HashMap<Dependency, Long>();
         
-        for (Dependency dependency : dependencies) {
-            if (!clientDisplayOnly || dependency.isDisplayOnClient()) {
-                ret.add(dependency);
+        for (EnumMap.Entry<Dependency, Long> entry : dependencies.entrySet()) {
+            Dependency dependency = entry.getKey();
+            long flags = entry.getValue();
+            
+            if (!clientDisplayOnly || DependencyFlags.DISPLAY_ON_CLIENT.in(flags)) {
+                ret.put(dependency, flags);
             }
         }
         
@@ -395,8 +401,16 @@ public class Program {
         
         JSONArray jsonDependencies = new JSONArray();
         
-        for (Dependency dependency : dependencies) {
-            jsonDependencies.put(dependency.getId());
+        for (EnumMap.Entry<Dependency, Long> entry : dependencies.entrySet()) {
+            JSONObject obj = new JSONObject();
+            Dependency dependency = entry.getKey();
+            int dependencyId = dependency.getId();
+            long flags = entry.getValue();
+            
+            obj.put("id", dependencyId);
+            obj.put("flags", flags);
+            
+            jsonDependencies.put(obj);
         }
         
         json.put("dependencies", jsonDependencies);
@@ -436,7 +450,7 @@ public class Program {
         String helpFile = "";
         String version = "";
         Timestamp releaseTime = null;
-        List<Dependency> dependencies = new ArrayList<Dependency>();
+        Map<Dependency, Long> dependencies = new HashMap<Dependency, Long>();
         
         if (json.has("id")) {
             id = json.getInt("id");
@@ -479,9 +493,12 @@ public class Program {
              JSONArray jsonDependencies = json.getJSONArray("dependencies");
              
              for (int i = 0; i < jsonDependencies.length(); i++) {
-                 int dependencyId = jsonDependencies.getInt(i);
+                 JSONObject jsonDependency = jsonDependencies.getJSONObject(i);
+                 int dependencyId = jsonDependency.getInt("id");
+                 long flags = jsonDependency.getLong("flags");
                  Dependency dependency = DataHandler.getDependency(dependencyId, installed);
-                 dependencies.add(dependency);
+
+                 dependencies.put(dependency, flags);
              }
          }
          

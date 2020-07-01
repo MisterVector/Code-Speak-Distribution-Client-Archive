@@ -3,6 +3,7 @@ package org.codespeak.distribution.client.handler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +161,9 @@ public class DataHandler {
             installedCategories.add(category);
         }
         
-        for (Dependency dependency : program.getDependencies()) {
+        for (EnumMap.Entry<Dependency, Long> entry : program.getDependencies().entrySet()) {
+            Dependency dependency = entry.getKey();
+            
             if (!installedDependencies.contains(dependency)) {
                 installedDependencies.add(dependency);
             }
@@ -180,18 +183,18 @@ public class DataHandler {
         installedPrograms.remove(program);
         
         Category category = program.getCategory();
-        List<Dependency> deps = program.getDependencies();
+        Map<Dependency, Long> deps = program.getDependencies();
         
         for (Program checkProgram : installedPrograms) {
             Category checkCategory = checkProgram.getCategory();
-            List<Dependency> checkDependencies = checkProgram.getDependencies();
+            Map<Dependency, Long> checkDependencies = checkProgram.getDependencies();
             
             if (checkCategory.equals(category)) {
                 category = null;
             }
             
-            for (Dependency checkDependency : checkDependencies) {
-                if (deps.contains(checkDependency)) {
+            for (Dependency checkDependency : checkDependencies.keySet()) {
+                if (deps.containsKey(checkDependency)) {
                     deps.remove(checkDependency);
                 }
             }
@@ -201,7 +204,7 @@ public class DataHandler {
             installedCategories.remove(category);
         }
         
-        for (Dependency dependency : deps) {
+        for (Dependency dependency : deps.keySet()) {
             installedDependencies.remove(dependency);
         }
     }
@@ -312,7 +315,7 @@ public class DataHandler {
                 savedCategories.add(category);
             }
             
-            for (Dependency dependency : program.getDependencies()) {
+            for (Dependency dependency : program.getDependencies().keySet()) {
                 if (!savedDependencies.contains(dependency)) {
                     savedDependencies.add(dependency);
                 }
