@@ -494,11 +494,21 @@ public class Program {
              
              for (int i = 0; i < jsonDependencies.length(); i++) {
                  JSONObject jsonDependency = jsonDependencies.getJSONObject(i);
-                 int dependencyId = jsonDependency.getInt("id");
-                 long flags = jsonDependency.getLong("flags");
-                 Dependency dependency = DataHandler.getDependency(dependencyId, installed);
+                 int dependencyId = 0;
+                 long flags = 0;
+                 
+                 if (jsonDependency.has("id")) {
+                     dependencyId = jsonDependency.getInt("id");
+                 }
 
-                 dependencies.put(dependency, flags);
+                 if (jsonDependency.has("flags")) {
+                     flags = jsonDependency.getLong("flags");
+                 }
+
+                 if (dependencyId > 0) {
+                    Dependency dependency = DataHandler.getDependency(dependencyId, installed);
+                    dependencies.put(dependency, flags);
+                 }
              }
          }
          
