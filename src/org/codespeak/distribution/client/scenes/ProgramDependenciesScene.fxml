@@ -13,7 +13,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="57.0" prefHeight="72.0" prefWidth="685.0" text="This program requires certain dependencies before it can work properly. Select the dependencies from the list below and click the Install Dependency button to install it. At any point you may click the Test Program button to see if the program works without issues. When finished, click the Close button. If you ever need to return to this window, you can find it by going to Program &gt; View Dependencies." wrapText="true" />
+      <Label alignment="TOP_LEFT" layoutX="16.0" layoutY="57.0" prefHeight="72.0" prefWidth="685.0" text="This program requires certain dependencies before it can work properly. Select the dependencies from the list below and click the Install Dependency button to install it. At any point you may click the Test Program button to see if the program works without issues. When finished, click the Close button. If you ever need to return to this window, you can find it by going to Program &gt; View Dependencies. Administrator privileges are required to install dependencies." wrapText="true" />
       <Label alignment="TOP_CENTER" layoutX="16.0" layoutY="138.0" prefHeight="27.0" prefWidth="252.0" text="Dependencies">
          <font>
             <Font name="System Bold" size="18.0" />
