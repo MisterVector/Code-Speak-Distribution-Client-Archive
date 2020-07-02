@@ -92,4 +92,17 @@ public class ClientException extends Exception {
         return AlertUtil.createAlert(alertType, message, "Program Error");
     }
 
+    /**
+     * Converts an exception to a ClientException
+     * @param ex the exception to convert
+     * @return an ClientException converted from an exception
+     */
+    public static ClientException fromException(Exception ex) {
+        if (ex instanceof ClientException) {
+            return (ClientException) ex;
+        }
+        
+        return new ClientException(ErrorType.ERROR_SEVERE, "An exception has occurred.", ex);
+    }
+
 }

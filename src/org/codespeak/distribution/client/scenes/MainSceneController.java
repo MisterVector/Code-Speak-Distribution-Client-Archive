@@ -627,10 +627,11 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onInstallButtonClick() throws IOException {
+    public void onInstallButtonClick() {
         if (currentlySelectedProgram != null) {
             String programName = currentlySelectedProgram.getName();
-
+            ClientException exception = null;
+            
             try {
                 DataHandler.installProgram(currentlySelectedProgram);
 
@@ -649,11 +650,15 @@ public class MainSceneController implements Initializable {
                     stage.show();
                     controller.showProgramDependencies(programName, dependencies, programLaunchFile);
                 }
-            } catch (ClientException ex) {
-                Alert alert = ex.buildAlert();
+            } catch (ClientException | IOException ex) {
+                exception = ClientException.fromException(ex);
+            }
+                
+            if (exception != null) {
+                Alert alert = exception.buildAlert();
                 alert.show();
                 
-                DistributionClient.logError(ex);
+                DistributionClient.logError(exception);
             }
         }
     }
