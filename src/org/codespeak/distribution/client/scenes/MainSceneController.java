@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.DistributionClient;
 import org.codespeak.distribution.client.Settings;
+import org.codespeak.distribution.client.Settings.SettingFields;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.ChangelogEntry;
 import org.codespeak.distribution.client.data.ClientCheckVersionResponse;
@@ -229,8 +230,9 @@ public class MainSceneController implements Initializable {
         
         String selectedCategoryValue = "All";
         Category selectedCategory = null;
+        boolean rememberSelectedCategory = settings.getValue(SettingFields.REMEMBER_SELECTED_CATEGORY);
 
-        if (settings.getRememberSelectedCategory()) {
+        if (rememberSelectedCategory) {
             if (DataHandler.hasMappedData("selected_category")) {
                 String tempSelectedCategoryValue = DataHandler.getMappedData("selected_category");
 
@@ -260,7 +262,9 @@ public class MainSceneController implements Initializable {
             return;
         }
 
-        if (!startup || settings.getCheckClientUpdateOnStartup()) {
+        boolean checkClientUpdateOnStartup = settings.getValue(SettingFields.CHECK_CLIENT_UPDATE_ON_STARTUP);
+        
+        if (!startup || checkClientUpdateOnStartup) {
             try {
                 ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
 

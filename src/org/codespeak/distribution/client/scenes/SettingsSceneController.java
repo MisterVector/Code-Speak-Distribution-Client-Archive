@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 import org.codespeak.distribution.client.Settings;
+import org.codespeak.distribution.client.Settings.SettingFields;
 
 /**
  * Controller for the settings scene
@@ -34,16 +35,16 @@ public class SettingsSceneController implements Initializable {
         settings = Configuration.getSettings();
         
         settingsTitleLabel.setText("Settings for " + Configuration.PROGRAM_NAME);
-        rememberCurrentlySelectedCategoryCheck.setSelected(settings.getRememberSelectedCategory());
-        checkClientUpdateOnStartupCheck.setSelected(settings.getCheckClientUpdateOnStartup());
-        backupBeforeRemovingTextFilesCheck.setSelected(settings.getBackupBeforeRemovingTextFiles());
+        rememberCurrentlySelectedCategoryCheck.setSelected(settings.getValue(SettingFields.REMEMBER_SELECTED_CATEGORY));
+        checkClientUpdateOnStartupCheck.setSelected(settings.getValue(SettingFields.CHECK_CLIENT_UPDATE_ON_STARTUP));
+        backupBeforeRemovingTextFilesCheck.setSelected(settings.getValue(SettingFields.BACKUP_BEFORE_REMOVING_TEXT_FILES));
     }
     
     @FXML
     public void onOkButtonClick(ActionEvent event) {
-        settings.setRememberSelectedCategory(rememberCurrentlySelectedCategoryCheck.isSelected());
-        settings.setCheckClientUpdateOnStartup(checkClientUpdateOnStartupCheck.isSelected());
-        settings.setBackupBeforeRemovingTextFiles(backupBeforeRemovingTextFilesCheck.isSelected());
+        settings.setValue(SettingFields.REMEMBER_SELECTED_CATEGORY, rememberCurrentlySelectedCategoryCheck.isSelected());
+        settings.setValue(SettingFields.CHECK_CLIENT_UPDATE_ON_STARTUP, checkClientUpdateOnStartupCheck.isSelected());
+        settings.setValue(SettingFields.BACKUP_BEFORE_REMOVING_TEXT_FILES, backupBeforeRemovingTextFilesCheck.isSelected());        
         
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();

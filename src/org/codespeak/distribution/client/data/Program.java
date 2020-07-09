@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.codespeak.distribution.client.Configuration;
+import org.codespeak.distribution.client.Settings;
+import org.codespeak.distribution.client.Settings.SettingFields;
 import org.codespeak.distribution.client.data.FileInfo.FileStatus;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
@@ -301,7 +303,9 @@ public class Program {
             File updateFile = updateFilePath.toFile();
             
             if (updateFile.exists()) {
-                if (file.getFileStatus() == FileStatus.REMOVED && Configuration.getSettings().getBackupBeforeRemovingTextFiles()
+                boolean backupBeforeRemovingTextFile = Configuration.getSettings().getValue(SettingFields.BACKUP_BEFORE_REMOVING_TEXT_FILES);
+                
+                if (file.getFileStatus() == FileStatus.REMOVED && backupBeforeRemovingTextFile
                         && MiscUtil.isNonEmptyTextFile(updateFilePath)) {
                     backupFile(programDirectory, filePath);
                 }

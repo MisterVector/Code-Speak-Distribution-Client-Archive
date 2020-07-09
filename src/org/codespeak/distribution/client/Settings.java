@@ -1,5 +1,9 @@
 package org.codespeak.distribution.client;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -8,69 +12,69 @@ import org.json.JSONObject;
  * @author Vector
  */
 public class Settings {
-    
-    private static final boolean DEFAULT_REMEMBER_SELECTED_CATEGORY = false;
-    private static final boolean DEFAULT_CHECK_CLIENT_UPDATE_ON_STARTUP = true;
-    private static final boolean DEFAULT_BACKUP_BEFORE_REMOVING_TEXT_FILES = true;
-    
-    private boolean rememberSelectedCategory;
-    private boolean checkClientUpdateOnStartup;
-    private boolean backupBeforeRemovingTextFiles;
-    
-    private Settings(boolean rememberSelectedCategory, boolean checkClientUpdateOnStartup, boolean backupBeforeRemovingTextFiles) {
-        this.rememberSelectedCategory = rememberSelectedCategory;
-        this.checkClientUpdateOnStartup = checkClientUpdateOnStartup;
-        this.backupBeforeRemovingTextFiles = backupBeforeRemovingTextFiles;
-    }
-    
-    /**
-     * Gets whether the selected category is remembered
-     * @return whether the selected category is remembered
-     */
-    public boolean getRememberSelectedCategory() {
-        return rememberSelectedCategory;
-    }
 
-    /**
-     * Sets whether the current category will be remembered
-     * @param rememberSelectedCategory whether the current category will
-     *                                 be remembered
-     */
-    public void setRememberSelectedCategory(boolean rememberSelectedCategory) {
-        this.rememberSelectedCategory = rememberSelectedCategory;
+    public enum SettingFields {
+        REMEMBER_SELECTED_CATEGORY("remember_selected_category", Boolean.class, false),
+        CHECK_CLIENT_UPDATE_ON_STARTUP("check_client_update_on_startup", Boolean.class, true),
+        BACKUP_BEFORE_REMOVING_TEXT_FILES("backup_before_removing_text_files", Boolean.class, true);
+        
+        private final String key;
+        private final Class fieldClass;
+        private final Object defaultValue;
+        
+        private SettingFields(String key, Class fieldClass, Object defaultValue) {
+            this.key = key;
+            this.fieldClass = fieldClass;
+            this.defaultValue = defaultValue;
+        }
+        
+        /**
+         * Gets the key of this field
+         * @return key of this field
+         */
+        public String getKey() {
+            return key;
+        }
+        
+        /**
+         * Gets the class representing this field
+         * @return class representing this field
+         */
+        public Class getFieldClass() {
+            return fieldClass;
+        }
+        
+        /**
+         * Gets the default value of this field
+         * @return default value of this field
+         */
+        public Object getDefaultValue() {
+            return defaultValue;
+        }
+    }
+    
+    private Map<SettingFields, Object> fieldValues = new HashMap<SettingFields, Object>();
+    
+    private Settings(Map<SettingFields, Object> fieldValues) {
+        this.fieldValues = fieldValues;
     }
     
     /**
-     * Gets if the client is checking for an update on startup
-     * @return if the client is checking for an update on startup
+     * Gets the value of the specified Settings field
+     * @param field field representing the value to return
+     * @return value of the specified settings field
      */
-    public boolean getCheckClientUpdateOnStartup() {
-        return checkClientUpdateOnStartup;
+    public <T> T getValue(SettingFields field) {
+        return (T) fieldValues.get(field);
     }
     
     /**
-     * Sets if the client is checking for an update on startup
-     * @param checkClientUpdateOnStartup if the client is checking for an update
-     * on startup
+     * Sets the value of the specified Settings field
+     * @param field field representing the value to set
+     * @param value value to set
      */
-    public void setCheckClientUpdateOnStartup(boolean checkClientUpdateOnStartup) {
-        this.checkClientUpdateOnStartup = checkClientUpdateOnStartup;
-    }
-    
-    /**
-     * Gets if the client is backing up text files before removing them
-     * @return if the client is backing up text files before removing them
-     */
-    public boolean getBackupBeforeRemovingTextFiles() {
-        return backupBeforeRemovingTextFiles;
-    }
-    
-    /**
-     * Sets if the client is backing up text files before removing them
-     * @param backupBeforeRemovingTextFiles if the client is backing up non-empty text files on update
-     */
-    public void setBackupBeforeRemovingTextFiles(boolean backupBeforeRemovingTextFiles) {
-        this.backupBeforeRemovingTextFiles = backupBeforeRemovingTextFiles;
+    public void setValue(SettingFields field, Object value) {
+        fieldValues.put(field, value);
     }
     
     /**
@@ -80,9 +84,12 @@ public class Settings {
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         
-        json.put("remember_selected_category", rememberSelectedCategory);
-        json.put("check_client_update_on_startup", checkClientUpdateOnStartup);
-        json.put("backup_before_removing_text_files", backupBeforeRemovingTextFiles);
+        for (EnumMap.Entry<SettingFields, Object> entry : fieldValues.entrySet()) {
+            SettingFields field = entry.getKey();
+            Object value = entry.getValue();
+            
+            json.put(field.getKey(), value);
+        }
         
         return json;
     }
@@ -93,23 +100,35 @@ public class Settings {
      * @return Settings object created from JSON
      */
     public static Settings fromJSON(JSONObject json) {
-        boolean rememberSelectedCategory = DEFAULT_REMEMBER_SELECTED_CATEGORY;
-        boolean checkClientUpdateOnStartup = DEFAULT_CHECK_CLIENT_UPDATE_ON_STARTUP;
-        boolean backupBeforeRemovingTextFiles = DEFAULT_BACKUP_BEFORE_REMOVING_TEXT_FILES;
+        Map<SettingFields, Object> fieldValues = new HashMap<SettingFields, Object>();
         
-        if (json.has("remember_selected_category")) {
-            rememberSelectedCategory = json.getBoolean("remember_selected_category");
+        for (SettingFields field : SettingFields.values()) {
+            String key = field.getKey();
+            Class fieldClass = field.getFieldClass();
+            Object value = null;
+            
+            if (json.has(key)) {
+                try {
+                    Object tempValue = json.get(key);
+                    
+                    if (fieldClass == Boolean.class) {
+                        if (tempValue instanceof Boolean) {
+                            value = tempValue;
+                        }
+                    }
+                } catch (JSONException ex) {
+                    
+                }
+            }
+            
+            if (value == null) {
+                value = field.getDefaultValue();
+            }
+            
+            fieldValues.put(field, value);
         }
         
-        if (json.has("check_client_update_on_startup")) {
-            checkClientUpdateOnStartup = json.getBoolean("check_client_update_on_startup");
-        }
-        
-        if (json.has("backup_before_removing_text_files")) {
-            backupBeforeRemovingTextFiles = json.getBoolean("backup_before_removing_text_files");
-        }
-        
-        return new Settings(rememberSelectedCategory, checkClientUpdateOnStartup, backupBeforeRemovingTextFiles);
+        return new Settings(fieldValues);
     }
     
 }
