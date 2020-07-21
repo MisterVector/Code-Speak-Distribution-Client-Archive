@@ -17,26 +17,11 @@ public class ProgramUpdater extends Updater {
     private final MainSceneController controller;
     
     public ProgramUpdater(Program program, Program installedProgram, MainSceneController controller, List<ChangelogEntry> entries) {
-        super(entries);
+        super(program.getName(), installedProgram.getVersion(), program.getVersion(), entries);
         
         this.program = program;
         this.installedProgram = installedProgram;
         this.controller = controller;
-    }
-    
-    @Override
-    public String getName() {
-        return program.getName();
-    }
-    
-    @Override
-    public String getCurrentVersion() {
-        return program.getVersion();
-    }
-    
-    @Override
-    public String getPreviousVersion() {
-        return installedProgram.getVersion();
     }
     
     @Override

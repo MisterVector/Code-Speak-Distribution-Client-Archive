@@ -17,33 +17,15 @@ import org.codespeak.distribution.client.data.ChangelogEntry;
  */
 public class ClientUpdater extends Updater {
 
-    private final String previousVersion;
-    private final String currentVersion;
-
     public ClientUpdater(String previousVersion, String currentVersion, List<ChangelogEntry> entries) {
-        super(entries);
-        
-        this.previousVersion = previousVersion;
-        this.currentVersion = currentVersion;
-    }
-    
-    @Override
-    public String getName() {
-        return Configuration.PROGRAM_NAME;
-    }
-    
-    @Override
-    public String getPreviousVersion() {
-        return previousVersion;
-    }
-    
-    @Override
-    public String getCurrentVersion() {
-        return currentVersion;
+        super(Configuration.PROGRAM_NAME, previousVersion, currentVersion, entries);
     }
     
     @Override
     public void update() throws Exception {
+        String previousVersion = super.getPreviousVersion();
+        String currentVersion = super.getCurrentVersion();
+        
         Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
         List<String> commands = new ArrayList<String>();
         File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
