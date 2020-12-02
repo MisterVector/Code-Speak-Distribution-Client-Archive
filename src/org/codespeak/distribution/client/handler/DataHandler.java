@@ -30,7 +30,7 @@ public class DataHandler {
     private static List<Program> installedPrograms = new ArrayList<Program>();
 
     private static Map<String, String> mappedData = new HashMap<String, String>();
-    
+    private static List<Integer> storedProgramIDs = new ArrayList<Integer>();
     /**
      * Adds a category to the list
      * @param category category to add
@@ -273,6 +273,28 @@ public class DataHandler {
     }
     
     /**
+     * Gets an array list of new programs
+     * @return array list of new programs
+     */
+    public static List<Program> getNewPrograms() {
+        List<Program> ret = new ArrayList<Program>();
+        
+        if (storedProgramIDs.isEmpty()) {
+            return ret;
+        }
+        
+        for (Program program : programs) {
+            int id = program.getId();
+            
+            if (!storedProgramIDs.contains(id)) {
+                ret.add(program);
+            }
+        }
+        
+        return ret;
+    }
+    
+    /**
      * Goes through all installed programs and marks if any are detached from
      * the distribution system
      */
@@ -304,6 +326,7 @@ public class DataHandler {
         JSONArray jsonCategories = new JSONArray();
         JSONArray jsonDependencies = new JSONArray();
         JSONArray jsonInstalledPrograms = new JSONArray();
+        JSONArray jsonStoredProgramIDs = new JSONArray();
         JSONObject jsonMappedData = new JSONObject();
 
         for (Program program : installedPrograms) {
@@ -330,6 +353,10 @@ public class DataHandler {
             jsonDependencies.put(dependency.toJSON());
         }
         
+        for (Program program : programs) {
+            jsonStoredProgramIDs.put(program.getId());
+        }
+        
         for (String key : mappedData.keySet()) {
             String value = mappedData.get(key);
             
@@ -339,6 +366,7 @@ public class DataHandler {
         json.put("categories", jsonCategories);
         json.put("dependencies", jsonDependencies);
         json.put("programs", jsonInstalledPrograms);
+        json.put("stored_program_ids", jsonStoredProgramIDs);
         json.put("mapped_data", jsonMappedData);
         
         return json;
@@ -377,6 +405,14 @@ public class DataHandler {
                 JSONObject obj = jsonPrograms.getJSONObject(i);
                 Program program = Program.fromJSON(obj, true);
                 installedPrograms.add(program);
+            }
+        }
+        
+        if (json.has("stored_program_ids")) {
+            JSONArray storedProgramIDsJson = json.getJSONArray("stored_program_ids");
+            
+            for (int i = 0; i < storedProgramIDsJson.length(); i++) {
+                storedProgramIDs.add(storedProgramIDsJson.getInt(i));
             }
         }
         

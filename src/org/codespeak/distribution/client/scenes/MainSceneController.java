@@ -251,6 +251,30 @@ public class MainSceneController implements Initializable {
     }    
 
     /**
+     * Checks for newly added programs to the distribution system
+     */
+    public void checkForNewPrograms() {
+        if (DistributionClient.isOnline()) {
+            List<Program> newPrograms = DataHandler.getNewPrograms();
+            
+            if (!newPrograms.isEmpty()) {
+                String newProgramList = "";
+                
+                for (Program program : newPrograms) {
+                    if (!newProgramList.isEmpty()) {
+                        newProgramList += "\n";
+                    }
+                    
+                    newProgramList += program.getName();
+                }
+                
+                Alert alert = AlertUtil.createAlert("The following programs have been added since this program was started:\n\n" + newProgramList);
+                alert.show();
+            }
+        }
+    }
+
+    /**
      * Checks for client update
      * @param startup if this update is being called on program startup
      */

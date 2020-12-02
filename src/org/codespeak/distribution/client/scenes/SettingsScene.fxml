@@ -18,7 +18,7 @@
             <Font size="14.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkClientUpdateOnStartupCheck" layoutX="339.0" layoutY="70.0" mnemonicParsing="false" text="Check Client Update On Startup">
+      <CheckBox fx:id="checkClientUpdateOnStartupCheck" layoutX="333.0" layoutY="105.0" mnemonicParsing="false" text="Check Client Update On Startup">
          <font>
             <Font size="14.0" />
          </font>
@@ -30,5 +30,10 @@
       </CheckBox>
       <Button layoutX="379.0" layoutY="137.0" mnemonicParsing="false" onAction="#onOkButtonClick" prefHeight="25.0" prefWidth="120.0" text="OK" />
       <Button layoutX="516.0" layoutY="137.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="120.0" text="Close" />
+      <CheckBox fx:id="notifyOfNewPrograms" layoutX="333.0" layoutY="72.0" mnemonicParsing="false" text="Notify Of New Programs">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>

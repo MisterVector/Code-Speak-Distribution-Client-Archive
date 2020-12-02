@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import org.codespeak.distribution.client.Settings.SettingFields;
 import org.codespeak.distribution.client.data.Category;
 import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.data.Program;
@@ -56,6 +57,12 @@ public class DistributionClient extends Application {
         
         stage.show();
         controller.checkClientUpdate(true);
+        
+        boolean notifyOfNewPrograms = Configuration.getSettings().getValue(SettingFields.NOTIFY_OF_NEW_PROGRAMS);
+        
+        if (notifyOfNewPrograms) {
+            controller.checkForNewPrograms();
+        }
         
         if (savedException != null) {
             Alert alert = savedException.buildAlert();

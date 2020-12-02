@@ -16,7 +16,8 @@ public class Settings {
     public enum SettingFields {
         REMEMBER_SELECTED_CATEGORY("remember_selected_category", Boolean.class, false),
         CHECK_CLIENT_UPDATE_ON_STARTUP("check_client_update_on_startup", Boolean.class, true),
-        BACKUP_BEFORE_REMOVING_TEXT_FILES("backup_before_removing_text_files", Boolean.class, true);
+        BACKUP_BEFORE_REMOVING_TEXT_FILES("backup_before_removing_text_files", Boolean.class, true),
+        NOTIFY_OF_NEW_PROGRAMS("notify_of_new_programs", Boolean.class, true);
         
         private final String key;
         private final Class fieldClass;
