@@ -128,23 +128,8 @@ public class MainSceneController implements Initializable {
     }
 
     private void launchInstalledProgram() throws IOException {
-            Path programDirectory = currentlySelectedInstalledProgram.getDirectory().toAbsolutePath();
-            Path programDirectoryAndLaunchFile = programDirectory.resolve(currentlySelectedInstalledProgram.getLaunchFile());
-            String programDirectoryAndLaunchFileRaw = programDirectoryAndLaunchFile.toString();
-            
-            List<String> commands = new ArrayList<String>();
-            
-            if (programDirectoryAndLaunchFileRaw.endsWith(".jar")) {
-                commands.add("java");
-                commands.add("-jar");
-            }
-            
-            commands.add(programDirectoryAndLaunchFile.toString());
-            commands.add("--csds-launch");
-            
-            ProcessBuilder pb = new ProcessBuilder(commands);
-            pb.directory(programDirectory.toFile());
-            pb.start();
+        ProcessBuilder pb = MiscUtil.createProcessBuilder(currentlySelectedInstalledProgram.getDirectory(true));
+        pb.start();
     }
     
     private void displayPrograms(Category category) {

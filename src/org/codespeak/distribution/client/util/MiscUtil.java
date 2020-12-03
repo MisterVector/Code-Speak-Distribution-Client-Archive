@@ -8,6 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -133,6 +135,31 @@ public class MiscUtil {
         }
 
         return false;
+    }
+
+    /**
+     * Creates a process builder and returns it
+     * @param processPath path to the process
+     * @return process builder made from the process path
+     */
+    public static ProcessBuilder createProcessBuilder(Path processPath) {
+        Path directory = processPath.getParent().toAbsolutePath();
+        String processPathRaw = processPath.toString();
+
+        List<String> commands = new ArrayList<String>();
+
+        if (processPathRaw.endsWith(".jar")) {
+            commands.add("java");
+            commands.add("-jar");
+        }
+
+        commands.add(processPathRaw);
+        commands.add("--csds-launch");
+
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        pb.directory(directory.toFile());
+
+        return pb;
     }
     
 }

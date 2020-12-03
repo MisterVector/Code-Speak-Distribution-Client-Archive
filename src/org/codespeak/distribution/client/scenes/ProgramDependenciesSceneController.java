@@ -24,6 +24,7 @@ import org.codespeak.distribution.client.data.Dependency;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.handler.BackendHandler;
 import org.codespeak.distribution.client.util.AlertUtil;
+import org.codespeak.distribution.client.util.MiscUtil;
 
 /**
  * Controller for the program dependencies scene
@@ -124,7 +125,8 @@ public class ProgramDependenciesSceneController implements Initializable {
 
     @FXML
     public void onTestProgramButtonClick(ActionEvent event) throws IOException {
-        runtime.exec(programDirectoryAndLaunchFile.toString());
+        ProcessBuilder pb = MiscUtil.createProcessBuilder(programDirectoryAndLaunchFile);
+        pb.start();
     }
     
     @FXML
