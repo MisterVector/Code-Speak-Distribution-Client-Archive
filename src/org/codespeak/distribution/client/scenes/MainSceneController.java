@@ -390,7 +390,7 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onViewHelpMenuItemClick() throws IOException {
+    public void onProgramViewHelpMenuItemClick() throws IOException {
         if (currentlySelectedInstalledProgram != null) {
             String helpFile = currentlySelectedInstalledProgram.getHelpFile();
             
