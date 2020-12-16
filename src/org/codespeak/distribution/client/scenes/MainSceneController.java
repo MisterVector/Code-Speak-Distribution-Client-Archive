@@ -489,8 +489,7 @@ public class MainSceneController implements Initializable {
             
             ObservableList<ButtonType> buttons = confirmAlert.getButtonTypes();
 
-            buttons.clear();
-            buttons.addAll(ButtonType.YES, ButtonType.NO);
+            buttons.setAll(ButtonType.YES, ButtonType.NO);
 
             ButtonType buttonType = confirmAlert.showAndWait().get();
  
@@ -711,8 +710,7 @@ public class MainSceneController implements Initializable {
 
             ObservableList<ButtonType> buttons = alert.getButtonTypes();
 
-            buttons.clear();
-            buttons.addAll(ButtonType.YES, ButtonType.NO);
+            buttons.setAll(ButtonType.YES, ButtonType.NO);
 
             ButtonType buttonType = alert.showAndWait().get();
 
