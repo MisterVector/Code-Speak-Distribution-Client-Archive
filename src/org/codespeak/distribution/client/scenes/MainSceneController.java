@@ -321,7 +321,7 @@ public class MainSceneController implements Initializable {
             ProgramTableData programData = programItems.get(currentlySelectedProgramIndex);
 
             programData.setVersion(installedProgram.getVersion());
-            programData.setReleaseTime(installedProgram.getReleaseTime().toString());
+            programData.setReleaseTime(installedProgram.getReleaseTime());
 
             programItems.set(currentlySelectedProgramIndex, programData);
 

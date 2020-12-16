@@ -1,7 +1,9 @@
 package org.codespeak.distribution.client.objects;
 
+import java.sql.Timestamp;
 import javafx.beans.property.SimpleStringProperty;
 import org.codespeak.distribution.client.data.Program;
+import org.codespeak.distribution.client.util.MiscUtil;
 
 /**
  * A class representing program information in a table
@@ -74,8 +76,10 @@ public class ProgramTableData {
      * Sets the release time of this program
      * @param releaseTime release time of this program
      */
-    public void setReleaseTime(String releaseTime) {
-        this.releaseDate.set(releaseTime);
+    public void setReleaseTime(Timestamp releaseTime) {
+        String formattedReleaseDate = MiscUtil.formatTimestamp(program.getReleaseTime());
+            
+        this.releaseDate.set(formattedReleaseDate);
     }
     
 }
