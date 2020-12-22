@@ -233,6 +233,36 @@ public class Program {
         
         return Paths.get(programPath);
     }
+
+    /**
+     * Checks to see if the specified dependencies are newer than this
+     * program's dependencies
+     * @param otherDependencies a map of other dependencies
+     */
+    public boolean hasNewDependencies(Map<Dependency, Long> otherDependencies) {
+        return hasNewDependencies(otherDependencies, false);
+    }
+    /**
+     * Checks to see if the specified dependencies are newer than this
+     * program's dependencies
+     * @param otherDependencies a ma
+     * @param onlyClient p of other dependencies
+     * @return 
+     */
+    public boolean hasNewDependencies(Map<Dependency, Long> otherDependencies, boolean onlyClient) {
+        for (EnumMap.Entry<Dependency, Long> entry : otherDependencies.entrySet()) {
+            Dependency dependency = entry.getKey();
+            long flags = entry.getValue();
+            
+            if (!dependencies.containsKey(dependency)) {
+                if (!onlyClient || DependencyFlags.DISPLAY_ON_CLIENT.in(flags)) {
+                    return true;                    
+                }
+            }
+        }
+        
+        return false;
+    }
     
     /**
      * Uninstalls this program

@@ -315,6 +315,8 @@ public class MainSceneController implements Initializable {
      */
     public void onUpdateProgram(Program program, Program installedProgram) throws IOException {
         try {
+            boolean newDependencies = installedProgram.hasNewDependencies(program.getDependencies(), true);
+            
             installedProgram.update(program);
         
             ObservableList<ProgramTableData> programItems = programsTable.getItems();
@@ -326,6 +328,19 @@ public class MainSceneController implements Initializable {
             programItems.set(currentlySelectedProgramIndex, programData);
 
             displayProgramControls(program, installedProgram);
+            
+            if (newDependencies) {
+                Alert alert = AlertUtil.createAlert("This program has new dependencies. The dependencies window will now be shown.");
+                alert.showAndWait();
+                
+                String programName = installedProgram.getName();
+                StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
+                Stage stage = stageController.getStage();
+                ProgramDependenciesSceneController controller = stageController.getController();
+                
+                stage.show();
+                controller.showProgramDependencies(programName, installedProgram.getDependencies(true), installedProgram.getDirectory(true));
+            }
         } catch (ClientException ex) {
             Alert alert = ex.buildAlert();
             alert.show();
