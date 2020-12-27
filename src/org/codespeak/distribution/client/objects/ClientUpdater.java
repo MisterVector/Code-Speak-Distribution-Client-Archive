@@ -24,11 +24,10 @@ public class ClientUpdater extends Updater {
     @Override
     public void update() throws Exception {
         String previousVersion = super.getPreviousVersion();
-        String currentVersion = super.getCurrentVersion();
         
         Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
         List<String> commands = new ArrayList<String>();
-        File applicationFile = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        File applicationFolder = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath().getParent().toFile();
 
         if (Configuration.UPDATER_FILE.endsWith(".jar")) {
             commands.add("java");
@@ -38,10 +37,8 @@ public class ClientUpdater extends Updater {
         commands.add(updaterPath.toString());
         commands.add("--old-version");
         commands.add(previousVersion);
-        commands.add("--new-version");
-        commands.add(currentVersion);
-        commands.add("--launch-file");
-        commands.add(applicationFile.toString());
+        commands.add("--client-folder");
+        commands.add(applicationFolder.toString());
 
         ProcessBuilder pb = new ProcessBuilder(commands);
         pb.directory(new File("."));
