@@ -77,7 +77,7 @@ public class ProgramTableData {
      * @param releaseTime release time of this program
      */
     public void setReleaseTime(Timestamp releaseTime) {
-        String formattedReleaseDate = MiscUtil.formatTimestamp(program.getReleaseTime());
+        String formattedReleaseDate = MiscUtil.formatTimestamp(releaseTime);
             
         this.releaseDate.set(formattedReleaseDate);
     }
