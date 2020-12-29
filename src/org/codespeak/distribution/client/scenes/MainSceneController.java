@@ -69,6 +69,7 @@ public class MainSceneController implements Initializable {
     private Settings settings;
     
     @FXML private ComboBox<String> categoryChoices;
+    @FXML private Label categoryDescriptionLabel;
     @FXML private TableView<ProgramTableData> programsTable;
     @FXML private TableColumn<ProgramTableData, String> programsTableNameColumn;
     @FXML private TableColumn<ProgramTableData, String> programsTableVersionColumn;
@@ -145,8 +146,7 @@ public class MainSceneController implements Initializable {
             items.add(programData);
         }
 
-        Tooltip t = new Tooltip(category == null ? "All programs." : category.getDescription());
-        Tooltip.install(categoryChoices, t);
+        categoryDescriptionLabel.setText(category == null ? "All programs." : category.getDescription());
     }
     
     private void resetProgramControls() {
