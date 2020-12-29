@@ -265,8 +265,10 @@ public class MainSceneController implements Initializable {
      */
     public void checkClientUpdate(boolean startup) {
         if (!DistributionClient.isOnline()) {
-            Alert alert = AlertUtil.createAlert("Unable to check for client update at this time.");
-            alert.show();
+            if (!startup) {
+                Alert alert = AlertUtil.createAlert("Unable to check for client update at this time.");
+                alert.show();
+            }
             
             return;
         }
