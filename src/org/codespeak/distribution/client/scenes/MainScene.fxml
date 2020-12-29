@@ -31,8 +31,8 @@
                       <MenuItem mnemonicParsing="false" onAction="#onProgramViewHelpMenuItemClick" text="View Help" />
                         <MenuItem mnemonicParsing="false" onAction="#onProgramViewChangelogButtonClick" text="View Changelog" />
                         <MenuItem mnemonicParsing="false" onAction="#onViewDependenciesMenuItemClick" text="View Dependencies" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onOpenFolderMenuItemClick" text="Open Folder" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#onProgramRepairButtonClick" text="Repair" />
                         <MenuItem mnemonicParsing="false" onAction="#onUninstallMenuItemClick" text="Uninstall" />
                     </items>
