@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="742.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.MainSceneController">
+<AnchorPane id="AnchorPane" prefHeight="717.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.MainSceneController">
    <children>
       <AnchorPane prefHeight="673.0" prefWidth="641.0">
          <children>
@@ -62,22 +62,22 @@
                   <TableColumn fx:id="programsTableReleaseDateColumn" prefWidth="203.0" text="Release Date" />
               </columns>
             </TableView>
-            <AnchorPane layoutX="11.0" layoutY="430.0" prefHeight="304.0" prefWidth="695.0">
+            <AnchorPane layoutX="11.0" layoutY="430.0" prefHeight="283.0" prefWidth="724.0">
                <children>
-                  <Label fx:id="programNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="713.0" text="No Program Selected" textAlignment="CENTER" wrapText="true">
+                  <Label fx:id="programNameLabel" alignment="TOP_CENTER" layoutX="11.0" layoutY="7.0" prefHeight="35.0" prefWidth="713.0" text="No Program Selected" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="programDescriptionLabel" alignment="TOP_LEFT" layoutX="11.0" layoutY="76.0" prefHeight="195.0" prefWidth="713.0" text="No description. Select a program first." wrapText="true">
+                  <Label fx:id="programDescriptionLabel" alignment="TOP_LEFT" layoutX="11.0" layoutY="57.0" prefHeight="195.0" prefWidth="713.0" text="No description. Select a program first." wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="launchProgramButton" disable="true" layoutX="14.0" layoutY="278.0" mnemonicParsing="false" onAction="#onLaunchProgramButtonClick" prefHeight="25.0" prefWidth="120.0" text="Launch Program" />
-                  <Button fx:id="installButton" disable="true" layoutX="151.0" layoutY="278.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="120.0" text="Install" />
-                  <Button fx:id="updateButton" disable="true" layoutX="288.0" layoutY="277.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="120.0" text="Update" />
-                  <Label fx:id="programDetailsLabel" layoutX="422.0" layoutY="277.0" textFill="RED">
+                  <Button fx:id="launchProgramButton" disable="true" layoutX="14.0" layoutY="252.0" mnemonicParsing="false" onAction="#onLaunchProgramButtonClick" prefHeight="25.0" prefWidth="120.0" text="Launch Program" />
+                  <Button fx:id="installButton" disable="true" layoutX="151.0" layoutY="252.0" mnemonicParsing="false" onAction="#onInstallButtonClick" prefHeight="25.0" prefWidth="120.0" text="Install" />
+                  <Button fx:id="updateButton" disable="true" layoutX="288.0" layoutY="251.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="25.0" prefWidth="120.0" text="Update" />
+                  <Label fx:id="programDetailsLabel" layoutX="422.0" layoutY="251.0" textFill="RED">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
