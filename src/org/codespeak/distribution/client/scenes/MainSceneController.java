@@ -458,7 +458,7 @@ public class MainSceneController implements Initializable {
             Path helpFilePath = currentlySelectedInstalledProgram.getDirectory().resolve(helpFile);
             
             if (!helpFilePath.toFile().exists()) {
-                Alert alert = AlertUtil.createAlert("The help file has been deleted.");
+                Alert alert = AlertUtil.createAlert("The help file was not found.");
                 alert.show();
                 
                 return;
@@ -678,7 +678,7 @@ public class MainSceneController implements Initializable {
         File file = new File(Configuration.README_FILE);
         
         if (!file.exists()) {
-            Alert alert = AlertUtil.createAlert(("The read me file does not exist."));
+            Alert alert = AlertUtil.createAlert(("The help file was not found."));
             alert.show();
             
             return;
