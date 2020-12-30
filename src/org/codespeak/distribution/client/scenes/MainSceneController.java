@@ -298,9 +298,9 @@ public class MainSceneController implements Initializable {
                         alert.show();
                     }
                 }                
-            } catch (IOException ex) {
-
-            } catch (ClientException ex) {
+            } catch (ClientException | IOException e) {
+                ClientException ex = ClientException.fromException(e);
+                
                 Alert alert = ex.buildAlert();
                 alert.show();
 
@@ -313,9 +313,8 @@ public class MainSceneController implements Initializable {
      * Called when a program is updated
      * @param installedProgram an installed program
      * @param program the latest information on a program
-     * @throws java.io.IOException
      */
-    public void onUpdateProgram(Program program, Program installedProgram) throws IOException {
+    public void onUpdateProgram(Program program, Program installedProgram) {
         try {
             boolean newDependencies = installedProgram.hasNewDependencies(program.getDependencies(), true);
             
@@ -343,7 +342,9 @@ public class MainSceneController implements Initializable {
                 stage.show();
                 controller.showProgramDependencies(programName, installedProgram.getDependencies(true), installedProgram.getDirectory(true));
             }
-        } catch (ClientException ex) {
+        } catch (ClientException | IOException e) {
+            ClientException ex = ClientException.fromException(e);
+            
             Alert alert = ex.buildAlert();
             alert.show();
             
@@ -352,7 +353,7 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onProgramsTableKeyReleased(KeyEvent event) throws IOException {
+    public void onProgramsTableKeyReleased(KeyEvent event) {
         KeyCode code = event.getCode();
         
         switch (code) {
@@ -367,7 +368,16 @@ public class MainSceneController implements Initializable {
                 break;
             case ENTER:
                 if (currentlySelectedInstalledProgram != null) {
-                    launchInstalledProgram();
+                    try {
+                        launchInstalledProgram();
+                    } catch (IOException e) {
+                        ClientException ex = ClientException.fromException(e);
+
+                        Alert alert = ex.buildAlert();
+                        alert.show();
+
+                        DistributionClient.logError(ex);
+                    }
                 }
                 
                 break;
@@ -375,7 +385,7 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onOpenBackupFolderMenuItemClick(ActionEvent event) throws Exception {
+    public void onOpenBackupFolderMenuItemClick(ActionEvent event) {
         Path backupFolder = Paths.get(Configuration.BACKUPS_FOLDER);
         
         if (!backupFolder.toFile().exists()) {
@@ -384,15 +394,33 @@ public class MainSceneController implements Initializable {
             
             return;
         }
-        
-        Desktop desktop = Desktop.getDesktop();
-        desktop.open(backupFolder.toFile());
+
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(backupFolder.toFile());
+        } catch (IOException e) {
+            ClientException ex = ClientException.fromException(e);
+
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
+        }
     }
     
     @FXML
-    public void onSettingsMenuItemClick(ActionEvent event) throws Exception {
-        Stage stage = SceneUtil.getScene(SceneTypes.SETTINGS, "Settings for " + Configuration.PROGRAM_NAME).getStage();
-        stage.show();
+    public void onSettingsMenuItemClick(ActionEvent event) {
+        try {
+            Stage stage = SceneUtil.getScene(SceneTypes.SETTINGS, "Settings for " + Configuration.PROGRAM_NAME).getStage();
+            stage.show();
+        } catch (IOException e) {
+            ClientException ex = ClientException.fromException(e);
+
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
+        }
     }
     
     @FXML
@@ -401,13 +429,22 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onAboutMenuItemClick() throws IOException {
-        Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About " + Configuration.PROGRAM_NAME).getStage();
-        stage.show();
+    public void onAboutMenuItemClick() {
+        try {
+            Stage stage = SceneUtil.getScene(SceneTypes.ABOUT, "About " + Configuration.PROGRAM_NAME).getStage();
+            stage.show();
+        } catch (IOException e) {
+            ClientException ex = ClientException.fromException(e);
+
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
+        }
     }
 
     @FXML
-    public void onProgramViewHelpMenuItemClick() throws IOException {
+    public void onProgramViewHelpMenuItemClick() {
         if (currentlySelectedInstalledProgram != null) {
             String helpFile = currentlySelectedInstalledProgram.getHelpFile();
             
@@ -427,8 +464,17 @@ public class MainSceneController implements Initializable {
                 return;
             }
             
-            Desktop desktop = Desktop.getDesktop();
-            desktop.open(helpFilePath.toFile());
+            try {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(helpFilePath.toFile());
+            } catch (IOException e) {
+                ClientException ex = ClientException.fromException(e);
+
+                Alert alert = ex.buildAlert();
+                alert.show();
+
+                DistributionClient.logError(ex);
+            }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
@@ -436,19 +482,28 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onViewDependenciesMenuItemClick() throws Exception {
+    public void onViewDependenciesMenuItemClick() {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();
             Map<Dependency, Long> dependencies = currentlySelectedInstalledProgram.getDependencies(true);
 
             if (dependencies.size() > 0) {
-                Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
-                StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
-                ProgramDependenciesSceneController controller = stageController.getController();
-                Stage stage = stageController.getStage();
+                try {
+                    Path programLaunchFile = currentlySelectedInstalledProgram.getDirectory(true);
+                    StageController<ProgramDependenciesSceneController> stageController = SceneUtil.getScene(SceneTypes.PROGRAM_DEPENDENCIES, "Dependencies for " + programName);
+                    ProgramDependenciesSceneController controller = stageController.getController();
+                    Stage stage = stageController.getStage();
 
-                stage.show();
-                controller.showProgramDependencies(programName, dependencies, programLaunchFile);
+                    stage.show();
+                    controller.showProgramDependencies(programName, dependencies, programLaunchFile);
+                } catch (IOException e) {
+                    ClientException ex = ClientException.fromException(e);
+
+                    Alert alert = ex.buildAlert();
+                    alert.show();
+
+                    DistributionClient.logError(ex);
+                }
             } else {
                 Alert alert = AlertUtil.createAlert(programName + " does not have any dependencies.");
                 alert.show();
@@ -460,12 +515,21 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onOpenFolderMenuItemClick() throws IOException {
+    public void onOpenFolderMenuItemClick() {
         if (currentlySelectedInstalledProgram != null) {
             Path programDirectory = currentlySelectedInstalledProgram.getDirectory();
-            Desktop desktop = Desktop.getDesktop();
-            
-            desktop.open(programDirectory.toFile());
+
+            try {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(programDirectory.toFile());
+            } catch (IOException e) {
+                ClientException ex = ClientException.fromException(e);
+
+                Alert alert = ex.buildAlert();
+                alert.show();
+
+                DistributionClient.logError(ex);
+            }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
             alert.show();
@@ -473,7 +537,7 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onProgramRepairButtonClick() throws IOException {
+    public void onProgramRepairButtonClick() {
         if (currentlySelectedInstalledProgram != null) {
             if (!DistributionClient.isOnline()) {
                 Alert alert = AlertUtil.createAlert("Unable to repair program at this time.");
@@ -516,7 +580,9 @@ public class MainSceneController implements Initializable {
 
                     Alert alert = AlertUtil.createAlert(programName + " has been repaired.");
                     alert.show();
-                } catch (ClientException ex) {
+                } catch (ClientException | IOException e) {
+                    ClientException ex = ClientException.fromException(e);
+
                     Alert alert = ex.buildAlert();
                     alert.show();
                     
@@ -530,7 +596,7 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onProgramViewChangelogButtonClick() throws IOException {
+    public void onProgramViewChangelogButtonClick() {
         if (currentlySelectedProgram != null) {
             if (!DistributionClient.isOnline()) {
                 Alert alert = AlertUtil.createAlert("Unable to view program changelog at this time.");
@@ -566,7 +632,9 @@ public class MainSceneController implements Initializable {
 
                 stage.show();
                 controller.showChangelog(name, entries);
-            } catch (ClientException ex) {
+            } catch (ClientException | IOException e) {
+                ClientException ex = ClientException.fromException(e);
+
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
@@ -579,7 +647,7 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onViewChangelogButtonClick() throws IOException {
+    public void onViewChangelogButtonClick() {
         if (!DistributionClient.isOnline()) {
             Alert alert = AlertUtil.createAlert("Unable to view changelog at this time.");
             alert.show();
@@ -595,7 +663,9 @@ public class MainSceneController implements Initializable {
 
             stage.show();
             controller.showChangelog(Configuration.PROGRAM_NAME, entries);
-        } catch (ClientException ex) {
+        } catch (ClientException | IOException e) {
+            ClientException ex = ClientException.fromException(e);
+
             Alert alert = ex.buildAlert();
             alert.show();
             
@@ -604,7 +674,7 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onViewHelpMenuItemClick(ActionEvent event) throws IOException {
+    public void onViewHelpMenuItemClick(ActionEvent event) {
         File file = new File(Configuration.README_FILE);
         
         if (!file.exists()) {
@@ -614,8 +684,17 @@ public class MainSceneController implements Initializable {
             return;
         }
         
-        Desktop desktop = Desktop.getDesktop();
-        desktop.open(file);
+        try {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(file);
+        } catch (IOException e) {
+            ClientException ex = ClientException.fromException(e);
+
+            Alert alert = ex.buildAlert();
+            alert.show();
+            
+            DistributionClient.logError(ex);
+        }
     }
     
     @FXML
@@ -649,9 +728,18 @@ public class MainSceneController implements Initializable {
     }
 
     @FXML
-    public void onLaunchProgramButtonClick() throws IOException {
+    public void onLaunchProgramButtonClick() {
         if (currentlySelectedInstalledProgram != null) {
-            launchInstalledProgram();
+            try {
+                launchInstalledProgram();
+            } catch (IOException e) {
+                ClientException ex = ClientException.fromException(e);
+
+                Alert alert = ex.buildAlert();
+                alert.show();
+
+                DistributionClient.logError(ex);
+            }
         }
     }
     
@@ -659,7 +747,6 @@ public class MainSceneController implements Initializable {
     public void onInstallButtonClick() {
         if (currentlySelectedProgram != null) {
             String programName = currentlySelectedProgram.getName();
-            ClientException exception = null;
             
             try {
                 DataHandler.installProgram(currentlySelectedProgram);
@@ -679,21 +766,19 @@ public class MainSceneController implements Initializable {
                     stage.show();
                     controller.showProgramDependencies(programName, dependencies, programLaunchFile);
                 }
-            } catch (ClientException | IOException ex) {
-                exception = ClientException.fromException(ex);
-            }
-                
-            if (exception != null) {
-                Alert alert = exception.buildAlert();
+            } catch (ClientException | IOException e) {
+                ClientException ex = ClientException.fromException(e);
+
+                Alert alert = ex.buildAlert();
                 alert.show();
                 
-                DistributionClient.logError(exception);
+                DistributionClient.logError(ex);
             }
         }
     }
     
     @FXML
-    public void onUpdateButtonClick() throws IOException {
+    public void onUpdateButtonClick() {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();
 
@@ -709,7 +794,9 @@ public class MainSceneController implements Initializable {
 
                 stage.show();
                 controller.showUpdate(updater);
-            } catch (ClientException ex) {
+            } catch (ClientException | IOException e) {
+                ClientException ex = ClientException.fromException(e);
+                
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
@@ -719,7 +806,7 @@ public class MainSceneController implements Initializable {
     }
     
     @FXML
-    public void onUninstallMenuItemClick() throws IOException {
+    public void onUninstallMenuItemClick() {
         if (currentlySelectedInstalledProgram != null) {
             String programName = currentlySelectedInstalledProgram.getName();
             
@@ -732,27 +819,36 @@ public class MainSceneController implements Initializable {
             ButtonType buttonType = alert.showAndWait().get();
 
             if (buttonType == ButtonType.YES) {
-                DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
+                try {
+                    DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
 
-                if (DistributionClient.isOnline() && !currentlySelectedInstalledProgram.isDetached()) {
-                    currentlySelectedInstalledProgram = null;
+                    if (DistributionClient.isOnline() && !currentlySelectedInstalledProgram.isDetached()) {
+                        currentlySelectedInstalledProgram = null;
 
-                    displayProgramControls(currentlySelectedProgram, null);
-                } else {
-                    currentlySelectedProgram = null;
-                    currentlySelectedInstalledProgram = null;
-                    currentlySelectedProgramIndex = -1;
-                    currentlySelectedCategoryIndex = 0;
+                        displayProgramControls(currentlySelectedProgram, null);
+                    } else {
+                        currentlySelectedProgram = null;
+                        currentlySelectedInstalledProgram = null;
+                        currentlySelectedProgramIndex = -1;
+                        currentlySelectedCategoryIndex = 0;
 
-                    populateCategories();
-                    displayPrograms(null);
-                    resetProgramControls();
+                        populateCategories();
+                        displayPrograms(null);
+                        resetProgramControls();
 
-                    categoryChoices.getSelectionModel().select("All");
+                        categoryChoices.getSelectionModel().select("All");
+                    }
+
+                    Alert uninstallAlert = AlertUtil.createAlert(programName + " has been uninstalled.");
+                    uninstallAlert.show();
+                } catch (IOException e) {
+                    ClientException ex = ClientException.fromException(e);
+
+                    alert = ex.buildAlert();
+                    alert.show();
+
+                    DistributionClient.logError(ex);
                 }
-                
-                Alert uninstallAlert = AlertUtil.createAlert(programName + " has been uninstalled.");
-                uninstallAlert.show();
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
