@@ -31,6 +31,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Button layoutX="302.0" layoutY="210.0" mnemonicParsing="false" onAction="#onCloseWindowButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close Window" />
+      <Button layoutX="302.0" layoutY="210.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close" />
    </children>
 </AnchorPane>
