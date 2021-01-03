@@ -14,18 +14,16 @@ import org.json.JSONObject;
 public class Settings {
 
     public enum SettingFields {
-        REMEMBER_SELECTED_CATEGORY("remember_selected_category", Boolean.class, false),
-        CHECK_CLIENT_UPDATE_ON_STARTUP("check_client_update_on_startup", Boolean.class, true),
-        BACKUP_BEFORE_REMOVING_TEXT_FILES("backup_before_removing_text_files", Boolean.class, true),
-        NOTIFY_OF_NEW_PROGRAMS("notify_of_new_programs", Boolean.class, true);
+        REMEMBER_SELECTED_CATEGORY("remember_selected_category", false),
+        CHECK_CLIENT_UPDATE_ON_STARTUP("check_client_update_on_startup", true),
+        BACKUP_BEFORE_REMOVING_TEXT_FILES("backup_before_removing_text_files", true),
+        NOTIFY_OF_NEW_PROGRAMS("notify_of_new_programs", true);
         
         private final String key;
-        private final Class fieldClass;
         private final Object defaultValue;
         
-        private SettingFields(String key, Class fieldClass, Object defaultValue) {
+        private SettingFields(String key, Object defaultValue) {
             this.key = key;
-            this.fieldClass = fieldClass;
             this.defaultValue = defaultValue;
         }
         
@@ -35,14 +33,6 @@ public class Settings {
          */
         public String getKey() {
             return key;
-        }
-        
-        /**
-         * Gets the class representing this field
-         * @return class representing this field
-         */
-        public Class getFieldClass() {
-            return fieldClass;
         }
         
         /**
@@ -105,17 +95,15 @@ public class Settings {
         
         for (SettingFields field : SettingFields.values()) {
             String key = field.getKey();
-            Class fieldClass = field.getFieldClass();
+            Object defaultValue = field.getDefaultValue();
             Object value = null;
             
             if (json.has(key)) {
                 try {
                     Object tempValue = json.get(key);
                     
-                    if (fieldClass == Boolean.class) {
-                        if (tempValue instanceof Boolean) {
-                            value = tempValue;
-                        }
+                    if (tempValue.getClass() == defaultValue.getClass()) {
+                        value = tempValue;
                     }
                 } catch (JSONException ex) {
                     
@@ -123,7 +111,7 @@ public class Settings {
             }
             
             if (value == null) {
-                value = field.getDefaultValue();
+                value = defaultValue;
             }
             
             fieldValues.put(field, value);
