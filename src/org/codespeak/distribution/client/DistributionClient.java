@@ -45,7 +45,7 @@ public class DistributionClient extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        String title = Configuration.PROGRAM_TITLE;
+        String title = Configuration.PROGRAM_NAME;
         
         if (!online) {
             title += " - Currently Offline";

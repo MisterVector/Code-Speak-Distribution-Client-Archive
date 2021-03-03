@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 
@@ -25,12 +26,16 @@ public class AboutSceneController implements Initializable {
     
     private Desktop desktop;
 
+    @FXML private Label headerLabel;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         desktop = Desktop.getDesktop();
+        
+        headerLabel.setText(headerLabel.getText().replace("%v", Configuration.PROGRAM_VERSION));
     }    
 
     @FXML

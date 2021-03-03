@@ -6,24 +6,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.AboutSceneController">
+<AnchorPane id="AnchorPane" prefHeight="211.0" prefWidth="499.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.codespeak.distribution.client.scenes.AboutSceneController">
    <children>
-      <Label alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="402.0" text="Code Speak Distribution Client">
+      <Label fx:id="headerLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="469.0" text="Code Speak Distribution Client v%v">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="181.0" layoutY="67.0" prefHeight="10.0" prefWidth="76.0" text="By Vector">
+      <Label alignment="TOP_CENTER" layoutX="20.0" layoutY="67.0" prefHeight="27.0" prefWidth="457.0" text="By Vector">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label alignment="TOP_LEFT" layoutX="18.0" layoutY="108.0" prefHeight="63.0" prefWidth="402.0" text="This is a program that interacts with the Code Speak Distribution System. It is used to manage the installation of programs served through the system." wrapText="true">
+      <Label alignment="TOP_LEFT" layoutX="18.0" layoutY="108.0" prefHeight="53.0" prefWidth="469.0" text="This is a program that interacts with the Code Speak Distribution System. It is used to manage the installation of programs served through the system." wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="18.0" layoutY="209.0" onMouseClicked="#onCodeSpeakLinkClick" text="www.codespeak.org" textFill="#000dff" underline="true">
+      <Label layoutX="16.0" layoutY="172.0" onMouseClicked="#onCodeSpeakLinkClick" text="www.codespeak.org" textFill="#000dff" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -31,6 +31,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Button layoutX="302.0" layoutY="210.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close" />
+      <Button layoutX="374.0" layoutY="173.0" mnemonicParsing="false" onAction="#onCloseButtonClick" prefHeight="25.0" prefWidth="107.0" text="Close" />
    </children>
 </AnchorPane>
