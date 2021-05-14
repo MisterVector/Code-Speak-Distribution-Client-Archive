@@ -149,7 +149,7 @@ public class DistributionClient extends Application {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         String logFileDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd");
-        String errorDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd hh:MM:ss a");
+        String errorDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd hh:mm:ss a");
         String errorLogFile = "error-" + logFileDateFormat + ".log";
         Path logPath = logsFolder.toPath().resolve(errorLogFile);
 
