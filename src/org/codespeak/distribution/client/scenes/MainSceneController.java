@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +138,7 @@ public class MainSceneController implements Initializable {
         items.clear();
         
         for (Program program : programs) {
-            String formattedReleaseDate = MiscUtil.formatTimestamp(program.getReleaseTime());
+            String formattedReleaseDate = MiscUtil.formatInstant(program.getReleaseTime());
             
             ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseDate);
             items.add(programData);
@@ -166,15 +166,15 @@ public class MainSceneController implements Initializable {
         if (installedProgram != null) {
             name = installedProgram.getName();
             description = installedProgram.getDescription();
-            Timestamp releaseTime = program.getReleaseTime();
-            Timestamp installedReleaseTime = installedProgram.getReleaseTime();
+            Instant releaseTime = program.getReleaseTime();
+            Instant installedReleaseTime = installedProgram.getReleaseTime();
             
             launchProgramButton.setDisable(false);
             
             if (installedProgram.isDetached()) {
                 programDetailsLabel.setText("This program is no longer maintained.");
             } else {
-                if (releaseTime.after(installedReleaseTime)) {
+                if (releaseTime.isAfter(installedReleaseTime)) {
                     updateButton.setDisable(false);
                     programDetailsLabel.setText("A new version is available!");
                 }                
@@ -277,11 +277,11 @@ public class MainSceneController implements Initializable {
             try {
                 ClientCheckVersionResponse response = BackendHandler.getDataFromQuery(QueryTypes.CHECK_CLIENT_VERSION, "&current_version=" + Configuration.PROGRAM_VERSION);
 
-                Timestamp requestReleaseTime = response.getRequestReleaseTime();
-                Timestamp releaseTime = response.getReleaseTime();
+                Instant requestReleaseTime = response.getRequestReleaseTime();
+                Instant releaseTime = response.getReleaseTime();
                 String version = response.getVersion();
 
-                if (releaseTime.after(requestReleaseTime)) {
+                if (releaseTime.isAfter(requestReleaseTime)) {
                     List<ChangelogEntry> entries = BackendHandler.getDataFromQuery(QueryTypes.GET_CLIENT_CHANGELOG, "&since_version=" + Configuration.PROGRAM_VERSION);
                     StageController<UpdateSceneController> stageController = SceneUtil.getScene(SceneTypes.UPDATE, "New verion for " + Configuration.PROGRAM_NAME);
                     Stage stage = stageController.getStage();
@@ -551,8 +551,8 @@ public class MainSceneController implements Initializable {
                 return;
             }
             
-            Timestamp installedReleaseTime = currentlySelectedInstalledProgram.getReleaseTime();
-            Timestamp releaseTime = currentlySelectedProgram.getReleaseTime();
+            Instant installedReleaseTime = currentlySelectedInstalledProgram.getReleaseTime();
+            Instant releaseTime = currentlySelectedProgram.getReleaseTime();
             
             if (!installedReleaseTime.equals(releaseTime)) {
                 Alert alert = AlertUtil.createAlert("This program must be at the latest version before it can be repaired.");

@@ -10,8 +10,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import org.codespeak.distribution.client.handler.DataHandler;
-import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class Program {
     private String launchFile;
     private String helpFile;
     private String version;
-    private Timestamp releaseTime;
+    private Instant releaseTime;
     private Map<Dependency, Long> dependencies = new HashMap<Dependency, Long>();
     private boolean installed;
     private boolean detached = false;
@@ -72,7 +72,7 @@ public class Program {
     }
     
     private Program(int id, Category category, String slug, String name, String description,
-                    String launchFile, String helpFile, String version, Timestamp releaseTime,
+                    String launchFile, String helpFile, String version, Instant releaseTime,
                     Map<Dependency, Long> dependencies, boolean installed) {
         this.id = id;
         this.category = category;
@@ -152,7 +152,7 @@ public class Program {
      * Gets the release time of this program
      * @return release time of this program
      */
-    public Timestamp getReleaseTime() {
+    public Instant getReleaseTime() {
         return releaseTime;
     }
 
@@ -481,7 +481,7 @@ public class Program {
         String launchFile = "";
         String helpFile = "";
         String version = "";
-        Timestamp releaseTime = null;
+        Instant releaseTime = null;
         Map<Dependency, Long> dependencies = new HashMap<Dependency, Long>();
         
         if (json.has("id")) {
@@ -518,7 +518,7 @@ public class Program {
          }
          
          if (json.has("release_time")) {
-             releaseTime = Timestamp.valueOf(json.getString("release_time"));
+             releaseTime = MiscUtil.getInstant(json.getString("release_time"));
          }
          
          if (json.has("dependencies")) {

@@ -42,7 +42,7 @@ public class ChangelogSceneController implements Initializable {
         StringBuilder sb = new StringBuilder();
         
         for (ChangelogEntry entry : changelogEntries) {
-            String formattedReleaseTime = MiscUtil.formatTimestamp(entry.getReleaseTime());
+            String formattedReleaseTime = MiscUtil.formatInstant(entry.getReleaseTime());
             
             if (sb.length() > 0) {
                 sb.append("\n\n");

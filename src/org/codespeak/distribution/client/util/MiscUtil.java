@@ -6,8 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.DatatypeConverter;
@@ -32,23 +35,56 @@ public class MiscUtil {
     }
 
     /**
-     * Returns a formatted timestamp string from the specified timestamp
-     * @param timestamp a timestamp to be formatted
-     * @return formatted output of a timestamp
+     * Converts the specified date time string to ISO 8601 instant format
+     * @param str the specified string to convert
+     * @return an ISO 8601 instant compliant string
      */
-    public static String formatTimestamp(Timestamp timestamp) {
-        return formatTimestamp(timestamp, DEFAULT_DATETIME_FORMAT);
+    private static String ensureISOFormat(String str) {
+        return str.replace(" ", "T") + "Z";
     }
     
     /**
-     * Returns a formatted timestamp string from the specified timestamp
-     * @param timestamp a timestamp to be formatted
-     * @param format The new format for the timestamp
-     * @return formatted output of a timestamp
+     * Returns a string representing the specified instant in the local time
+     * zone using the default date time format
+     * @param instant the instant to format
+     * @return a string representing an instant in the local time zone according
+     * to the default date time format
      */
-    public static String formatTimestamp(Timestamp timestamp, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(timestamp);
+    public static String formatInstant(Instant instant) {
+        return formatInstant(instant, DEFAULT_DATETIME_FORMAT);
+    }
+    
+    /**
+     * Returns a string representing the specified instant in the local time
+     * zone according to a specified format
+     * @param instant the instant to format
+     * @param format the specified format to use
+     * @return a string representing an instant in the local time zone according
+     * to a specified format
+     */
+    public static String formatInstant(Instant instant, String format) {
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+
+        return zdt.format(DateTimeFormatter.ofPattern(format));
+    }
+
+    /**
+     * Gets an instant from the specified date time string
+     * @param dateTimeString date time string to get an instant from
+     * @return instant from a date time string
+     */
+    public static Instant getInstant(String dateTimeString) {
+        Instant instant = null;
+        
+        try {
+            instant = Instant.parse(dateTimeString);
+        } catch (DateTimeParseException ex) {
+            dateTimeString = ensureISOFormat(dateTimeString);
+            
+            instant = Instant.parse(dateTimeString);
+        }
+        
+        return instant;
     }
     
     /**

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
@@ -147,9 +147,9 @@ public class DistributionClient extends Application {
      */
     public static void logError(ClientException ex) {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        String logFileDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd");
-        String errorDateFormat = MiscUtil.formatTimestamp(now, "yyyy-MM-dd hh:mm:ss a");
+        Instant now = Instant.now();
+        String logFileDateFormat = MiscUtil.formatInstant(now, "yyyy-MM-dd");
+        String errorDateFormat = MiscUtil.formatInstant(now, "yyyy-MM-dd hh:mm:ss a");
         String errorLogFile = "error-" + logFileDateFormat + ".log";
         Path logPath = logsFolder.toPath().resolve(errorLogFile);
 

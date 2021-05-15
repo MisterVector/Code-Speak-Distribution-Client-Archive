@@ -1,7 +1,8 @@
 package org.codespeak.distribution.client.data;
 
 import java.io.File;
-import java.sql.Timestamp;
+import java.time.Instant;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
 
@@ -52,10 +53,10 @@ public class FileInfo {
     private final String checksum;
     private final FileStatus status;
     private final String updateVersion;
-    private final Timestamp updateTime;
+    private final Instant updateTime;
     
     private FileInfo(String name, String path, String checksum, FileStatus status,
-                     String updateVersion, Timestamp updateTime) {
+                     String updateVersion, Instant updateTime) {
         this.name = name;
         this.path = path;
         this.checksum = checksum;
@@ -157,7 +158,7 @@ public class FileInfo {
      * Gets the update time of this file
      * @return update time of this file
      */
-    public Timestamp getUpdateTime() {
+    public Instant getUpdateTime() {
         return updateTime;
     }
     
@@ -189,7 +190,7 @@ public class FileInfo {
         String checksum = "";
         FileStatus status = FileStatus.NEW;
         String updateVersion = "";
-        Timestamp updateTime = null;
+        Instant updateTime = null;
         
         if (json.has("file_name")) {
             fileName = json.getString("file_name");
@@ -212,7 +213,7 @@ public class FileInfo {
         }
         
         if (json.has("update_time")) {
-            updateTime = Timestamp.valueOf(json.getString("update_time"));
+            updateTime = MiscUtil.getInstant(json.getString("update_time"));
         }
         
         return new FileInfo(fileName, filePath, checksum, status, updateVersion, updateTime);

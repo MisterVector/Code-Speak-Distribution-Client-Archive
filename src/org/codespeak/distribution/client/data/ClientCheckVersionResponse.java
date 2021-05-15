@@ -1,6 +1,7 @@
 package org.codespeak.distribution.client.data;
 
-import java.sql.Timestamp;
+import java.time.Instant;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.json.JSONObject;
 
 /**
@@ -11,11 +12,11 @@ import org.json.JSONObject;
 public class ClientCheckVersionResponse {
     
     private final String requestVersion;
-    private final Timestamp requestReleaseTime;
+    private final Instant requestReleaseTime;
     private final String version;
-    private final Timestamp releaseTime;
+    private final Instant releaseTime;
     
-    private ClientCheckVersionResponse(String requestVersion, Timestamp requestReleaseTime, String version, Timestamp releaseTime) {
+    private ClientCheckVersionResponse(String requestVersion, Instant requestReleaseTime, String version, Instant releaseTime) {
         this.requestVersion = requestVersion;
         this.requestReleaseTime = requestReleaseTime;
         this.version = version;
@@ -34,7 +35,7 @@ public class ClientCheckVersionResponse {
      * Gets the requested version's release time
      * @return requested version's release time
      */
-    public Timestamp getRequestReleaseTime() {
+    public Instant getRequestReleaseTime() {
         return requestReleaseTime;
     }
     
@@ -50,7 +51,7 @@ public class ClientCheckVersionResponse {
      * Gets the release time
      * @return release time
      */
-    public Timestamp getReleaseTime() {
+    public Instant getReleaseTime() {
         return releaseTime;
     }
 
@@ -61,16 +62,16 @@ public class ClientCheckVersionResponse {
      */
     public static ClientCheckVersionResponse fromJSON(JSONObject json) {
         String requestVersion = "";
-        Timestamp requestReleaseTime = null;
+        Instant requestReleaseTime = null;
         String version = "";
-        Timestamp releaseTime = null;
+        Instant releaseTime = null;
         
         if (json.has("request_version")) {
             requestVersion = json.getString("request_version");
         }
         
         if (json.has("request_release_time")) {
-            requestReleaseTime = Timestamp.valueOf(json.getString("request_release_time"));
+            requestReleaseTime = MiscUtil.getInstant(json.getString("request_release_time"));
         }
         
         if (json.has("version")) {
@@ -78,7 +79,7 @@ public class ClientCheckVersionResponse {
         }
         
         if (json.has("release_time")) {
-            releaseTime = Timestamp.valueOf(json.getString("release_time"));
+            releaseTime = MiscUtil.getInstant(json.getString("release_time"));
         }
         
         return new ClientCheckVersionResponse(requestVersion, requestReleaseTime, version, releaseTime);

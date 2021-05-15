@@ -1,6 +1,7 @@
 package org.codespeak.distribution.client.data;
 
-import java.sql.Timestamp;
+import java.time.Instant;
+import org.codespeak.distribution.client.util.MiscUtil;
 import org.json.JSONObject;
 
 /**
@@ -11,9 +12,9 @@ public class ChangelogEntry {
 
     private final String version;
     private final String content;
-    private final Timestamp releaseTime;
+    private final Instant releaseTime;
     
-    private ChangelogEntry(String version, String content, Timestamp releaseTime) {
+    private ChangelogEntry(String version, String content, Instant releaseTime) {
         this.version = version;
         this.content = content;
         this.releaseTime = releaseTime;
@@ -27,7 +28,7 @@ public class ChangelogEntry {
         return content;
     }
     
-    public Timestamp getReleaseTime() {
+    public Instant getReleaseTime() {
         return releaseTime;
     }
     
@@ -53,7 +54,7 @@ public class ChangelogEntry {
     public static ChangelogEntry fromJSON(JSONObject json) {
         String version = "";
         String content = "";
-        Timestamp releaseTime = null;
+        Instant releaseTime = null;
         
         if (json.has("version")) {
             version = json.getString("version");
@@ -64,7 +65,7 @@ public class ChangelogEntry {
         }
         
         if (json.has("release_time")) {
-            releaseTime = Timestamp.valueOf(json.getString("release_time"));
+            releaseTime = MiscUtil.getInstant(json.getString("release_time"));
         }
         
         return new ChangelogEntry(version, content, releaseTime);
