@@ -34,11 +34,6 @@ public class MiscUtil {
         return messageDigest;
     }
 
-    /**
-     * Converts the specified date time string to ISO 8601 instant format
-     * @param str the specified string to convert
-     * @return an ISO 8601 instant compliant string
-     */
     private static String ensureISOFormat(String str) {
         return str.replace(" ", "T") + "Z";
     }
@@ -79,6 +74,8 @@ public class MiscUtil {
         try {
             instant = Instant.parse(dateTimeString);
         } catch (DateTimeParseException ex) {
+            // Must be in the old date and time format, so convert to the
+            // new format
             dateTimeString = ensureISOFormat(dateTimeString);
             
             instant = Instant.parse(dateTimeString);
