@@ -3,7 +3,7 @@ package org.codespeak.distribution.client.objects;
 import java.time.Instant;
 import javafx.beans.property.SimpleStringProperty;
 import org.codespeak.distribution.client.data.Program;
-import org.codespeak.distribution.client.util.MiscUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 
 /**
  * A class representing program information in a table
@@ -77,7 +77,7 @@ public class ProgramTableData {
      * @param releaseTime release time of this program
      */
     public void setReleaseTime(Instant releaseTime) {
-        String formattedReleaseDate = MiscUtil.formatInstant(releaseTime);
+        String formattedReleaseDate = DateUtil.formatInstant(releaseTime);
             
         this.releaseDate.set(formattedReleaseDate);
     }

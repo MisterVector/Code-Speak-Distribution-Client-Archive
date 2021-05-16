@@ -2,7 +2,7 @@ package org.codespeak.distribution.client.data;
 
 import java.io.File;
 import java.time.Instant;
-import org.codespeak.distribution.client.util.MiscUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
 
@@ -213,7 +213,7 @@ public class FileInfo {
         }
         
         if (json.has("update_time")) {
-            updateTime = MiscUtil.getInstant(json.getString("update_time"));
+            updateTime = DateUtil.getInstant(json.getString("update_time"));
         }
         
         return new FileInfo(fileName, filePath, checksum, status, updateVersion, updateTime);

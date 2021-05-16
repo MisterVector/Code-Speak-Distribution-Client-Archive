@@ -24,7 +24,7 @@ import org.codespeak.distribution.client.handler.DataHandler;
 import org.codespeak.distribution.client.objects.StageController;
 import org.codespeak.distribution.client.scenes.MainSceneController;
 import org.codespeak.distribution.client.scenes.SceneTypes;
-import org.codespeak.distribution.client.util.MiscUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
@@ -148,8 +148,8 @@ public class DistributionClient extends Application {
     public static void logError(ClientException ex) {
         File logsFolder = new File(Configuration.LOGS_FOLDER);
         Instant now = Instant.now();
-        String logFileDateFormat = MiscUtil.formatInstant(now, "yyyy-MM-dd");
-        String errorDateFormat = MiscUtil.formatInstant(now, "yyyy-MM-dd hh:mm:ss a");
+        String logFileDateFormat = DateUtil.formatInstant(now, "yyyy-MM-dd");
+        String errorDateFormat = DateUtil.formatInstant(now, "yyyy-MM-dd hh:mm:ss a");
         String errorLogFile = "error-" + logFileDateFormat + ".log";
         Path logPath = logsFolder.toPath().resolve(errorLogFile);
 

@@ -23,6 +23,7 @@ import org.codespeak.distribution.client.data.FileInfo.FileStatus;
 import org.codespeak.distribution.client.objects.ClientException;
 import org.codespeak.distribution.client.data.query.QueryTypes;
 import org.codespeak.distribution.client.handler.BackendHandler;
+import org.codespeak.distribution.client.util.DateUtil;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONArray;
@@ -518,7 +519,7 @@ public class Program {
          }
          
          if (json.has("release_time")) {
-             releaseTime = MiscUtil.getInstant(json.getString("release_time"));
+             releaseTime = DateUtil.getInstant(json.getString("release_time"));
          }
          
          if (json.has("dependencies")) {

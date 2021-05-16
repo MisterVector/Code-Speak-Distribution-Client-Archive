@@ -1,7 +1,7 @@
 package org.codespeak.distribution.client.data;
 
 import java.time.Instant;
-import org.codespeak.distribution.client.util.MiscUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 import org.json.JSONObject;
 
 /**
@@ -65,7 +65,7 @@ public class ChangelogEntry {
         }
         
         if (json.has("release_time")) {
-            releaseTime = MiscUtil.getInstant(json.getString("release_time"));
+            releaseTime = DateUtil.getInstant(json.getString("release_time"));
         }
         
         return new ChangelogEntry(version, content, releaseTime);

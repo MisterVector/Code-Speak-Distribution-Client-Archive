@@ -49,6 +49,7 @@ import org.codespeak.distribution.client.objects.ProgramUpdater;
 import org.codespeak.distribution.client.objects.StageController;
 import org.codespeak.distribution.client.objects.Updater;
 import org.codespeak.distribution.client.util.AlertUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 import org.codespeak.distribution.client.util.MiscUtil;
 import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
@@ -138,7 +139,7 @@ public class MainSceneController implements Initializable {
         items.clear();
         
         for (Program program : programs) {
-            String formattedReleaseDate = MiscUtil.formatInstant(program.getReleaseTime());
+            String formattedReleaseDate = DateUtil.formatInstant(program.getReleaseTime());
             
             ProgramTableData programData = new ProgramTableData(program, program.getName(), program.getVersion(), formattedReleaseDate);
             items.add(programData);

@@ -11,7 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.data.ChangelogEntry;
 import org.codespeak.distribution.client.objects.Updater;
-import org.codespeak.distribution.client.util.MiscUtil;
+import org.codespeak.distribution.client.util.DateUtil;
 
 /**
  * Controller for the program update scene
@@ -48,7 +48,7 @@ public class UpdateSceneController implements Initializable {
         StringBuilder sb = new StringBuilder();
         
         for (ChangelogEntry entry : updater.getEntries()) {
-            String formattedReleaseTime = MiscUtil.formatInstant(entry.getReleaseTime());
+            String formattedReleaseTime = DateUtil.formatInstant(entry.getReleaseTime());
             
             if (sb.length() > 0) {
                 sb.append("\n\n");
