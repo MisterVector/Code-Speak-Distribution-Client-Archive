@@ -20,6 +20,10 @@ public enum SceneTypes {
         this.fxmlName = fxmlName;
     }
     
+    /**
+     * Gets the path of this scene
+     * @return path of this scene
+     */
     public String getPath() {
         return "/org/codespeak/distribution/client/scenes/" + fxmlName;
     }

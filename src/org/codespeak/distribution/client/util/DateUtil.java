@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
+ * A utility class containing methods that work on dates and times
  *
  * @author Vector
  */

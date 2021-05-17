@@ -12,6 +12,7 @@ import org.codespeak.distribution.client.objects.StageController;
 import org.codespeak.distribution.client.scenes.SceneTypes;
 
 /**
+ * A utility class with methods for getting a particular scene
  *
  * @author Vector
  */

@@ -26,9 +26,6 @@ public class UpdateSceneController implements Initializable {
     @FXML private Label changesSinceLabel;
     @FXML private TextArea changesSinceText;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         

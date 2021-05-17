@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.codespeak.distribution.client.scenes;
 
 import java.awt.Desktop;
@@ -18,7 +13,7 @@ import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
 
 /**
- * FXML Controller class
+ * Controller for the about scene
  *
  * @author Vector
  */
@@ -28,9 +23,6 @@ public class AboutSceneController implements Initializable {
 
     @FXML private Label headerLabel;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         desktop = Desktop.getDesktop();

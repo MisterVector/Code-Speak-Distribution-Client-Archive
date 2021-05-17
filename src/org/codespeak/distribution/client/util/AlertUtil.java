@@ -4,7 +4,7 @@ import javafx.scene.control.Alert;
 import org.codespeak.distribution.client.Configuration;
 
 /**
- * A utility class that deals with alerts
+ * A utility class for creating alerts
  *
  * @author Vector
  */

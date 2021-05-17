@@ -20,14 +20,26 @@ public class ChangelogEntry {
         this.releaseTime = releaseTime;
     }
     
+    /**
+     * Gets the version of this changelog entry
+     * @return version of this changelog entry
+     */
     public String getVersion() {
         return version;
     }
     
+    /**
+     * Gets the content of this changelog entry
+     * @return content of this changelog entry
+     */
     public String getContent() {
         return content;
     }
     
+    /**
+     * Gets the release time of this changelog entry
+     * @return release time of this changelog entry
+     */
     public Instant getReleaseTime() {
         return releaseTime;
     }

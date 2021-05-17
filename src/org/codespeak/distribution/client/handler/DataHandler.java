@@ -131,7 +131,7 @@ public class DataHandler {
      * Gets a program by its ID
      * @param id ID of program
      * @param installed whether the program is installed
-     * @return 
+     * @return a program object represented by its ID
      */
     public static Program getProgram(int id, boolean installed) {
         List<Program> progs = (installed ? installedPrograms : programs);

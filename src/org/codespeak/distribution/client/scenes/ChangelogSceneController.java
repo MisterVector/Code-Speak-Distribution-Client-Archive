@@ -23,17 +23,15 @@ public class ChangelogSceneController implements Initializable {
     @FXML private Label changelogNameLabel;
     @FXML private TextArea changelogText;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
     
     /**
-     * Called when a program update is being displayed. The information here
+     * Called when a program update is being displayed.The information here
      * will be used to display various pieces of information
+     * @param changelogName the name of the changelog
      * @param changelogEntries 
      */
     public void showChangelog(String changelogName, List<ChangelogEntry> changelogEntries) {

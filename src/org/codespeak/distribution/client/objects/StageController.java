@@ -3,7 +3,7 @@ package org.codespeak.distribution.client.objects;
 import javafx.stage.Stage;
 
 /**
- * A class which contains both a scene and a controller object
+ * A class which contains both a stage and a controller object
  *
  * @author Vector
  */

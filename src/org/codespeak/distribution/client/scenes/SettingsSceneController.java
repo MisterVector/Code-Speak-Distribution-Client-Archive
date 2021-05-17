@@ -28,9 +28,6 @@ public class SettingsSceneController implements Initializable {
     @FXML private CheckBox checkClientUpdateOnStartupCheck;
     @FXML private CheckBox backupBeforeRemovingTextFilesCheck;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         settings = Configuration.getSettings();

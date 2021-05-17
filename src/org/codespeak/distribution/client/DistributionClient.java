@@ -30,6 +30,7 @@ import org.codespeak.distribution.client.util.StringUtil;
 import org.json.JSONObject;
 
 /**
+ * The main class
  *
  * @author Vector
  */

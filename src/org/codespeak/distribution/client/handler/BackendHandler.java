@@ -165,7 +165,7 @@ public class BackendHandler {
 
     /**
      * Gets a file channel from a URL
-     * @param remoteURL
+     * @param remoteURL URL of the file
      * @return Readable Byte Channel from the requested URL
      * @throws org.codespeak.distribution.client.objects.ClientException if an
      * error occurred while getting remote file channel

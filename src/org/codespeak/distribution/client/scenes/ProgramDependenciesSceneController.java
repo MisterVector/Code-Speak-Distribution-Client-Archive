@@ -42,9 +42,6 @@ public class ProgramDependenciesSceneController implements Initializable {
     @FXML private ListView<String> dependencyList;
     @FXML private Label dependencyDescriptionLabel;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         currentlySelectedDependency = null;

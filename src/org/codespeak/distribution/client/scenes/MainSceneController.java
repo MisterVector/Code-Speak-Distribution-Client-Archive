@@ -55,6 +55,7 @@ import org.codespeak.distribution.client.util.SceneUtil;
 import org.codespeak.distribution.client.util.StringUtil;
 
 /**
+ * Controller for the main scene
  *
  * @author ComputerDoctor
  */
