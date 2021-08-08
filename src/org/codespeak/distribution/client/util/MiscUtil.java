@@ -119,17 +119,18 @@ public class MiscUtil {
      * @return process builder made from the process path
      */
     public static ProcessBuilder createProcessBuilder(Path processPath) {
-        Path directory = processPath.getParent().toAbsolutePath();
-        String processPathRaw = processPath.toString();
+        Path absoluteProcessPath = processPath.toAbsolutePath();
+        Path directory = absoluteProcessPath.getParent();
+        String absoluteProcessPathRaw = absoluteProcessPath.toString();
 
         List<String> commands = new ArrayList<String>();
 
-        if (processPathRaw.endsWith(".jar")) {
+        if (absoluteProcessPathRaw.endsWith(".jar")) {
             commands.add("java");
             commands.add("-jar");
         }
 
-        commands.add(processPathRaw);
+        commands.add(absoluteProcessPathRaw);
         commands.add("--csds-launch");
 
         ProcessBuilder pb = new ProcessBuilder(commands);
