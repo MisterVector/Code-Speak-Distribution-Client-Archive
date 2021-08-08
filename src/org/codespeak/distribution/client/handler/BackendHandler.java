@@ -173,6 +173,7 @@ public class BackendHandler {
     public static ReadableByteChannel getRemoteFileChannelFromURL(String remoteURL) throws ClientException {
         String title =  "An exception occurred while fetching a remote file.";
         ErrorType type = ErrorType.ERROR_SEVERE;
+        remoteURL = remoteURL.replace(" ", "%20");
 
         try {
             URL url = new URL(remoteURL);
