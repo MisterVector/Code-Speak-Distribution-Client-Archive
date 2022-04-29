@@ -37,12 +37,7 @@ import org.json.JSONObject;
 public class DistributionClient extends Application {
     
     private static ClientException savedException = null;
-    private static DistributionClient instance;
     private static boolean online = true;
-    
-    public DistributionClient() {
-        instance = this;
-    }
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -134,14 +129,6 @@ public class DistributionClient extends Application {
         launch(args);
     }
     
-    /**
-     * Gets an instance of this class
-     * @return instance of this class
-     */
-    public static DistributionClient getInstance() {
-        return instance;
-    }
-
     /**
      * Logs the specified ClientException to file
      * @param ex the exception to log

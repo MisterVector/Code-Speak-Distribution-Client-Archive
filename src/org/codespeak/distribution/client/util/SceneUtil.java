@@ -61,7 +61,7 @@ public class SceneUtil {
      */
     public static StageController getScene(Stage stage, SceneTypes sceneType, String title, boolean newStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(DistributionClient.getInstance().getClass().getResource(sceneType.getPath()));
+        loader.setLocation(DistributionClient.class.getResource(sceneType.getPath()));
         
         Parent parent = (Parent) loader.load();
         Scene scene = new Scene(parent);
