@@ -31,7 +31,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.codespeak.distribution.client.Configuration;
-import org.codespeak.distribution.client.DistributionClient;
+import org.codespeak.distribution.client.Main;
 import org.codespeak.distribution.client.Settings;
 import org.codespeak.distribution.client.Settings.SettingFields;
 import org.codespeak.distribution.client.data.Category;
@@ -106,7 +106,7 @@ public class MainSceneController implements Initializable {
             ProgramTableData programData = programsTable.getItems().get(selectedIndex);
             Program selectedProgram = programData.getProgram();
             
-            if (DistributionClient.isOnline()) {
+            if (Main.isOnline()) {
                 if (selectedProgram.isInstalled()) {
                     if (selectedProgram.isDetached()) {
                         currentlySelectedProgram = selectedProgram;
@@ -207,7 +207,7 @@ public class MainSceneController implements Initializable {
 
         settings = Configuration.getSettings();
 
-        if (DistributionClient.isOnline()) {
+        if (Main.isOnline()) {
             DataHandler.markDetachedPrograms();
         }
         
@@ -239,7 +239,7 @@ public class MainSceneController implements Initializable {
      * Checks for newly added programs to the distribution system
      */
     public void checkForNewPrograms() {
-        if (DistributionClient.isOnline()) {
+        if (Main.isOnline()) {
             List<Program> newPrograms = DataHandler.getNewPrograms();
             
             if (!newPrograms.isEmpty()) {
@@ -264,7 +264,7 @@ public class MainSceneController implements Initializable {
      * @param startup if this update is being called on program startup
      */
     public void checkClientUpdate(boolean startup) {
-        if (!DistributionClient.isOnline()) {
+        if (!Main.isOnline()) {
             if (!startup) {
                 Alert alert = AlertUtil.createAlert("Unable to check for client update at this time.");
                 alert.show();
@@ -304,7 +304,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         }
     }
@@ -348,7 +348,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
 
@@ -376,7 +376,7 @@ public class MainSceneController implements Initializable {
                         Alert alert = ex.buildAlert();
                         alert.show();
 
-                        DistributionClient.logError(ex);
+                        Main.logError(ex);
                     }
                 }
                 
@@ -404,7 +404,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
     
@@ -419,7 +419,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
     
@@ -439,7 +439,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
 
@@ -473,7 +473,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
@@ -502,7 +502,7 @@ public class MainSceneController implements Initializable {
                     Alert alert = ex.buildAlert();
                     alert.show();
 
-                    DistributionClient.logError(ex);
+                    Main.logError(ex);
                 }
             } else {
                 Alert alert = AlertUtil.createAlert(programName + " does not have any dependencies.");
@@ -528,7 +528,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select an installed program first.");
@@ -539,7 +539,7 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onProgramRepairButtonClick() {
         if (currentlySelectedInstalledProgram != null) {
-            if (!DistributionClient.isOnline()) {
+            if (!Main.isOnline()) {
                 Alert alert = AlertUtil.createAlert("Unable to repair program at this time.");
                 alert.show();
 
@@ -586,7 +586,7 @@ public class MainSceneController implements Initializable {
                     Alert alert = ex.buildAlert();
                     alert.show();
                     
-                    DistributionClient.logError(ex);
+                    Main.logError(ex);
                 }
             }
         } else {
@@ -598,7 +598,7 @@ public class MainSceneController implements Initializable {
     @FXML
     public void onProgramViewChangelogButtonClick() {
         if (currentlySelectedProgram != null) {
-            if (!DistributionClient.isOnline()) {
+            if (!Main.isOnline()) {
                 Alert alert = AlertUtil.createAlert("Unable to view program changelog at this time.");
                 alert.show();
 
@@ -638,7 +638,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         } else {
             Alert alert = AlertUtil.createAlert("Select a program first.");
@@ -648,7 +648,7 @@ public class MainSceneController implements Initializable {
     
     @FXML
     public void onViewChangelogButtonClick() {
-        if (!DistributionClient.isOnline()) {
+        if (!Main.isOnline()) {
             Alert alert = AlertUtil.createAlert("Unable to view changelog at this time.");
             alert.show();
 
@@ -669,7 +669,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
     
@@ -693,7 +693,7 @@ public class MainSceneController implements Initializable {
             Alert alert = ex.buildAlert();
             alert.show();
             
-            DistributionClient.logError(ex);
+            Main.logError(ex);
         }
     }
     
@@ -738,7 +738,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         }
     }
@@ -772,7 +772,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         }
     }
@@ -800,7 +800,7 @@ public class MainSceneController implements Initializable {
                 Alert alert = ex.buildAlert();
                 alert.show();
                 
-                DistributionClient.logError(ex);
+                Main.logError(ex);
             }
         }
     }
@@ -822,7 +822,7 @@ public class MainSceneController implements Initializable {
                 try {
                     DataHandler.uninstallProgram(currentlySelectedInstalledProgram);
 
-                    if (DistributionClient.isOnline() && !currentlySelectedInstalledProgram.isDetached()) {
+                    if (Main.isOnline() && !currentlySelectedInstalledProgram.isDetached()) {
                         currentlySelectedInstalledProgram = null;
 
                         displayProgramControls(currentlySelectedProgram, null);
@@ -847,7 +847,7 @@ public class MainSceneController implements Initializable {
                     alert = ex.buildAlert();
                     alert.show();
 
-                    DistributionClient.logError(ex);
+                    Main.logError(ex);
                 }
             }
         } else {

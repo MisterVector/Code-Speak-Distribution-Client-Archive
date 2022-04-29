@@ -34,7 +34,7 @@ import org.json.JSONObject;
  *
  * @author Vector
  */
-public class DistributionClient extends Application {
+public class Main extends Application {
     
     private static ClientException savedException = null;
     private static boolean online = true;

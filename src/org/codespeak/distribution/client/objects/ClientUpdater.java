@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import org.codespeak.distribution.client.Configuration;
-import org.codespeak.distribution.client.DistributionClient;
+import org.codespeak.distribution.client.Main;
 import org.codespeak.distribution.client.data.ChangelogEntry;
 
 /**
@@ -27,7 +27,7 @@ public class ClientUpdater extends Updater {
         
         Path updaterPath = Paths.get(".").resolve(Configuration.UPDATER_FILE).toAbsolutePath();
         List<String> commands = new ArrayList<String>();
-        File applicationFolder = new File(DistributionClient.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath().getParent().toFile();
+        File applicationFolder = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toPath().getParent().toFile();
 
         if (Configuration.UPDATER_FILE.endsWith(".jar")) {
             commands.add("java");
